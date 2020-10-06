@@ -2,13 +2,10 @@ environments:
   - name: local
     endpoints:
       production:
-        url: https://eu.httpbin.org
-        config:
-        retryTimeOut: $RETRY       
+        url: https://eu.httpbin.org   
       sandbox:         
       url: https://eu.httpbin.org
-      config:
-        retryTimeOut: $RETRY       
+    
 
 deploy:
   import:
