@@ -12,7 +12,7 @@ pipeline {
             steps{
                 git branch: "master",
                 url: 'https://gitlab.com/prabagodelrio/api-tool-httpbin-v2.git',
-                credentialsId: 'prabagodelrio@gmail.com'
+                credentialsId: 'prabagodelrio-gitlabv2'
             }
         }
         stage('Deploy to Dev') {
