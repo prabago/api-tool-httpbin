@@ -8,7 +8,7 @@ pipeline {
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
     }
     stages {
-            stage('Deploy to $'DEV_ENV) {
+            stage('Deploy to '$DEV_ENV) {
             environment{
                 RETRY = '80'
             }
