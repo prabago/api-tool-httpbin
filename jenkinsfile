@@ -13,6 +13,8 @@ pipeline {
                 RETRY = '80'
             }
             steps {
+                echo 'Register to $DEV_ENV'
+                sh './config.sh'
                 echo 'Logging into $DEV_ENV'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
