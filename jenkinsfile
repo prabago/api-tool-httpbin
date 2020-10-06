@@ -8,13 +8,7 @@ pipeline {
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
     }
     stages {
-            stage('Demote to Created') {
-            steps {
-                echo 'Demote to Created'
-                sh 'apictl change-status api -a "Demote to Created" -n api-tool-httpbin -v v2 -e $DEV_ENV -k' 
-            }
-        }
-            stage('Import to $DEV_ENV') {
+            stage('Deploy to $'DEV_ENV) {
             environment{
                 RETRY = '80'
             }
@@ -26,16 +20,7 @@ pipeline {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 echo 'Import to $DEV_ENV'
-
                 sh 'apictl import-api -f $API_DIR -e $DEV_ENV -k --preserve-provider --update --verbose'
-               
-            }
-        }
-
-        stage('Deploy to $DEV_ENV') {
-            steps {
-                echo 'Running tests in $DEV_ENV'
-                sh 'apictl change-status api -a Publish -n api-tool-httpbin -v v2 -e $DEV_ENV -k' 
             }
         }
         stage('Run Tests') {
