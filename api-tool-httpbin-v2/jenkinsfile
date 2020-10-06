@@ -3,7 +3,7 @@ pipeline {
     tools {nodejs "node"}
     environment {
         CI = 'true'
-        API_DIR = '.'
+        API_DIR = './api-tool-httpbin-v2/'
         DEV_ENV = 'local'
         TEST_SCRIPT_FILE = 'sample.httpbin.dev.postman_collection.json'        
     }
