@@ -14,8 +14,9 @@ pipeline {
             }
             steps {
                 echo 'Logging into $DEV_ENV'
+               
                 sh 'apictl login $DEV_ENV -u admin -p admin -k'                        
-                }
+                
                 echo 'Deploying to $DEV_ENV'
                 sh 'apictl import-api -f $API_DIR -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
