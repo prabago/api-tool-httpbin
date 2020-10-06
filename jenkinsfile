@@ -8,7 +8,13 @@ pipeline {
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
     }
     stages {
-               stage('Import to $DEV_ENV') {
+            stage('Demote to Created') {
+            steps {
+                echo 'Demote to Created'
+                sh 'apictl change-status api -a "Demote to Created" -n api-tool-httpbin -v v2 -e $DEV_ENV -k' 
+            }
+        }
+            stage('Import to $DEV_ENV') {
             environment{
                 RETRY = '80'
             }
