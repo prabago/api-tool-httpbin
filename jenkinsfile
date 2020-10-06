@@ -19,8 +19,17 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
-                echo 'Deploying to $DEV_ENV'
+                echo 'Import to $DEV_ENV'
+
                 sh 'apictl import-api -f $API_DIR -e $DEV_ENV -k --preserve-provider --update --verbose'
+               
+            }
+        }
+
+        stage('Deploy to $DEV_ENV') {
+            steps {
+                echo 'Running tests in $DEV_ENV'
+                sh 'apictl change-status api -a Publish -n api-tool-httpbin -v v2 -e $DEV_ENV -k' 
             }
         }
         stage('Run Tests') {
