@@ -15,14 +15,14 @@ pipeline {
             steps {
                 echo 'Logging into $DEV_ENV'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
-                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                    sh 'apictl login $DEV_ENV -u admin -p admin -k'                        
                 }
                 echo 'Deploying to $DEV_ENV'
                 sh 'apictl import-api -f $API_DIR -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
         }
         stage('Run Tests') {
-            steps {
+            steps {a
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run $API_DIR/$TEST_SCRIPT_FILE --insecure' 
             }
