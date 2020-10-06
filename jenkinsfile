@@ -22,7 +22,7 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            steps {a
+            steps {
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run $API_DIR/$TEST_SCRIPT_FILE --insecure' 
             }
