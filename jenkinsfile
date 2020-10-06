@@ -4,11 +4,11 @@ pipeline {
     environment {
         CI = 'true'
         API_DIR = '.'
-        DEV_ENV = 'dev'
+        DEV_ENV = 'local'
         TEST_SCRIPT_FILE = 'sample.httpbin.dev.postman_collection.json'        
     }
     stages {
-               stage('Deploy to Dev') {
+               stage('Deploy to local') {
             environment{
                 RETRY = '80'
             }
