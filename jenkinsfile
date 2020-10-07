@@ -3,7 +3,8 @@ pipeline {
     tools {nodejs "node"}
     environment {
         CI = 'true'
-        API_DIR = './api-tool-httpbin-v2/'
+        API_NAME = 'api-tool-httpbin-v2'
+        API_DIR = './apis/'
         DEV_ENV = 'local'
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
     }
@@ -14,19 +15,19 @@ pipeline {
             }
             steps {
                 echo 'Register to $DEV_ENV'
-                sh './config.sh'
+                sh './scripts/config.sh'
                 echo 'Logging into $DEV_ENV'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 echo 'Import to $DEV_ENV'
-                sh 'apictl import-api -f $API_DIR -e $DEV_ENV -k --preserve-provider --update --verbose'
+                sh 'apictl import-api -f $API_DIR/$API_NAME -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
         }
         stage('Run Tests') {
             steps {
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run $TEST_SCRIPT_FILE --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
+                sh 'newman run $TEST_SCRIPT_FILE -e $DEV_ENV.*postman_environment.json --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
             }
         }
     }

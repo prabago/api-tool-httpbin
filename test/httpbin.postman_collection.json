@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "c43a4c74-425a-4ec1-8273-c0086df7fb4f",
+		"name": "httpbin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DELAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e35576f6-7978-418d-b33a-a6927f9da65d",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body contains args and data\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"args\");",
+							"  pm.expect(pm.response.text()).to.include(\"data\");",
+							"  pm.expect(pm.response.text()).to.include(\"Accept\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ec73ead1-2343-475a-b417-f087c8f37c2d",
+						"exec": [
+							"",
+							"const server =  pm.environment.get(\"api-server\");",
+							"const port =  pm.environment.get(\"sandbox-port\");",
+							"",
+							"const tokenUrl = 'https://' + pm.environment.get(\"api-server\") + ':' + pm.environment.get(\"sandbox-port\") + '/token';",
+							"let clientId = '8tz6Lf4lneGJcwryybwZUUj2fh8a';",
+							"let clientSecret = 'Qj0_ENxcxzwx7K2cWQ88Rpu0lSka';",
+							"let scope = 'am_application_scope default'",
+							"",
+							"let getTokenRequest = {",
+							"    method: 'POST',",
+							"    url: tokenUrl,",
+							"    auth: {",
+							"        type: \"basic\",",
+							"        basic: [",
+							"            { key: \"username\", value: clientId },",
+							"            { key: \"password\", value: clientSecret }",
+							"        ]",
+							"    },",
+							"    body: {",
+							"        mode: 'x-www-form-urlencoded',",
+							"        formdata: [",
+							"            { key: 'grant_type', value: 'client_credentials' },",
+							"            { key: 'scope', value: scope }",
+							"        ]",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(getTokenRequest, (err, response) => {",
+							"    let jsonResponse = response.json(),",
+							"        newAccessToken = jsonResponse.access_token;",
+							"",
+							"    console.log({ err, jsonResponse, newAccessToken })",
+							"",
+							"    pm.environment.set('accessToken', newAccessToken);",
+							"    pm.variables.set('accessToken', newAccessToken);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhdWQiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwibmJmIjoxNjAyMDE3OTk0LCJhenAiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwic2NvcGUiOiJhbV9hcHBsaWNhdGlvbl9zY29wZSBkZWZhdWx0IiwiaXNzIjoiaHR0cHM6XC9cL2xvY2FsaG9zdDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjAyMDIxNTk0LCJpYXQiOjE2MDIwMTc5OTQsImp0aSI6Ijg5YTM2NWU5LTlhMjktNDk5NC04MTZlLTU2YTE0YmM2MzMxOSJ9.lFWf9W4wXEg49h-oP5Zj6csVMYpy4lwR_jrkboqrYZcgVnLDPdafkQ1N6Msn4XjwfjTPsJFxuM3SQn5_HDhP1sjGF0fGRA-fLx2ENpqwru_WFZTE-Tq94mGLPebv9JisXI2Nww9gOAWlSJGUeWmtOXg8feKgK9O_vc-SZ8ES1Oq93zxe1XpTvX6dQAUTh9-yJjszWoeKOsyd4Pw-tyYjBkRigtAiLRyKpI6y9Sdf_6KyESPrwOJfY5VKyu0vNNn2kfxvOO_uwGYr5gdozzajXc4iTgIQYTBE5I9Fjl-WqZUyua58ix8beGuvPui5slnoOZbYovWnFiHwrPSxALgyoA"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:8243/httpbin/v2/delay/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8243",
+					"path": [
+						"httpbin",
+						"v2",
+						"delay",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "388a4757-a14a-4d0a-aede-cea06529e4a4",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "21c04010-2706-4ea7-aef8-663f32ee7335",
+						"exec": [
+							"",
+							"const server =  pm.environment.get(\"api-server\");",
+							"const port =  pm.environment.get(\"sandbox-port\");",
+							"",
+							"const tokenUrl = 'https://' + pm.environment.get(\"api-server\") + ':' + pm.environment.get(\"sandbox-port\") + '/token';",
+							"let clientId = '8tz6Lf4lneGJcwryybwZUUj2fh8a';",
+							"let clientSecret = 'Qj0_ENxcxzwx7K2cWQ88Rpu0lSka';",
+							"let scope = 'am_application_scope default'",
+							"",
+							"let getTokenRequest = {",
+							"    method: 'POST',",
+							"    url: tokenUrl,",
+							"    auth: {",
+							"        type: \"basic\",",
+							"        basic: [",
+							"            { key: \"username\", value: clientId },",
+							"            { key: \"password\", value: clientSecret }",
+							"        ]",
+							"    },",
+							"    body: {",
+							"        mode: 'x-www-form-urlencoded',",
+							"        formdata: [",
+							"            { key: 'grant_type', value: 'client_credentials' },",
+							"            { key: 'scope', value: scope }",
+							"        ]",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(getTokenRequest, (err, response) => {",
+							"    let jsonResponse = response.json(),",
+							"        newAccessToken = jsonResponse.access_token;",
+							"",
+							"    console.log({ err, jsonResponse, newAccessToken })",
+							"",
+							"    pm.environment.set('accessToken', newAccessToken);",
+							"    pm.variables.set('accessToken', newAccessToken);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhdWQiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwibmJmIjoxNjAyMDE3OTk0LCJhenAiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwic2NvcGUiOiJhbV9hcHBsaWNhdGlvbl9zY29wZSBkZWZhdWx0IiwiaXNzIjoiaHR0cHM6XC9cL2xvY2FsaG9zdDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjAyMDIxNTk0LCJpYXQiOjE2MDIwMTc5OTQsImp0aSI6Ijg5YTM2NWU5LTlhMjktNDk5NC04MTZlLTU2YTE0YmM2MzMxOSJ9.lFWf9W4wXEg49h-oP5Zj6csVMYpy4lwR_jrkboqrYZcgVnLDPdafkQ1N6Msn4XjwfjTPsJFxuM3SQn5_HDhP1sjGF0fGRA-fLx2ENpqwru_WFZTE-Tq94mGLPebv9JisXI2Nww9gOAWlSJGUeWmtOXg8feKgK9O_vc-SZ8ES1Oq93zxe1XpTvX6dQAUTh9-yJjszWoeKOsyd4Pw-tyYjBkRigtAiLRyKpI6y9Sdf_6KyESPrwOJfY5VKyu0vNNn2kfxvOO_uwGYr5gdozzajXc4iTgIQYTBE5I9Fjl-WqZUyua58ix8beGuvPui5slnoOZbYovWnFiHwrPSxALgyoA"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-server}}:{{sandbox-port}}/httpbin/v2/get",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{sandbox-port}}",
+					"path": [
+						"httpbin",
+						"v2",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "412267fc-03ea-462e-bb70-caf3013af4fe",
+			"key": "access_token",
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhdWQiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwibmJmIjoxNjAyMDY2MzA1LCJhenAiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwic2NvcGUiOiJhbV9hcHBsaWNhdGlvbl9zY29wZSBkZWZhdWx0IiwiaXNzIjoiaHR0cHM6XC9cL2xvY2FsaG9zdDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjAyMDY5OTA1LCJpYXQiOjE2MDIwNjYzMDUsImp0aSI6ImRhM2RjNGNiLTlkZTgtNDAyNi05ZTA3LTkyMDZhMjFlNmUwNSJ9.qVu7CrUgV4O4jhLG9FXKV54ufuk36GWIaGGQQX_eBbFU7i5df6Mf17H7qCToau-nphrS1wU1kFWxEJVqwP1GrFcq-QyE-fno1YH-Uqr2oce6czAtMvbt3DCIsSzpvZx_costErdMclG2ketX8iVRMxOBgLF_XgfR8rGYJTlf3TZngwhG5GHMxUbALaefCjjcgy7jdiH4FrWYatZdZS_xeHG1CYfd5VILLMvqRp3GyArYWq-jvCe3ggRjF_W9sLr0cS4_JQ5L9vfe3YWlXyyLNoJ5E4sHtyeCdW73TCN-RUKXv9L4L4_etOmILVcNEQQUgADrcXgJql5pU_LkDIbKlA"
+		},
+		{
+			"id": "2121e00f-4013-45cf-b75c-6187a53bbb97",
+			"key": "scope",
+			"value": "am_application_scope default"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
