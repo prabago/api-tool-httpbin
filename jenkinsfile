@@ -32,7 +32,7 @@ pipeline {
                     }
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
+                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json –global-var "access_token=$TOKEN" --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
             }
         }
     }
