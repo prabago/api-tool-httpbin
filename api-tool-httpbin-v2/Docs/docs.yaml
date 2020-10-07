@@ -3,7 +3,15 @@
   type: HOWTO
   name: api-tool-httpbin-v2
   summary: summary
-  sourceType: INLINE
+  sourceType: FILE
   visibility: API_LEVEL
+  lastUpdated: Dec 12, 2019 11:18:16 PM
   filePath: api-tool-httpbin-v2.md
-  inlineContent: "This is doc content. This can have many lines."
+ -
+  id: 916ad053-4708-4a4e-8121-3d01c81c2daf
+  type: HOWTO
+  name: api-tool-httpbin-v2
+  summary: summary
+  sourceType: MARKDOWNs
+  visibility: API_LEVEL
+  lastUpdated: Dec 12, 2019 11:18:16 PM
