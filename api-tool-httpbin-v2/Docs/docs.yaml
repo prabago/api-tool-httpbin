@@ -3,7 +3,7 @@
   type: HOWTO
   name: api-tool-httpbin-v2
   summary: summary
-  sourceType: MARKDOWN
+  sourceType: INLINE
   visibility: API_LEVEL
   filePath: api-tool-httpbin-v2.md
   inlineContent: "This is doc content. This can have many lines."
