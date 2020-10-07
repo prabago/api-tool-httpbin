@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Run Tests') {
             environment {
-               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k'', , returnStdout: true).trim()
+               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k', , returnStdout: true).trim()
            }
             steps {
                 echo 'Token are $TOKEN'
