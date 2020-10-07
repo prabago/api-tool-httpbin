@@ -5,5 +5,5 @@
   summary: summary
   sourceType: MARKDOWN
   visibility: API_LEVEL
-  lastUpdated: Dec 12, 2019 11:18:16 PM
   filePath: api-tool-httpbin-v2.md
+  inlineContent: "This is doc content. This can have many lines."
