@@ -10,12 +10,12 @@ pipeline {
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
     }
     stages {
-            stage('Deploy to ${DEV_ENV}') {
+            stage('Despliegue') {
             environment{
                 RETRY = '80'
             }
             steps {
-                echo 'Register to ${DEV_ENV}'
+                echo "Register to ${DEV_ENV}"
                 sh './scripts/config.sh'
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
@@ -25,7 +25,7 @@ pipeline {
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VERSION -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
         }
-        stage('Run Tests') {
+        stage('Ejecucion de Tests') {
             environment {
                TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k', , returnStdout: true).trim()
            }
