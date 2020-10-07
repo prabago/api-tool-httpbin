@@ -1,17 +1,6 @@
  -
-  id: 916ad053-4708-4a4e-8121-3d01c81c2daf
   type: HOWTO
   name: api-tool-httpbin-v2
-  summary: summary
-  sourceType: FILE
+  summary: api-tool-httpbin-v2
+  sourceType: MARKDOWN
   visibility: API_LEVEL
-  lastUpdated: Dec 12, 2019 11:18:16 PM
-  filePath: api-tool-httpbin-v2.md
- -
-  id: 916ad053-4708-4a4e-8121-3d01c81c2daf
-  type: HOWTO
-  name: api-tool-httpbin-v2
-  summary: summary
-  sourceType: MARKDOWNs
-  visibility: API_LEVEL
-  lastUpdated: Dec 12, 2019 11:18:16 PM
