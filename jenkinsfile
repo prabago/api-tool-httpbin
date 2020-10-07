@@ -32,6 +32,7 @@ pipeline {
     }
     post {
         cleanup {
+             sh 'apictl logout $DEV_PASSWORD -k'
             deleteDir()
             dir("${workspace}@tmp") {
                 deleteDir()
