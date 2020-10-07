@@ -26,7 +26,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run $TEST_SCRIPT_FILE --insecure --bail' 
+                sh 'newman run $TEST_SCRIPT_FILE -reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
             }
         }
     }
