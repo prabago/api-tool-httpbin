@@ -17,11 +17,11 @@ pipeline {
             steps {
                 echo "Register to ${DEV_ENV}"
                 sh './scripts/config.sh'
-                echo 'Logging into ${$DEV_ENV}'
+                echo "Logging into ${$DEV_ENV}"
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
-                echo 'Import to ${DEV_ENV} with USER ${DEV_USERNAME}'
+                echo "Import to ${DEV_ENV} with USER ${DEV_USERNAME}"
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VERSION -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
         }
@@ -30,8 +30,8 @@ pipeline {
                TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k', , returnStdout: true).trim()
            }
             steps {
-                echo 'Token are $TOKEN'
-                echo 'Running tests in $DEV_ENV'
+                echo "Token are $TOKEN"
+                echo "Running tests in $DEV_ENV"
                 sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --global-var access_token=$TOKEN --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
             }
         }
