@@ -31,6 +31,9 @@ pipeline {
         }
     }
     post {
+        always {
+            junit '*.xml'
+        }
         cleanup {
              sh 'apictl logout $DEV_ENV -k'
             deleteDir()
@@ -41,5 +44,6 @@ pipeline {
                 deleteDir()
             }
         }
+        
     }
 }
