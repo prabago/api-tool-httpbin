@@ -67,14 +67,15 @@ isPublishedDefaultVersion: false
 keyManagers:
  - all
 environments:
- - Production and Sandbox
+ - Local
+ - Sandbox
 createdTime: "1602002996832"
 additionalProperties: {}
 monetizationProperties: {}
 isMonetizationEnabled: false
 environmentList:
- - Local
- - Sandbox
+ - SANDBOX
+ - PRODUCTION
 apiSecurity: oauth2,oauth_basic_auth_api_key_mandatory
 endpoints: []
 enableSchemaValidation: false
