@@ -6,8 +6,9 @@ pipeline {
         API_VERSION = 'v2'
         API_NAME = 'api-tool-httpbin'
         API_DIR = './apis/'
-        DEV_ENV = 'local-sb'
-        TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'        
+        DEV_ENV = 'local'
+        TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'
+        SB_TOKEN_URL = 'https://localhost:8244/token'        
     }
     stages {
             stage('Despliegue') {
@@ -25,9 +26,9 @@ pipeline {
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VERSION -e $DEV_ENV -k --preserve-provider --update --verbose'
             }
         }
-        stage('Ejecucion de Tests') {
+        stage('Ejecucion de Tests contra Sandbox') {
             environment {
-               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k', , returnStdout: true).trim()
+               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k -t $SB_TOKEN_URL', , returnStdout: true).trim()
            }
             steps {
                 echo 'Token are $TOKEN'
