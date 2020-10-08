@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Ejecucion de Tests contra Sandbox') {
             environment {
-               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV-sb -k -t $SB_TOKEN_URL', , returnStdout: true).trim()
+               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV-sb -k --token $SB_TOKEN_URL', , returnStdout: true).trim()
            }
             steps {
                 echo 'Token are $TOKEN'
