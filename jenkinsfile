@@ -27,11 +27,10 @@ pipeline {
             }
         }
         stage('Ejecucion de Tests contra Sandbox') {
-             echo 'Logging into ${$DEV_ENV}-lv'
+            environment {
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV-sb -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
-            environment {
                TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV-sb -k -t $SB_TOKEN_URL', , returnStdout: true).trim()
            }
             steps {
