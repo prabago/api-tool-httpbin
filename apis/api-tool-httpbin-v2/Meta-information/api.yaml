@@ -73,8 +73,8 @@ additionalProperties: {}
 monetizationProperties: {}
 isMonetizationEnabled: false
 environmentList:
- - SANDBOX
- - PRODUCTION
+ - Local
+ - Sandbox
 apiSecurity: oauth2,oauth_basic_auth_api_key_mandatory
 endpoints: []
 enableSchemaValidation: false
