@@ -56,7 +56,7 @@ corsConfiguration:
    - DELETE
    - PATCH
    - OPTIONS
-endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"https:\/\/eu.httpbin.org\/"},"production_endpoints":{"url":"https:\/\/eu.httpbin.org\/"}}'
+endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"http:\/\/localhost:4010"},"endpoint_security":{"production":{"password":null,"tokenUrl":null,"clientId":null,"clientSecret":null,"customParameters":"{}","type":null,"grantType":null,"enabled":false,"username":null},"sandbox":{"password":null,"tokenUrl":"http:\/\/localhost:4010\/token","clientId":"prueba","clientSecret":"eyJjIjoiWUQyRFdPZGpDa0gzZ0huWUxOQzhiVi9oTVpPZS9vWWRjaHo2QW1TOUdUYlNSeG1INytaMm5MRjJzUm5KMUtOdDRkZTdEN1c3MVZlTWR5U3dTaDFYRm16NFFXL3hYRGUvSmR4cVhKTjBqR2xadzJuenJBV0RNaHd1enoreGJaUmVBUFh3RXJDNDVSM3hJRG5RemFtSWtONlRkUlp1VU1BWFZ2NTZSVnZtUTJta3V2VWpsZVFwYUJieXd1MFpFbHhLdEc5emovcHVyT1JDNDFYMjhLNHgraTI5dXE0Q3pYMjA0VElLUGw5RFBUYzRyK3JhdGZxMXBmQiswQWhrckVZa1djazkxZmI1TkNLZ1pQVE13U1c5bTdhZ0ZXNmNzdzdyVmZEaEFGZDBYQ1pXUlhYTDg1Wk1iN2tUZ0J3NzY4K0FVVXFTMFJacmo0WlNNeitTdndiUnVBXHUwMDNkXHUwMDNkIiwidCI6IlJTQS9FQ0IvT0FFUHdpdGhTSEExYW5kTUdGMVBhZGRpbmciLCJ0cCI6IjU3RkYzOEQ5NzY2NEM3OTJGRjg4MDExNzFGMDQxOTFERUQ4ODc3OEQiLCJ0cGQiOiJTSEEtMSJ9","customParameters":"{}","type":"OAUTH","grantType":"CLIENT_CREDENTIALS","enabled":true,"username":null}},"production_endpoints":{"url":"https:\/\/eu.httpbin.org"}}'
 responseCache: Disabled
 cacheTimeout: 300
 implementation: ENDPOINT
