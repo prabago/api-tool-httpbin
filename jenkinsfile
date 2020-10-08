@@ -17,7 +17,7 @@ pipeline {
                 docker { image 'stoplight/prism:4' }
             }
             steps {
-                sh 'docker run --init --rm -it -d --name mocker -v $(pwd)/Meta-information:/Meta-information -P stoplight/prism:4 mock -h 0.0.0.0 "/Meta-information/swagger.yaml"'
+                sh 'docker run --init --rm -it -d --name mocker -v $(pwd)/apis/api-tool-httpbin-v2/Meta-information:/Meta-information -P stoplight/prism:4 mock -h 0.0.0.0 "/Meta-information/swagger.yaml"'
             }
         }
             stage('Despliegue') {
