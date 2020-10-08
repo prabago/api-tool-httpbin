@@ -12,9 +12,6 @@ pipeline {
     }
     stages {
         stage('mock-server') {
-            agent {
-                docker { image 'stoplight/prism:4' }
-            }
             steps {
                 sh 'docker run --init --rm -it -d --name mocker -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
             }
