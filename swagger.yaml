@@ -2,92 +2,127 @@ openapi: 3.0.1
 info:
   title: api-tool-httpbin
   version: v2
+  description: ''
 servers:
- -
-  url: /
+  - url: 'https://localhost:8244/httpbin/v2'
 security:
- -
-  default: []
+  - default: []
 paths:
-  /delay/{delay}:
+  '/delay/{delay}':
     get:
       parameters:
-       -
-        name: delay
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-          format: int32
+        - name: delay
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int32
       responses:
-        "200":
-          description: ok
-      security:
-       -
-        default: []
-      x-auth-type: Application & Application User
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                '200':
+                  value:
+                    args: {}
+                    data: ''
+                    files: {}
+                    form: {}
+                    headers:
+                      Accept: application/json
+                      Accept-Encoding: 'gzip, deflate, br'
+                      Accept-Language: es
+                      Host: eu.httpbin.org
+                      Referer: 'https://eu.httpbin.org/'
+                      Sec-Fetch-Dest: empty
+                      Sec-Fetch-Mode: cors
+                      Sec-Fetch-Site: same-origin
+                      User-Agent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
+                      X-Amzn-Trace-Id: Root=1-5f7ef8fe-752e2a070e76d2a629f7ba8a
+                    origin: 83.44.213.150
+                    url: 'https://eu.httpbin.org/delay/1'
+      security: []
+      x-auth-type: 'Application & Application User'
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
-         - oauth2
+          - oauth2
         optional: false
+      summary: ''
   /get:
     get:
       parameters: []
       responses:
-        "200":
+        '200':
           description: ok
-      security:
-       -
-        default: []
-      x-auth-type: Application & Application User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                '200':
+                  value:
+                    args: {}
+                    headers:
+                      Accept: application/json
+                      Accept-Encoding: 'gzip, deflate, br'
+                      Accept-Language: es
+                      Host: eu.httpbin.org
+                      Referer: 'https://eu.httpbin.org/'
+                      Sec-Fetch-Dest: empty
+                      Sec-Fetch-Mode: cors
+                      Sec-Fetch-Site: same-origin
+                      User-Agent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
+                      X-Amzn-Trace-Id: Root=1-5f7ef940-236849c74f3690de70971321
+                    origin: 83.44.213.150
+                    url: 'https://eu.httpbin.org/get'
+      security: []
+      x-auth-type: 'Application & Application User'
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
-         - oauth2
+          - oauth2
         optional: false
 components:
-  securitySchemes:
-    default:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: ""
-          scopes: {}
+  securitySchemes: {}
 x-wso2-auth-header: Authorization
 x-wso2-cors:
   corsConfigurationEnabled: false
   accessControlAllowOrigins:
-   - '*'
+    - '*'
   accessControlAllowCredentials: false
   accessControlAllowHeaders:
-   - authorization
-   - Access-Control-Allow-Origin
-   - Content-Type
-   - SOAPAction
-   - apikey
-   - testKey
+    - authorization
+    - Access-Control-Allow-Origin
+    - Content-Type
+    - SOAPAction
+    - apikey
+    - testKey
   accessControlAllowMethods:
-   - GET
-   - PUT
-   - POST
-   - DELETE
-   - PATCH
-   - OPTIONS
+    - GET
+    - PUT
+    - POST
+    - DELETE
+    - PATCH
+    - OPTIONS
 x-wso2-production-endpoints:
   urls:
-   - https://eu.httpbin.org/
+    - 'https://eu.httpbin.org/'
   type: http
 x-wso2-sandbox-endpoints:
   urls:
-   - https://eu.httpbin.org/
+    - 'https://eu.httpbin.org/'
   type: http
 x-wso2-basePath: /httpbin/v2
 x-wso2-transports:
- - http
- - https
+  - http
+  - https
 x-wso2-response-cache:
   enabled: false
   cacheTimeoutInSeconds: 300
