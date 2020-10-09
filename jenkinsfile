@@ -32,13 +32,10 @@ pipeline {
             }
         }
         stage('Ejecucion de Tests contra Sandbox') {
-            environment {
-               TOKEN = sh(script: 'apictl get-keys -n $API_NAME -v $API_VERSION -e $DEV_ENV -k --token $SB_TOKEN_URL', , returnStdout: true).trim()
-           }
             steps {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --global-var access_token=$TOKEN --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
+                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
             }
         }
     }
