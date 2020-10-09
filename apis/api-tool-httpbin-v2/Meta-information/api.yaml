@@ -30,7 +30,8 @@ technicalOwner: PABLO RABAGO RIO
 technicalOwnerEmail: prabago@minsait.com
 businessOwner: prabagodelrio@gmail.com
 businessOwnerEmail: prabagodelrio@gmail.com
-visibility: public
+visibility: restricted
+visibleRoles: Internal/subscriber
 gatewayLabels: []
 endpointSecured: false
 endpointAuthDigest: false
