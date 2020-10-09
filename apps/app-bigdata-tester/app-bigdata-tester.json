@@ -9,7 +9,24 @@
   },
   "subscribedAPIs": [],
   "keys": [],
-  "keyManagerWiseOAuthApp": {},
+  "keyManagerWiseOAuthApp": {
+    "SANDBOX": {
+      "Resident Key Manager": {
+        "clientId": "sqWQxPz15z8LMY_1JgrS4HDJZoAa",
+        "clientName": "prabago_app-bigdata-tester_SANDBOX",
+        "callBackURL": "null",
+        "clientSecret": "ZVFTZ252WkJvbm9jeWY0VWE5Z281Yld3blI0YQ\u003d\u003d",
+        "parameters": {
+          "grant_types": "refresh_token password client_credentials urn:ietf:params:oauth:grant-type:jwt-bearer",
+          "redirect_uris": "null",
+          "client_name": "prabago_app-bigdata-tester_SANDBOX"
+        },
+        "isSaasApplication": false,
+        "appAttributes": {}
+      }
+    },
+    "PRODUCTION": {}
+  },
   "tier": "Unlimited",
   "status": "APPROVED",
   "groupId": "",
