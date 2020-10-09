@@ -1,0 +1,20 @@
+{
+  "id": 2,
+  "name": "app-bigdata-tester",
+  "uuid": "60ae71cb-8f8a-47fb-99c5-3efdcf1c0eee",
+  "subscriber": {
+    "name": "prabago",
+    "id": 1,
+    "tenantId": 0
+  },
+  "subscribedAPIs": [],
+  "keys": [],
+  "keyManagerWiseOAuthApp": {},
+  "tier": "Unlimited",
+  "status": "APPROVED",
+  "groupId": "",
+  "owner": "prabago",
+  "applicationAttributes": {},
+  "tokenType": "JWT",
+  "subscriptionCount": 0
+}
