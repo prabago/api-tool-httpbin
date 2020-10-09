@@ -67,8 +67,7 @@ isPublishedDefaultVersion: false
 keyManagers:
  - all
 environments:
- - Local
- - Sandbox
+ - Local and Sandbox
 createdTime: "1602002996832"
 additionalProperties: {}
 monetizationProperties: {}
