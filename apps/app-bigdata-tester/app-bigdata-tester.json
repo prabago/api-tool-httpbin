@@ -7,7 +7,51 @@
     "id": 1,
     "tenantId": 0
   },
-  "subscribedAPIs": [],
+  "subscribedAPIs": [
+    {
+      "subscriptionId": 1,
+      "tier": {
+        "name": "Bronze",
+        "displayName": "Bronze",
+        "requestsPerMin": 0,
+        "requestCount": 0,
+        "unitTime": 0,
+        "timeUnit": "ms",
+        "stopOnQuotaReached": true
+      },
+      "subscriber": {
+        "name": "prabago",
+        "id": 1,
+        "tenantId": 0
+      },
+      "apiId": {
+        "providerName": "prabago",
+        "apiName": "api-tool-httpbin",
+        "version": "v2",
+        "id": 0
+      },
+      "application": {
+        "id": 0,
+        "name": "app-bigdata-tester",
+        "uuid": "60ae71cb-8f8a-47fb-99c5-3efdcf1c0eee",
+        "subscriber": {
+          "name": "prabago",
+          "id": 1,
+          "tenantId": 0
+        },
+        "subscribedAPIs": [],
+        "keys": [],
+        "keyManagerWiseOAuthApp": {},
+        "applicationAttributes": {},
+        "subscriptionCount": 0
+      },
+      "subStatus": "UNBLOCKED",
+      "subCreatedStatus": "SUBSCRIBE",
+      "keys": [],
+      "uuid": "17cc037e-6b0e-4d35-8067-9e37133a5fb9",
+      "isBlocked": false
+    }
+  ],
   "keys": [],
   "keyManagerWiseOAuthApp": {
     "SANDBOX": {
