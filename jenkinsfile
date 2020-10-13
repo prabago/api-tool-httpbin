@@ -30,7 +30,7 @@ pipeline {
                 }
                 echo "Import to ${DEV_ENV}"
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VERSION -e $DEV_ENV -k --preserve-provider --update --verbose'
-                sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k  --verbose'
+                sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --skipSubscriptions --verbose'
             }
         }
         stage('Ejecucion de Tests contra Sandbox') {
