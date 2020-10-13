@@ -1,15 +1,15 @@
 {
-  "id": 2,
+  "id": 66,
   "name": "app-bigdata-tester",
-  "uuid": "60ae71cb-8f8a-47fb-99c5-3efdcf1c0eee",
+  "uuid": "b1a9c396-0691-4a1a-99a0-c2a8f84ac866",
   "subscriber": {
     "name": "prabago",
-    "id": 1,
+    "id": 21,
     "tenantId": 0
   },
   "subscribedAPIs": [
     {
-      "subscriptionId": 1,
+      "subscriptionId": 24,
       "tier": {
         "name": "Bronze",
         "displayName": "Bronze",
@@ -21,7 +21,7 @@
       },
       "subscriber": {
         "name": "prabago",
-        "id": 1,
+        "id": 21,
         "tenantId": 0
       },
       "apiId": {
@@ -33,10 +33,10 @@
       "application": {
         "id": 0,
         "name": "app-bigdata-tester",
-        "uuid": "60ae71cb-8f8a-47fb-99c5-3efdcf1c0eee",
+        "uuid": "b1a9c396-0691-4a1a-99a0-c2a8f84ac866",
         "subscriber": {
           "name": "prabago",
-          "id": 1,
+          "id": 21,
           "tenantId": 0
         },
         "subscribedAPIs": [],
@@ -48,7 +48,7 @@
       "subStatus": "UNBLOCKED",
       "subCreatedStatus": "SUBSCRIBE",
       "keys": [],
-      "uuid": "17cc037e-6b0e-4d35-8067-9e37133a5fb9",
+      "uuid": "3f3e6977-161a-4638-90ae-f4afa00851cb",
       "isBlocked": false
     }
   ],
@@ -56,12 +56,12 @@
   "keyManagerWiseOAuthApp": {
     "SANDBOX": {
       "Resident Key Manager": {
-        "clientId": "sqWQxPz15z8LMY_1JgrS4HDJZoAa",
+        "clientId": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
         "clientName": "prabago_app-bigdata-tester_SANDBOX",
         "callBackURL": "null",
-        "clientSecret": "ZVFTZ252WkJvbm9jeWY0VWE5Z281Yld3blI0YQ\u003d\u003d",
+        "clientSecret": "aU9UcWpBXzIwaGJKX1luSVQ1UXFoeFdBR0xrYQ\u003d\u003d",
         "parameters": {
-          "grant_types": "refresh_token password client_credentials urn:ietf:params:oauth:grant-type:jwt-bearer",
+          "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
           "redirect_uris": "null",
           "client_name": "prabago_app-bigdata-tester_SANDBOX"
         },
@@ -69,7 +69,21 @@
         "appAttributes": {}
       }
     },
-    "PRODUCTION": {}
+    "PRODUCTION": {
+      "Resident Key Manager": {
+        "clientId": "nYcrPfKLh810OmM6TpT0TjkHUF4a",
+        "clientName": "prabago_app-bigdata-tester_PRODUCTION",
+        "callBackURL": "null",
+        "clientSecret": "MmxVd0xtR2RtUDNheGY2TGJZMktuc3M5enFjYQ\u003d\u003d",
+        "parameters": {
+          "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
+          "redirect_uris": "null",
+          "client_name": "prabago_app-bigdata-tester_PRODUCTION"
+        },
+        "isSaasApplication": false,
+        "appAttributes": {}
+      }
+    }
   },
   "tier": "Unlimited",
   "status": "APPROVED",
