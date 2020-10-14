@@ -20,11 +20,12 @@ pipeline {
             stage('Despliegue') {
             environment{
                 MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
-                echo "Port to ${MOCK_PORT}"
+
                 RETRY = '80'
             }
             steps {
                 echo "Register to ${DEV_ENV}"
+                echo "Port to ${MOCK_PORT}"
                 sh './scripts/config.sh'
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
