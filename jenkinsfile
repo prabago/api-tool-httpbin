@@ -2,41 +2,58 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment {
-        CI = 'true'
-        API_VERSION = 'v2'
         API_NAME = 'api-tool-httpbin'
         API_DIR = './apis/'
         APP_DIR = './apps/'
         DEV_ENV = 'local'
-        TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'
-        SB_TOKEN_URL = 'https://localhost:8244/token'        
+        TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'  
     }
     stages {
-        stage('mock-server') {
+        stage('Run mock-server') {
             steps {
                 sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
             }
         }
-            stage('Despliegue') {
+
+        stage('Post Mock-server task') {
             environment{
                 MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
-
                 RETRY = '80'
             }
             steps {
-                echo "Register to ${DEV_ENV}"
                 echo "Port to ${MOCK_PORT}"
-                sh './scripts/config.sh'
                 sh 'find . -name "*.yaml" -print | xargs sed -i "s/4010/${MOCK_PORT}/g"'
+            }
+        }
+
+        stage('Pre Task Deployment') {
+            steps {
+                echo "Register to ${DEV_ENV}"
+                sh './scripts/config.sh'
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
-                echo "Import to ${DEV_ENV}"
-                sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VERSION -e $DEV_ENV -k --preserve-provider --update --verbose'
+            }
+        }
+            stage('Despliegue APIS') {
+            environment{
+                MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
+                RETRY = '80'
+            }
+            steps {
+                echo "Import APIs to ${DEV_ENV}"
+                sh 'apictl import-api -f $API_DIR/* -e $DEV_ENV -k --preserve-provider --update --verbose'
+            }
+        }
+
+        stage('Despliegue APPs') {
+            steps {
+                echo "Import APPs to ${DEV_ENV}"
                 sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
             }
         }
+        
         stage('Ejecucion de Tests contra Sandbox') {
             steps {
                 echo 'Token are $TOKEN'
