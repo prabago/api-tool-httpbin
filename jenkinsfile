@@ -15,7 +15,7 @@ pipeline {
         stage('mock-server') {
             steps {
                 sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
-                MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d':' -f2', , returnStdout: true).trim()
+                MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
                 echo "Port to ${MOCK_PORT}"
             }
         }
