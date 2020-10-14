@@ -26,7 +26,8 @@ paths:
           description: ok
       security:
        -
-        default: []
+        default:
+         - resource:reader
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
       x-wso2-application-security:
@@ -55,7 +56,10 @@ components:
       flows:
         implicit:
           authorizationUrl: ""
-          scopes: {}
+          scopes:
+            resource:reader: Internal/reader
+          x-scopes-bindings:
+            resource:reader: Internal/reader
 x-wso2-auth-header: Authorization
 x-wso2-cors:
   corsConfigurationEnabled: false
@@ -78,11 +82,11 @@ x-wso2-cors:
    - OPTIONS
 x-wso2-production-endpoints:
   urls:
-   - https://eu.httpbin.org/
+   - https://eu.httpbin.org
   type: http
 x-wso2-sandbox-endpoints:
   urls:
-   - https://eu.httpbin.org/
+   - http://localhost:32768
   type: http
 x-wso2-basePath: /httpbin/v2
 x-wso2-transports:

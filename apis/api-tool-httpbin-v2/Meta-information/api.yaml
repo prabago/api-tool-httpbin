@@ -3,13 +3,13 @@ id:
   apiName: api-tool-httpbin
   version: v2
   id: 0
-uuid: 8e17fd87-69de-4692-a0b9-5c25be764f22
+uuid: c13b373e-28bf-431d-9165-743b90d8d1fd
 type: HTTP
 context: /httpbin/v2
 contextTemplate: /httpbin/{version}
 tags: []
 documents: []
-lastUpdated: Oct 6, 2020, 6:52:17 PM
+lastUpdated: Oct 14, 2020, 7:13:12 PM
 availableTiers:
  -
   name: Bronze
@@ -57,7 +57,7 @@ corsConfiguration:
    - DELETE
    - PATCH
    - OPTIONS
-endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"https:\/\/eu.httpbin.org\/"},"production_endpoints":{"url":"https:\/\/eu.httpbin.org\/"}}'
+endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"http:\/\/localhost:32768"},"production_endpoints":{"url":"https:\/\/eu.httpbin.org"}}'
 responseCache: Disabled
 cacheTimeout: 300
 implementation: ENDPOINT
@@ -69,7 +69,7 @@ keyManagers:
  - all
 environments:
  - Local and Sandbox
-createdTime: "1602002996832"
+createdTime: "1602621060153"
 additionalProperties: {}
 monetizationProperties: {}
 isMonetizationEnabled: false
