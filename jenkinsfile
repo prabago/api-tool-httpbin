@@ -27,6 +27,7 @@ pipeline {
                 echo "Register to ${DEV_ENV}"
                 echo "Port to ${MOCK_PORT}"
                 sh './scripts/config.sh'
+                sh 'find . -name "*.yaml" -print | xargs sed -i "s/4010/${MOCK_PORT}/g"'
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
