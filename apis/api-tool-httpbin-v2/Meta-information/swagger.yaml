@@ -42,7 +42,8 @@ paths:
           description: ok
       security:
        -
-        default: []
+        default:
+         - resource:reader
       x-auth-type: Application & Application User
       x-throttling-tier: Unlimited
       x-wso2-application-security:
