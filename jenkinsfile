@@ -65,14 +65,7 @@ pipeline {
     post {
         always {
             junit '*.xml'
-            publishHTML (target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'newman',
-              reportFiles: 'report.html',
-              reportName: "Postman labs"
-            ])
+            
         }
         cleanup {
              sh 'apictl logout $DEV_ENV -k'
