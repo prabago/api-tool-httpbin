@@ -71,7 +71,7 @@ pipeline {
               keepAll: true,
               reportDir: 'newman',
               reportFiles: 'report.html',
-              reportName: "Postman labs"
+              reportName: "postman-test"
             ])
         }
         cleanup {
