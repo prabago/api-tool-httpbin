@@ -58,13 +58,21 @@ pipeline {
             steps {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --reporters cli,junit --reporter-junit-export "postman.xml" --insecure --bail' 
+                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 — reporter-htmlextra-export "report.html" --insecure --bail' 
             }
         }
     }
     post {
         always {
             junit '*.xml'
+            publishHTML (target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'newman',
+              reportFiles: 'report.html',
+              reportName: "Postman labs"
+            ])
         }
         cleanup {
              sh 'apictl logout $DEV_ENV -k'
