@@ -397,8 +397,15 @@
 						"id": "148a1c0e-4719-4410-a916-5cf32687e1c5",
 						"exec": [
 							"jsonData = pm.response.json();",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body contains error, message and description\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"code\");",
+							"  pm.expect(pm.response.text()).to.include(\"message\");",
+							"  pm.expect(pm.response.text()).to.include(\"description\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -457,14 +464,14 @@
 	],
 	"variable": [
 		{
-			"id": "b569607c-2a5f-4e73-9c0e-f8fa0f6a3cbb",
+			"id": "333278b0-23ef-453f-bf1f-f107bab02671",
 			"key": "access_token",
-			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDI3NzY2NDcsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwMjc4MDI0NywiaWF0IjoxNjAyNzc2NjQ3LCJqdGkiOiJmOWRmOTI5Yi03OGU0LTQ0MmQtYjUzMi01NjIyZTJkZTcyYTkifQ.OLznOkyPLTHjXdHuTeyWB3dswIleQdVbB6hnP0kLEVSlUPQamLDek_K_FeSqwHPl1wAODLG5VRRZtKcgf_85GqPCBCU17o90bNhtl84eT9puNW0EtEbfV8qNltwco1XktyObrHEmVjyjEZcGWZg3BqC6EfrRd9b-Z9GMg77PLToLPYcvQPcV4DW70NVX4xKY--9Chli8f6QN3grngVDc4bMCRYFxzrvshg42yZsBAuSRHBT1OGjr3r1gdqLqxo0EH4ANUUWvOCz2zkoh3Iw7biO4QtebhLiaEDHiY1QkPnq9yhZTOeZ4d1zrAKrAPbj9T7FSBhkF-bkcSdeFtZBqkQ"
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbmF0YyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDMxMTI1NjEsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6ImRlZmF1bHQiLCJpc3MiOiJodHRwczpcL1wvbG9jYWxob3N0Ojk0NDNcL29hdXRoMlwvdG9rZW4iLCJleHAiOjE2MDMxMTYxNjEsImlhdCI6MTYwMzExMjU2MSwianRpIjoiZmQ5YzU2YmUtNzljYS00ODU3LWEzMGQtMjZhNTQzYmU5ODY2In0.sTqq4KcM_H5BlReUfWsTZYoYGrMV0GIxBaQC37k9LKRcURjfmu5hz_FXBokLBDx1F5z3a51e9NelddPRYcKboC6DgjAdfABcklk2njT74vXnInxUbEV4M5wjIuRYm_A6c92947qhuG8hZpRZ-f50VV4ur1zLC8NQ7wHohoQPAPqRf4QuyxAl0a6EFOfDAhxQiUrdzToHtWwaR0f1UHp1x5Xn_yRIldsmLVrwYe_cj0vOwPkizSiKbGEOzy539mwEYGHqPyNX5gnKrg2kh6d7M616zPcVzBQYB-Nd91e7q9UYt0kFd0gIjePDhmCXDbXm8RL6GrFtGhLVLmmhmkH5iA"
 		},
 		{
-			"id": "f824f141-0b9a-4916-a7e3-7ca5f18a34f5",
+			"id": "b52e65c3-44e0-4073-827e-3f4e6f9129c0",
 			"key": "scope",
-			"value": "resource:reader"
+			"value": "default"
 		}
 	],
 	"protocolProfileBehavior": {}
