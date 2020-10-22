@@ -90,13 +90,7 @@ pipeline {
         cleanup {
              sh 'apictl logout $DEV_ENV -k'
               sh 'docker rm $API_NAME -f'
-            deleteDir()
-            dir("${workspace}@tmp") {
-                deleteDir()
-            }
-            dir("${workspace}@script") {
-                deleteDir()
-            }
+           
         }
         
     }
