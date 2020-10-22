@@ -79,7 +79,7 @@ pipeline {
         }
     }
     post {
-        sucess {
+        success {
             junit '*.xml'
             publishHTML (target: [
               allowMissing: false,
