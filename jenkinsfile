@@ -66,6 +66,7 @@ pipeline {
             steps {
                 echo "Import APPs to ${DEV_ENV}"
                 sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
+                sh 'apictl logout $DEV_ENV -k'
             }
         }
         
@@ -90,8 +91,13 @@ pipeline {
             ])
         }
         cleanup {
-             sh 'apictl logout $DEV_ENV -k'
-
+            
+            dir("${workspace}@tmp") {	            dir("${workspace}@tmp") {
+                deleteDir()	                deleteDir()
+            }	            }
+            dir("${workspace}@script") {	            dir("${workspace}@script") {
+                deleteDir()	                deleteDir()
+            }
            
         }
         
