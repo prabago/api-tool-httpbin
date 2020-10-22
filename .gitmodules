@@ -1,4 +1,0 @@
-[submodule "spectral"]
-	path = spectral
-	url = https://github.com/prabago/spectral.git
-	branch = master
