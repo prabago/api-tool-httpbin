@@ -91,14 +91,13 @@ pipeline {
             ])
         }
         cleanup {
-            
-            dir("${workspace}@tmp") {	            dir("${workspace}@tmp") {
-                deleteDir()	                deleteDir()
-            }	            }
-            dir("${workspace}@script") {	            dir("${workspace}@script") {
-                deleteDir()	                deleteDir()
+                       deleteDir()
+            dir("${workspace}@tmp") {
+                deleteDir()
             }
-           
+            dir("${workspace}@script") {
+                deleteDir()
+            }
         }
         
     }
