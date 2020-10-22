@@ -10,8 +10,11 @@ pipeline {
     }
     stages {
          stage('Check OpenAPI Spectral Lint') {
-            steps {
+            try {
                 sh 'spectral lint "swagger.yaml" --format junit --output ./report.xml'
+            } catch(err) {
+                step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
+                throw err
             }
         }
 
