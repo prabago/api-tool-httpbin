@@ -79,5 +79,27 @@ pipeline {
             }
         }
     }
-    
+    post {
+        success {
+            junit '*.xml'
+            publishHTML (target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'newman',
+              reportFiles: 'report.html',
+              reportName: "postman-test"
+            ])
+        }
+        cleanup {
+                       deleteDir()
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+            dir("${workspace}@script") {
+                deleteDir()
+            }
+        }
+        
+    }
 }
