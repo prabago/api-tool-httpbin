@@ -80,16 +80,7 @@ pipeline {
         }
     }
     post {
-        success {
-            publishHTML (target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'newman',
-              reportFiles: 'report.html',
-              reportName: "postman-test"
-            ])
-        }
+       
         cleanup {
                        deleteDir()
             dir("${workspace}@tmp") {
