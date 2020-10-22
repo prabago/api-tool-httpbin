@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
             try {
-                sh 'spectral lint "swagger.yaml" --format junit --output ./report.xml'
+                sh 'spectral lint "swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
             } catch(err) {
                 step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
                 throw err
