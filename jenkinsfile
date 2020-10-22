@@ -8,6 +8,7 @@ pipeline {
         DEV_ENV = 'local'
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'  
     }
+                  
     stages {
          stage('Check OpenAPI Spectral Lint') {
             steps {
@@ -24,6 +25,7 @@ pipeline {
 
         stage('Run mock-server') {
             steps {
+                sh 'docker rm $API_NAME -f'
                 sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
             }
         }
@@ -89,7 +91,7 @@ pipeline {
         }
         cleanup {
              sh 'apictl logout $DEV_ENV -k'
-              sh 'docker rm $API_NAME -f'
+
            
         }
         
