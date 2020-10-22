@@ -26,7 +26,8 @@ pipeline {
 
         stage('Run mock-server') {
             steps {
-                sh 'docker rm $API_NAME -f'
+                sh 'docker ps -f name=$API_NAME  -q | xargs --no-run-if-empty docker container stop'
+                sh 'docker container ls -a -fname=$API_NAME -q | xargs -r docker container rm'
                 sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
             }
         }
