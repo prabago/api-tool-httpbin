@@ -10,7 +10,8 @@ pipeline {
     }
     stages {
          stage('Check OpenAPI Spectral Lint') {
-             script {
+            steps {
+                script {
             try {
                 sh 'spectral lint "swagger.yaml" --format junit --output ./report.xml'
             } catch(err) {
@@ -18,6 +19,7 @@ pipeline {
                 throw err
             }
              }
+            }
         }
 
         stage('Run mock-server') {
