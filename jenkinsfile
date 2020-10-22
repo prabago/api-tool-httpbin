@@ -70,7 +70,6 @@ pipeline {
     }
     post {
         always {
-            publishStoplight consoleOrFile: 'file', resultFile: "${env.WORKSPACE}/prism.log"
             junit '*.xml'
             publishHTML (target: [
               allowMissing: false,
