@@ -11,7 +11,7 @@ pipeline {
     stages {
          stage('Check OpenAPI Spectral Lint') {
             steps {
-                sh 'docker run --rm  -v $(pwd):/tmp -P stoplight/spectral lint "/tmp/swagger.yaml" --format junit --output ./report.xml'
+                sh 'spectral lint "/swagger.yaml" --format junit --output ./report.xml'
             }
         }
 
