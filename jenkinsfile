@@ -81,7 +81,6 @@ pipeline {
     }
     post {
         success {
-            junit '*.xml'
             publishHTML (target: [
               allowMissing: false,
               alwaysLinkToLastBuild: false,
