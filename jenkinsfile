@@ -17,6 +17,7 @@ pipeline {
                 sh 'spectral lint "swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
             } catch(err) {
                 step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
+                 currentBuild.result = 'FAILURE'
                 throw err
             }
              }
