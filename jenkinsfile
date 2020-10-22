@@ -12,7 +12,9 @@ pipeline {
     stages {
          stage('Check OpenAPI Spectral Lint') {
             steps {
-            sh 'git submodule update --init --recursive'
+            sh 'git submodule foreach git checkout master'
+            sh 'git submodule foreach git pull'
+
                 script {
             try {
                 sh 'spectral lint "swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
