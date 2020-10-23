@@ -8,7 +8,6 @@ pipeline {
         APP_DIR = './apps/'
         DEV_ENV = 'local'
         API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
-        
     }
                   
     stages {
