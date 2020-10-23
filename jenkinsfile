@@ -2,12 +2,13 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment {
-        API_NAME = 'api-tool-httpbin'
+        API_NAME = 'api-tool-htppbin'
+        API_VER= 'v2'
         API_DIR = './apis/'
         APP_DIR = './apps/'
         DEV_ENV = 'local'
-        API_VER = 'v2'
-        TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'  
+        API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
+        
     }
                   
     stages {
@@ -57,14 +58,25 @@ pipeline {
                 }
             }
         }
+        stage('Backup API') {
+            steps {
+            sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
+            }
+        }
             stage('Despliegue APIS') {
             environment{
-                MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
                 RETRY = '80'
             }
             steps {
                 echo "Import APIs to ${DEV_ENV}"
+                
                 sh 'apictl import-api -f $API_DIR/* -e $DEV_ENV -k --preserve-provider --update --verbose'
+            }
+             post
+            {
+                 failure {
+        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+        }
             }
         }
 
@@ -72,20 +84,27 @@ pipeline {
             steps {
                 echo "Import APPs to ${DEV_ENV}"
                 sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
-                sh 'apictl logout $DEV_ENV -k'
+
             }
+            
         }
         
         stage('Ejecucion de Tests contra Sandbox') {
             steps {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
-                sh 'newman run ./test/$TEST_SCRIPT_FILE -e ./test/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/report.html" --insecure --bail' 
+                sh 'newman run ./tests/$API_NAME-$API_VER.postman_collection.json -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/report.html" --insecure --bail' 
+            }
+            post
+            {
+                 failure {
+        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+        }
             }
         }
     }
     post {
-        success {
+        always {
             junit '*.xml'
             publishHTML (target: [
               allowMissing: false,
@@ -97,6 +116,7 @@ pipeline {
             ])
         }
         cleanup {
+            sh 'apictl logout $DEV_ENV -k'
             deleteDir()
             dir("${workspace}@tmp") {
                 deleteDir()
