@@ -38,7 +38,7 @@ pipeline {
 
         stage('Post Mock-server task') {
             environment{
-                MOCK_PORT = sh(script: 'docker port $API_NAME 4010 | cut -d":" -f2', , returnStdout: true).trim()
+                MOCK_PORT = sh(script: 'docker port $API_NAME-$API_VER 4010 | cut -d":" -f2', , returnStdout: true).trim()
                 RETRY = '80'
             }
             steps {
