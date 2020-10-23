@@ -6,6 +6,7 @@ pipeline {
         API_DIR = './apis/'
         APP_DIR = './apps/'
         DEV_ENV = 'local'
+        API_VER = 'v2'
         TEST_SCRIPT_FILE = 'httpbin.postman_collection.json'  
     }
                   
@@ -29,9 +30,9 @@ pipeline {
 
         stage('Run mock-server') {
             steps {
-                sh 'docker ps -f name=$API_NAME  -q | xargs --no-run-if-empty docker container stop'
-                sh 'docker container ls -a -fname=$API_NAME -q | xargs -r docker container rm'
-                sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME/Meta-information/swagger.yaml"'
+                sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
+                sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
+                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
             }
         }
 
