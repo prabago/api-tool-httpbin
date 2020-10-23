@@ -69,8 +69,21 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/response'
+              examples:
+                '200':
+                  value:
+                    args: {}
+                    headers:
+                      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+                      Accept-Encoding: 'gzip, deflate, br'
+                      Accept-Language: 'es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3'
+                      Host: eu.httpbin.org
+                      Upgrade-Insecure-Requests: '1'
+                      User-Agent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0'
+                      X-Amzn-Trace-Id: Root=1-5f9329e9-0954dd7d7573930171b442db
+                    origin: 88.8.178.214
+                    url: 'https://eu.httpbin.org/get'
       security:
         - default:
             - 'resource:reader'
@@ -80,25 +93,6 @@ paths:
         security-types:
           - oauth2
         optional: false
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/response'
-            examples:
-              example-1:
-                value:
-                  args: {}
-                  headers:
-                    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-                    Accept-Encoding: 'gzip, deflate, br'
-                    Accept-Language: 'es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3'
-                    Host: eu.httpbin.org
-                    Upgrade-Insecure-Requests: '1'
-                    User-Agent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0'
-                    X-Amzn-Trace-Id: Root=1-5f9329e9-0954dd7d7573930171b442db
-                  origin: 88.8.178.214
-                  url: 'https://eu.httpbin.org/get'
       operationId: getGet
       tags:
         - get
