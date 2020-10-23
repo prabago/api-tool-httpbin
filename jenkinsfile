@@ -17,7 +17,7 @@ pipeline {
 
                 script {
             try {
-                sh 'spectral lint "swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
+                sh 'spectral lint "./apis/$API_NAME/Meta-information/swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
             } catch(err) {
                 step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
                  currentBuild.result = 'FAILURE'
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 sh 'docker ps -f name=$API_NAME  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME -q | xargs -r docker container rm'
-                sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/swagger.yaml"'
+                sh 'docker run --init --rm -it -d --name $API_NAME -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME/Meta-information/swagger.yaml"'
             }
         }
 
