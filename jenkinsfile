@@ -18,7 +18,7 @@ pipeline {
 
                 script {
             try {
-                sh 'spectral lint "./apis/$API_NAME/Meta-information/swagger.yaml" -r ./spectral/atc-spectral.yaml --format junit --output ./report.xml'
+                sh 'spectral lint "./apis/$API_NAME/Meta-information/swagger.yaml" -r ./apim-arq/rules/atc-spectral.yaml --format junit --output ./report.xml'
             } catch(err) {
                 step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
                  currentBuild.result = 'FAILURE'
@@ -50,7 +50,7 @@ pipeline {
         stage('Pre Task Deployment') {
             steps {
                 echo "Register to ${DEV_ENV}"
-                sh './scripts/config.sh'
+                sh './apim-arq/scripts/config.sh'
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
