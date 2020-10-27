@@ -118,7 +118,10 @@ pipeline {
             post
             {
                  failure {
-        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                script {
+                    if (API_BACKUP == 'true')
+                        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                    }
         }
             }
         }
