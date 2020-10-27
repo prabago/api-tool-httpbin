@@ -91,7 +91,11 @@ pipeline {
              post
             {
                  failure {
-        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                     script {
+                    if (API_BACKUP == 'true')
+                        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+            }
+        
         }
             }
         }
@@ -99,9 +103,7 @@ pipeline {
         stage('Despliegue APPs') {
             steps {
                 echo "Import APPs to ${DEV_ENV}"
-                if (API_BACKUP == 'true'){
                 sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
-                }
 
             }
             
