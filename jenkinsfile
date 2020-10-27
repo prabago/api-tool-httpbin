@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment {
-        API_NAME = 'api-tool-httpbin1'
+        API_NAME = 'api-tool-httpbin'
         API_VER= 'v2'
         API_DIR = './apis'
         APP_DIR = './apps'
