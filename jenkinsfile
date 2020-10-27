@@ -39,6 +39,7 @@ pipeline {
         stage('Post Mock-server task') {
             environment{
                 MOCK_PORT = sh(script: 'docker port $API_NAME-$API_VER 4010 | cut -d":" -f2', , returnStdout: true).trim()
+  
                 RETRY = '80'
             }
             steps {
@@ -55,11 +56,26 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
+                script{
+                def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME | tr -d '\r'", returnStdout: true).trim()
+                
+                def API_FINAL = "$API_NAME-$API_VER"
+                echo "API_FINAL---> ${API_FINAL}"
+                if (API_DPL == API_FINAL ){
+                   API_BACKUP = 'true'
+                }
+                echo "Prueba---> ${API_DPL}"
+                echo "API_BACKUP---> ${API_BACKUP}"
+                }
             }
         }
+    
         stage('Backup API') {
+            when {
+              expression { API_BACKUP == 'true' }
+             }
             steps {
-            sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
+                sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
             }
         }
             stage('Despliegue APIS') {
@@ -67,6 +83,7 @@ pipeline {
                 RETRY = '80'
             }
             steps {
+                
                 echo "Import APIs to ${DEV_ENV}"
                 
                 sh 'apictl import-api -f $API_DIR/* -e $DEV_ENV -k --preserve-provider --update --verbose'
