@@ -1,7 +1,7 @@
 {
-  "id": 66,
+  "id": 68,
   "name": "app-bigdata-tester",
-  "uuid": "b1a9c396-0691-4a1a-99a0-c2a8f84ac866",
+  "uuid": "474464a4-442b-44e2-bbab-4d682f5d4f7b",
   "subscriber": {
     "name": "prabago",
     "id": 21,
@@ -9,7 +9,50 @@
   },
   "subscribedAPIs": [
     {
-      "subscriptionId": 24,
+      "subscriptionId": 161,
+      "tier": {
+        "name": "Bronze",
+        "displayName": "Bronze",
+        "requestsPerMin": 0,
+        "requestCount": 0,
+        "unitTime": 0,
+        "timeUnit": "ms",
+        "stopOnQuotaReached": true
+      },
+      "subscriber": {
+        "name": "prabago",
+        "id": 21,
+        "tenantId": 0
+      },
+      "apiId": {
+        "providerName": "prabago",
+        "apiName": "api-tool-httpbin",
+        "version": "v3",
+        "id": 0
+      },
+      "application": {
+        "id": 0,
+        "name": "app-bigdata-tester",
+        "uuid": "474464a4-442b-44e2-bbab-4d682f5d4f7b",
+        "subscriber": {
+          "name": "prabago",
+          "id": 21,
+          "tenantId": 0
+        },
+        "subscribedAPIs": [],
+        "keys": [],
+        "keyManagerWiseOAuthApp": {},
+        "applicationAttributes": {},
+        "subscriptionCount": 0
+      },
+      "subStatus": "UNBLOCKED",
+      "subCreatedStatus": "SUBSCRIBE",
+      "keys": [],
+      "uuid": "7bbe384a-33a7-4030-97dd-9e6c8ccf69f0",
+      "isBlocked": false
+    },
+    {
+      "subscriptionId": 65,
       "tier": {
         "name": "Bronze",
         "displayName": "Bronze",
@@ -33,7 +76,7 @@
       "application": {
         "id": 0,
         "name": "app-bigdata-tester",
-        "uuid": "b1a9c396-0691-4a1a-99a0-c2a8f84ac866",
+        "uuid": "474464a4-442b-44e2-bbab-4d682f5d4f7b",
         "subscriber": {
           "name": "prabago",
           "id": 21,
@@ -48,7 +91,7 @@
       "subStatus": "UNBLOCKED",
       "subCreatedStatus": "SUBSCRIBE",
       "keys": [],
-      "uuid": "3f3e6977-161a-4638-90ae-f4afa00851cb",
+      "uuid": "8cac42d4-a94a-4bf5-ab18-28d7ded5f58f",
       "isBlocked": false
     }
   ],
@@ -89,7 +132,9 @@
   "status": "APPROVED",
   "groupId": "",
   "owner": "prabago",
-  "applicationAttributes": {},
+  "applicationAttributes": {
+    "Audiencia": "interna"
+  },
   "tokenType": "JWT",
   "subscriptionCount": 0
 }
