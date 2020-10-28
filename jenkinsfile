@@ -138,16 +138,7 @@ pipeline {
               reportName: "postman-test"
             ])
         }
-        cleanup {
-            sh 'apictl logout $DEV_ENV -k'
-            deleteDir()
-            dir("${workspace}@tmp") {
-                deleteDir()
-            }
-            dir("${workspace}@script") {
-                deleteDir()
-            }
-        }
+        
         
     }
 }
