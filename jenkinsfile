@@ -4,7 +4,7 @@ pipeline {
     environment {
         API_NAME = 'api-tool-httpbin'
         API_VER= 'v3'
-        API_DIR = './aps'
+        API_DIR = './apis'
         APP_DIR = './apps'
         DEV_ENV = 'local'
         API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
