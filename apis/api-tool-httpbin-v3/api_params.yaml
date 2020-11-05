@@ -18,5 +18,3 @@ deploy:
   import:
     update: true
     preserveProvider: true
-
-    preserveProvider: true
