@@ -6,7 +6,7 @@ pipeline {
         API_VER= 'v3'
         API_DIR = './apis'
         APP_DIR = './apps'
-        DEV_ENV = 'local-int'
+        DEV_ENV = 'local'
         API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
         API_BACKUP = 'false'
     }
