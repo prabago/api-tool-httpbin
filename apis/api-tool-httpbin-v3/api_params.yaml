@@ -2,7 +2,7 @@ environments:
   - name: local
     endpoints:
       production:
-        url: https://eu.httpbin.org
+        url: https://httpbin.org
       sandbox:         
         url: http://localhost:4010
   
