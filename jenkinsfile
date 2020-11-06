@@ -89,7 +89,7 @@ pipeline {
 
         stage('Backup API') {
             when {
-              expression { API_BACKUP == 'true' }
+              expression { API_BACKUP == 'true' && DEPLOY == 'true' }
              }
             steps {
                 sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
