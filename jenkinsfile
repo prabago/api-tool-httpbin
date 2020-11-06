@@ -38,6 +38,7 @@ pipeline {
                    DEPLOY = 'true'
                 }
                 echo "DEPLOY---> ${DEPLOY}"
+                echo "CHANGES---> ${CHANGES}"
                 }
             }
         }
