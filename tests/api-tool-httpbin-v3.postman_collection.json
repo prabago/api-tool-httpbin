@@ -12,7 +12,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3f66b5cb-d2c5-424c-83d8-6c5d528f3bb6",
+						"id": "658e84c2-0a23-4d29-8720-6c903eefa338",
 						"exec": [
 							"jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
@@ -76,13 +76,16 @@
 							"value": "resource:reader",
 							"type": "text"
 						}
-					]
+					],
+					"options": {
+						"urlencoded": {}
+					}
 				},
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/token",
+					"raw": "https://{{api-gateway}}:{{port}}/token",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -98,7 +101,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0fefd84c-9d62-4c86-9ac8-86d33e86d4e5",
+						"id": "aa2f3a7c-88c4-4a66-ae87-f0e9a1494ff0",
 						"exec": [
 							"jsonData = pm.response.json();",
 							"pm.test(\"Status code is 200\", function () {",
@@ -129,10 +132,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/delay/1",
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v3/delay/1",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -195,7 +198,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0497fac9-2b5f-4d62-9ac4-c41699eecdea",
+						"id": "00a6531c-a634-4cb0-ad4c-7457b54b11a4",
 						"exec": [
 							"jsonData = pm.response.json();",
 							"pm.test(\"Status code is 200\", function () {",
@@ -226,10 +229,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/get",
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v3/get",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -285,7 +288,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "459e2ddc-3206-4316-9c27-4999db1e7833",
+						"id": "0d650922-393a-44a9-9cb6-2c9ce1049f5d",
 						"exec": [
 							"pm.test(\"Status code is 403\", function () {",
 							"    pm.response.to.have.status(403);",
@@ -315,10 +318,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/put",
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v3/put",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -374,7 +377,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cd9ca2fe-c94a-4d2d-84e1-20025ffae3b1",
+						"id": "10c16f6e-84f4-4603-bc2f-998216e170fc",
 						"exec": [
 							"jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
@@ -438,13 +441,16 @@
 							"value": "resource:writer",
 							"type": "text"
 						}
-					]
+					],
+					"options": {
+						"urlencoded": {}
+					}
 				},
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/token",
+					"raw": "https://{{api-gateway}}:{{port}}/token",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -460,7 +466,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9824f104-efdc-491c-99d4-42dfa7865ae3",
+						"id": "43c88c8a-c30f-4d7d-b8e5-5d09be2af2c5",
 						"exec": [
 							"jsonData = pm.response.json();",
 							"pm.test(\"Status code is 200\", function () {",
@@ -491,10 +497,10 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/put",
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v3/put",
 					"protocol": "https",
 					"host": [
-						"{{api-server}}"
+						"{{api-gateway}}"
 					],
 					"port": "{{port}}",
 					"path": [
@@ -550,17 +556,17 @@
 	},
 	"variable": [
 		{
-			"id": "1886474a-cff0-4ec5-bdb9-8d1b61b1ff72",
+			"id": "493a62d7-2b5d-4ff6-b14e-4ec3394e0a46",
 			"key": "baseUrl",
 			"value": "https://localhost:8243/httpbin/v3"
 		},
 		{
-			"id": "6e451b81-bee5-4486-88b9-892771fd7ab8",
+			"id": "1a36f915-2ff3-44d9-9409-8c6eceee17de",
 			"key": "access_token",
-			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDM4ODE0ODUsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwMzg4NTA4NSwiaWF0IjoxNjAzODgxNDg1LCJqdGkiOiI5ZDUyMzVlNS1hYmRmLTQzMjgtOTYwZC0zMGM1ZDQ5OTlhMTAifQ.bWkgUPzklDInIVyL_65s0wIDQFISxEH6zqtWpq-qNQcraxA1B1LsJapfXAeR7LXu-zDc_r93JbBSeAqbUZBiQa2k8BLsfyRjUAqOeMWBCtsniCoY9IJZUZf40ZAtqJYdSZhAZlrh-LsPwYjiRxmuDzGj2TE5mfFYWaxvXUruZw6KDPLL0FPw_FG0nagSRDTIUejRtZhYv0Vzmp2fn9LHXMd2wEr5LvBMtJyZXx-VqiNOIDuil5MArTnVWnoo_Mdbv7XyVfSh4ufUsAIRDsqRovDQHL5u5wnw-UAeO7y6AkmyhhFa6rK8ikng7uYmKoGtabYOXXTW0v31CLHg8H9mkA"
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDQ2ODY2MjYsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNDY5MDIyNiwiaWF0IjoxNjA0Njg2NjI2LCJqdGkiOiJjMDU5NTMxOS1kZDE3LTQ0ZjgtYTM2Mi00MWMzNzhlNzc4ODcifQ.A9i5K3OeGAfNHpcHBgha73gABelemvOn8zl4KPJUwuoU-f4-SeYRU6GiPkRsqw4xFpSeKYdRTicSvi7Blu6i-JOwCr4hc6fobeQxipZ9j7UgNYW741LZ_N0ZiIH6Vrx3yWTwfUl4RVwOCA1CRgQGpamVWCdYYfrMsH01RZrRBWZ6whKtapACF69ZAOXZLsFGo3mX_5P5pUIbh4Jei9kygNuaW9qbIa9JZaeYirtY-xCGMC_lRvU9DGtfRCfFqOZng0YytbFLc4SC9U6ZzzCKUE8iCzaaLZPY4REucMicH8qAlLBwT6KRjZRtGXJVKGgQ4OIXOZ2xK2N2j66VY-5wpA"
 		},
 		{
-			"id": "cf9e04da-2f61-4eb3-8217-0172420d0082",
+			"id": "cab2ac74-2277-4ed0-a1e2-5b9da66bc045",
 			"key": "scope",
 			"value": "resource:reader"
 		}
