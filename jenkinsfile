@@ -34,7 +34,10 @@ pipeline {
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
             
                 if (CHANGES != 'Everything is up-to-date' ){
-                   DEPLOY = 'true'
+                     if (CHANGES = 'Everything is up-to-date' ){
+                        DEPLOY = 'true'
+                     }
+                   
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 }
