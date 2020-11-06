@@ -131,7 +131,18 @@ pipeline {
         }
     }
     post {
-        always {
+        success {
+            junit '*.xml'
+            publishHTML (target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'newman',
+              reportFiles: 'report.html',
+              reportName: "postman-test"
+            ])
+        }
+        failure {
             junit '*.xml'
             publishHTML (target: [
               allowMissing: false,
