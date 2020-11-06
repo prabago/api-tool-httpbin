@@ -1,8 +1,10 @@
 pipeline {
     agent any
     tools {nodejs "node"}
+    parameters {
+    parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') }  
+    }
     environment {
-        parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') }
         API_NAME = 'api-tool-httpbin'
         API_VER= 'v2'
         API_DIR = './apis'
@@ -12,7 +14,7 @@ pipeline {
         API_BACKUP = 'false'
         DEPLOY = 'false'
     }
-                  
+            
     stages {
                 stage('Check Deployment') {
             steps {
