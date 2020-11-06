@@ -99,7 +99,7 @@ pipeline {
                 sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
             }
         }
-            stage('Despliegue proyecto API') {
+            stage ("Deploy ${API_NAME}-${API_VER}") {
                 when {
               expression { DEPLOY == 'true' }
              }
