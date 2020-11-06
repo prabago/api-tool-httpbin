@@ -121,17 +121,37 @@ pipeline {
             }
             post
             {
-                 failure {
-                script {
-                    if (API_BACKUP == 'true')
-                        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
-                    }
+            success {
+                junit '*.xml'
+                publishHTML (target: [
+                  allowMissing: false,
+                  alwaysLinkToLastBuild: false,
+                  keepAll: true,
+                  reportDir: 'newman',
+                  reportFiles: 'report.html',
+                  reportName: "postman-test"
+                ])
+             }
+            failure {
+                junit '*.xml'
+                publishHTML (target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'newman',
+                reportFiles: 'report.html',
+                reportName: "postman-test"
+               ])
+                   script {
+                       if (API_BACKUP == 'true')
+                           sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                       }
         }
             }
         }
     }
     post {
-       
+    
         cleanup {
             sh 'apictl logout $DEV_ENV -k'
             deleteDir()
