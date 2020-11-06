@@ -4,7 +4,6 @@ pipeline {
 
        environment {
         API_NAME = 'api-tool-httpbin'
-        API_VER= 'v2'
         API_DIR = './apis'
         APP_DIR = './apps'
         API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
@@ -12,7 +11,7 @@ pipeline {
         DEPLOY = 'false'
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
-     choice(name: 'API_VER', choices: ['v1', 'v2'], description: '')
+     choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
                 stage('Check Deployment') {
