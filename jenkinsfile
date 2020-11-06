@@ -1,9 +1,9 @@
 pipeline {
     agent any
     tools {nodejs "node"}
-    parameters {
+
     parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') }  
-    }
+
     environment {
         API_NAME = 'api-tool-httpbin'
         API_VER= 'v2'
