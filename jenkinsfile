@@ -107,20 +107,10 @@ pipeline {
                 RETRY = '80'
             }
             steps {
-                 script {
-          parallel (
-            "$API_NAME-$API_VER": {
-              stage(" ") {
                 sh 'apictl set --vcs-deletion-enabled=true'
                 sh 'apictl vcs status -e $DEV_ENV'
                 echo "Import API project into ${DEV_ENV} --skipRollback=true"
                 sh 'apictl vcs deploy -e $DEV_ENV'
-              }
-            }
-          )
-        }   
-
-
             }
         }
 
