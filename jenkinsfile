@@ -2,19 +2,16 @@ pipeline {
     agent any
     tools {nodejs "node"}
 
-    parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') }  
-
-    environment {
+       environment {
         API_NAME = 'api-tool-httpbin'
         API_VER= 'v2'
         API_DIR = './apis'
         APP_DIR = './apps'
-
         API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
         API_BACKUP = 'false'
         DEPLOY = 'false'
     }
-            
+     parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') }
     stages {
                 stage('Check Deployment') {
             steps {
