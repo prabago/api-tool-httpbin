@@ -81,9 +81,9 @@ pipeline {
                 RETRY = '80'
             }
             steps {
-                sh 'apictl vcs status -e $DEV_ENV'
                 sh 'apictl set --vcs-deletion-enabled=true'
-                echo "Import API project into ${DEV_ENV}"
+                sh 'apictl vcs status -e $DEV_ENV'
+                echo "Import API project into ${DEV_ENV} --skipRollback=true"
                 sh 'apictl vcs deploy -e $DEV_ENV'
             }
         }
