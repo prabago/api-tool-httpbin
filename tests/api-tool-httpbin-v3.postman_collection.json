@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "881c4c5d-e907-4f52-89c3-5149ed16131e",
+		"name": "api-tool-httpbin-v3",
+		"description": "This is a RESTFul API for demo.\n\n\nContact Support:\n Name: prabago\n Email: prabago@minsait.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate AccesToken Reader Scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3f66b5cb-d2c5-424c-83d8-6c5d528f3bb6",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+							"pm.collectionVariables.set(\"scope\", jsonData.scope);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "gauss",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "resource:reader",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/token",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Delay",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0fefd84c-9d62-4c86-9ac8-86d33e86d4e5",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/delay/1",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v3",
+						"delay",
+						"1"
+					]
+				},
+				"description": "get delay timer"
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": {
+									"content": "Added as a part of security scheme: oauth2",
+									"type": "text/plain"
+								},
+								"key": "Authorization",
+								"value": "<token>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/delay/:delay",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"delay",
+								":delay"
+							],
+							"variable": [
+								{
+									"key": "delay"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"args\": {},\n \"headers\": {\n  \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\n  \"Accept-Encoding\": \"gzip, deflate, br\",\n  \"Accept-Language\": \"es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3\",\n  \"Host\": \"eu.httpbin.org\",\n  \"Upgrade-Insecure-Requests\": \"1\",\n  \"User-Agent\": \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0\",\n  \"X-Amzn-Trace-Id\": \"Root=1-5f9329e9-0954dd7d7573930171b442db\"\n },\n \"origin\": \"88.8.178.214\",\n \"url\": \"https://eu.httpbin.org/delay\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0497fac9-2b5f-4d62-9ac4-c41699eecdea",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/get",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v3",
+						"get"
+					]
+				},
+				"description": "example Get"
+			},
+			"response": [
+				{
+					"name": "ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": {
+									"content": "Added as a part of security scheme: oauth2",
+									"type": "text/plain"
+								},
+								"key": "Authorization",
+								"value": "<token>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/get",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"args\": {},\n \"headers\": {\n  \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\n  \"Accept-Encoding\": \"gzip, deflate, br\",\n  \"Accept-Language\": \"es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3\",\n  \"Host\": \"eu.httpbin.org\",\n  \"Upgrade-Insecure-Requests\": \"1\",\n  \"User-Agent\": \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0\",\n  \"X-Amzn-Trace-Id\": \"Root=1-5f9329e9-0954dd7d7573930171b442db\"\n },\n \"origin\": \"88.8.178.214\",\n \"url\": \"https://eu.httpbin.org/get\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Put Operation - 403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "459e2ddc-3206-4316-9c27-4999db1e7833",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/put",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v3",
+						"put"
+					]
+				},
+				"description": "prueba"
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": {
+									"content": "Added as a part of security scheme: oauth2",
+									"type": "text/plain"
+								},
+								"key": "Authorization",
+								"value": "<token>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/put",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"put"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"args\": {},\n \"data\": \"\",\n \"files\": {},\n \"form\": {},\n \"headers\": {\n  \"Accept\": \"application/json\",\n  \"Accept-Encoding\": \"gzip, deflate, br\",\n  \"Accept-Language\": \"es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3\",\n  \"Content-Length\": \"0\",\n  \"Host\": \"httpbin.org\",\n  \"Origin\": \"https://httpbin.org\",\n  \"Referer\": \"https://httpbin.org/\",\n  \"User-Agent\": \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0\",\n  \"X-Amzn-Trace-Id\": \"Root=1-5f985491-4abedfb27f6436d159d73789\"\n },\n \"json\": null,\n \"origin\": \"88.15.50.177\",\n \"url\": \"https://httpbin.org/put\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Generate AccesToken Writer Scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd9ca2fe-c94a-4d2d-84e1-20025ffae3b1",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+							"pm.collectionVariables.set(\"scope\", jsonData.scope);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "nobel",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "resource:writer",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/token",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Operation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9824f104-efdc-491c-99d4-42dfa7865ae3",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-server}}:{{port}}/httpbin/v3/put",
+					"protocol": "https",
+					"host": [
+						"{{api-server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v3",
+						"put"
+					]
+				},
+				"description": "prueba"
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": {
+									"content": "Added as a part of security scheme: oauth2",
+									"type": "text/plain"
+								},
+								"key": "Authorization",
+								"value": "<token>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/put",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"put"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"args\": {},\n \"data\": \"\",\n \"files\": {},\n \"form\": {},\n \"headers\": {\n  \"Accept\": \"application/json\",\n  \"Accept-Encoding\": \"gzip, deflate, br\",\n  \"Accept-Language\": \"es-ES,en;q=0.8,es;q=0.5,en-US;q=0.3\",\n  \"Content-Length\": \"0\",\n  \"Host\": \"httpbin.org\",\n  \"Origin\": \"https://httpbin.org\",\n  \"Referer\": \"https://httpbin.org/\",\n  \"User-Agent\": \"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:82.0) Gecko/20100101 Firefox/82.0\",\n  \"X-Amzn-Trace-Id\": \"Root=1-5f985491-4abedfb27f6436d159d73789\"\n },\n \"json\": null,\n \"origin\": \"88.15.50.177\",\n \"url\": \"https://httpbin.org/put\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2"
+	},
+	"variable": [
+		{
+			"id": "1886474a-cff0-4ec5-bdb9-8d1b61b1ff72",
+			"key": "baseUrl",
+			"value": "https://localhost:8243/httpbin/v3"
+		},
+		{
+			"id": "6e451b81-bee5-4486-88b9-892771fd7ab8",
+			"key": "access_token",
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDM4ODE0ODUsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwMzg4NTA4NSwiaWF0IjoxNjAzODgxNDg1LCJqdGkiOiI5ZDUyMzVlNS1hYmRmLTQzMjgtOTYwZC0zMGM1ZDQ5OTlhMTAifQ.bWkgUPzklDInIVyL_65s0wIDQFISxEH6zqtWpq-qNQcraxA1B1LsJapfXAeR7LXu-zDc_r93JbBSeAqbUZBiQa2k8BLsfyRjUAqOeMWBCtsniCoY9IJZUZf40ZAtqJYdSZhAZlrh-LsPwYjiRxmuDzGj2TE5mfFYWaxvXUruZw6KDPLL0FPw_FG0nagSRDTIUejRtZhYv0Vzmp2fn9LHXMd2wEr5LvBMtJyZXx-VqiNOIDuil5MArTnVWnoo_Mdbv7XyVfSh4ufUsAIRDsqRovDQHL5u5wnw-UAeO7y6AkmyhhFa6rK8ikng7uYmKoGtabYOXXTW0v31CLHg8H9mkA"
+		},
+		{
+			"id": "cf9e04da-2f61-4eb3-8217-0172420d0082",
+			"key": "scope",
+			"value": "resource:reader"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
