@@ -34,7 +34,7 @@ pipeline {
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
             
                 if (CHANGES != 'Everything is up-to-date' ){
-                    if (CHANGES.contains('$API_NAME-$API_VER')){
+                    if (CHANGES.contains("$API_NAME-$API_VER")){
                         DEPLOY = 'true'
                     }
                 }
