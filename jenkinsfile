@@ -99,7 +99,7 @@ pipeline {
                 sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
             }
         }
-            stage ('Deploy ' + API_NAME + '-' + API_VER) {
+            stage('Despliegue proyecto API') {
                 when {
               expression { DEPLOY == 'true' }
              }
@@ -107,10 +107,20 @@ pipeline {
                 RETRY = '80'
             }
             steps {
+                 script {
+          parallel (
+            "$API_NAME-$API_VER": {
+              stage(" ") {
                 sh 'apictl set --vcs-deletion-enabled=true'
                 sh 'apictl vcs status -e $DEV_ENV'
                 echo "Import API project into ${DEV_ENV} --skipRollback=true"
                 sh 'apictl vcs deploy -e $DEV_ENV'
+              }
+            }
+          )
+        }   
+
+
             }
         }
 
