@@ -1,16 +1,17 @@
 environments:
-    - name: local
-      endpoints:
-        production:
-          url: http://dev.wso2.com
-        sandbox:
-          url: http://dev.sandbox.wso2.com
-    - name: int
-      endpoints:
-        production:
-          url: http://prod.wso2.com
-        sandbox:
-          url: http://prod.sandbox.wso2.com
+  - name: local
+    endpoints:
+      production:
+        url: https://eu.httpbin.org   
+      sandbox:         
+        url: http://localhost:4010
+  - name: int
+    endpoints:
+      production:
+        url: https://httpbin.org   
+      sandbox:         
+        url: http://localhost:4010
+        
 
 deploy:
   import:
