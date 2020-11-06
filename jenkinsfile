@@ -65,6 +65,7 @@ pipeline {
                 }
                 echo "API_BACKUP---> ${API_BACKUP}"
                 }
+                sh 'apictl vcs status -e $DEV_ENV'
             }
         }
     
