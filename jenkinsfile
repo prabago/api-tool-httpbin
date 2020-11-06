@@ -131,28 +131,7 @@ pipeline {
         }
     }
     post {
-        success {
-            junit '*.xml'
-            publishHTML (target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'newman',
-              reportFiles: 'report.html',
-              reportName: "postman-test"
-            ])
-        }
-        failure {
-            junit '*.xml'
-            publishHTML (target: [
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: true,
-              reportDir: 'newman',
-              reportFiles: 'report.html',
-              reportName: "postman-test"
-            ])
-        }
+       
         cleanup {
             sh 'apictl logout $DEV_ENV -k'
             deleteDir()
