@@ -3,7 +3,7 @@ pipeline {
     tools {nodejs "node"}
     environment {
         API_NAME = 'api-tool-httpbin'
-        API_VER= 'v3'
+        API_VER= 'v2'
         API_DIR = './apis'
         APP_DIR = './apps'
         DEV_ENV = 'local'
