@@ -61,11 +61,9 @@ pipeline {
                 def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
                 
                 def API_FINAL = "$API_NAME-$API_VER"
-                echo "API_FINAL---> ${API_FINAL}"
                 if (API_DPL == API_FINAL ){
                    API_BACKUP = 'true'
                 }
-                echo "Prueba---> ${API_DPL}"
                 echo "API_BACKUP---> ${API_BACKUP}"
                 }
             }
@@ -79,37 +77,20 @@ pipeline {
                 sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
             }
         }
-            stage('Despliegue APIS') {
+            stage('Despliegue proyecto API') {
             environment{
                 RETRY = '80'
             }
             steps {
                 
-                echo "Import APIs to ${DEV_ENV}"
+                echo "Import API project into ${DEV_ENV}"
                 
-                sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'
-            }
-             post
-            {
-                 failure {
-                     script {
-                    if (API_BACKUP == 'true')
-                        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
-            }
-        
-        }
+                sh 'apictl vcs init'
+                sh 'apictl set --vcs-deletion-enabled=true'
+                sh 'apictl vcs deploy -e $DEV_ENV'
             }
         }
 
-        stage('Despliegue APPs') {
-            steps {
-                echo "Import APPs to ${DEV_ENV}"
-                sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
-
-            }
-            
-        }
-        
         stage('Ejecucion de Tests contra Sandbox') {
             steps {
                 echo 'Token are $TOKEN'
