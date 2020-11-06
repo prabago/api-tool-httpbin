@@ -12,6 +12,26 @@ pipeline {
     }
                   
     stages {
+                stage('Pre Task Deployment') {
+            steps {
+
+                echo 'Logging into ${$DEV_ENV}'
+                withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
+                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                }
+                script{
+                def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
+                
+                def API_FINAL = "$API_NAME-$API_VER"
+                if (API_DPL == API_FINAL ){
+                   API_BACKUP = 'true'
+                }
+                echo "API_BACKUP---> ${API_BACKUP}"
+                }
+                sh 'apictl vcs status -e $DEV_ENV'
+            }
+        }
+    
          stage('Check OpenAPI Spectral Lint') {
             steps {
             sh 'git submodule foreach git checkout master'
@@ -49,26 +69,7 @@ pipeline {
             }
         }
 
-        stage('Pre Task Deployment') {
-            steps {
 
-                echo 'Logging into ${$DEV_ENV}'
-                withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
-                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
-                }
-                script{
-                def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
-                
-                def API_FINAL = "$API_NAME-$API_VER"
-                if (API_DPL == API_FINAL ){
-                   API_BACKUP = 'true'
-                }
-                echo "API_BACKUP---> ${API_BACKUP}"
-                }
-                sh 'apictl vcs status -e $DEV_ENV'
-            }
-        }
-    
         stage('Backup API') {
             when {
               expression { API_BACKUP == 'true' }
