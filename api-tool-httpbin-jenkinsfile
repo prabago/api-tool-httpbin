@@ -36,9 +36,6 @@ pipeline {
         }
     
          stage('Check OpenAPI Spectral Lint') {
-            when {
-              expression { DEPLOY == 'true' }
-             }
             steps {
             sh 'git submodule foreach git checkout master'
             sh 'git submodule foreach git pull'
@@ -56,9 +53,6 @@ pipeline {
         }
 
         stage('Run mock-server') {
-            when {
-              expression { DEPLOY == 'true' }
-             }
             steps {
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
@@ -67,9 +61,6 @@ pipeline {
         }
 
         stage('Post Mock-server task') {
-            when {
-              expression { DEPLOY == 'true' }
-             }
             environment{
                 MOCK_PORT = sh(script: 'docker port $API_NAME-$API_VER 4010 | cut -d":" -f2', , returnStdout: true).trim()
   
@@ -84,7 +75,7 @@ pipeline {
 
         stage('Backup API') {
             when {
-              expression { API_BACKUP == 'true' && DEPLOY == 'true' }
+              expression { API_BACKUP == 'true' }
              }
             steps {
                 sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
@@ -122,9 +113,6 @@ pipeline {
         }
 
         stage('Ejecucion de Tests contra Sandbox') {
-            when {
-              expression { DEPLOY == 'true' }
-             }
             steps {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
