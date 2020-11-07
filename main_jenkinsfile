@@ -32,11 +32,10 @@ pipeline {
                 def arr = m.split(" ")
                     for (i in arr) {
                         def API_VER = sh(script: "${i} | tail -c 3", returnStdout: true).trim()
-                        build job: "${i}"", parameters:
-                            [
-                              [$class: 'ChoiceParameterValue', name: 'DEV_ENV', value:$DEV_ENV],
-                              [$class: 'ChoiceParameterValue', name: 'API_VER', value: $API_VER],
-                            ]
+                        build job:'${i}', parameters: [
+                              string(name: 'DEV_ENV', value: $DEV_ENV),
+                              string(name: 'API_VER', value: $API_VER)
+                        ]
                     println "now got ${i}"
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
