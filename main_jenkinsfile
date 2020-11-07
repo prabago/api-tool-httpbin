@@ -3,11 +3,6 @@ pipeline {
     tools {nodejs "node"}
 
        environment {
-        API_NAME = 'api-tool-httpbin'
-        API_DIR = './apis'
-        APP_DIR = './apps'
-        API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
-        API_BACKUP = 'false'
         DEPLOY = 'false'
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
@@ -25,9 +20,7 @@ pipeline {
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
             
                 if (CHANGES != 'Everything is up-to-date' ){
-                    if (CHANGES.contains("$API_NAME-$API_VER")){
                         DEPLOY = 'true'
-                    }
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
