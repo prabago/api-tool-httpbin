@@ -16,6 +16,8 @@ pipeline {
     stages {
                 stage('Check Deployment') {
             steps {
+                echo "API_VER---> ${API_VER}"
+                echo "DEV_ENV---> ${DEV_ENV}"
 
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
