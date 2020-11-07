@@ -6,7 +6,7 @@ environments:
           https://eu.httpbin.org
           https://httpbin.org 
       sandbox:         
-        url: http://localhost:4010
+        url: http://localhost:32832
   - name: int
     endpoints:
       production:
@@ -14,7 +14,7 @@ environments:
           https://eu.httpbin.org
           https://httpbin.org 
       sandbox:         
-        url: http://localhost:4010
+        url: http://localhost:32832
         
 
 deploy:
