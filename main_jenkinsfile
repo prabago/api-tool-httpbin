@@ -52,6 +52,9 @@ pipeline {
             }
              post {
         success {
+            withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
+                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                }
                script {
                     sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
                     sh 'apictl logout $DEV_ENV -k'
