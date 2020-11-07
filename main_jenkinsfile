@@ -18,8 +18,9 @@ pipeline {
                 script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis  |  wc -l", returnStdout: true).trim()
+                echo "APIS---> ${APIS}"
                 if (CHANGES != 'Everything is up-to-date'){
-                    if (APIS != 0 ){    
+                    if (APIS != "0"){    
                         DEPLOY = 'true'
                     }else
                     {
