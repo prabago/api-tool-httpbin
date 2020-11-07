@@ -48,7 +48,11 @@ pipeline {
         }
     }
     post {
-    
+        success {
+               script {
+                    sh 'apictl vcs deploy -e $DEV_ENV'
+                }
+             }
         cleanup {
 
             deleteDir()
