@@ -6,7 +6,6 @@ pipeline {
         DEPLOY = 'false'
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
-     choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
         stage('Check Deployment') {
