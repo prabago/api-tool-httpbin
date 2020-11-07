@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    tools {nodejs "node"}
+
+       environment {
+        API_NAME = 'api-tool-httpbin'
+        API_DIR = './apis'
+        APP_DIR = './apps'
+        API_BCK = '/var/lib/jenkins/.wso2apictl/exported/apis/'
+        API_BACKUP = 'false'
+        DEPLOY = 'false'
+    }
+     parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
+     choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
+     }
+    stages {
+                stage('Check Deployment') {
+            steps {
+
+                echo 'Logging into ${$DEV_ENV}'
+                withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
+                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                }
+                script{
+                def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
+            
+                if (CHANGES != 'Everything is up-to-date' ){
+                    if (CHANGES.contains("$API_NAME-$API_VER")){
+                        DEPLOY = 'true'
+                    }
+                }
+                echo "DEPLOY---> ${DEPLOY}"
+                echo "CHANGES---> ${CHANGES}"
+                }
+
+                script{
+                def APIS = sh(script: "apictl vcs status -e local | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 ", returnStdout: true).trim()
+                def m =  APIS.replace("(apis/", "").replace(")", " ")
+                echo "APIS---> ${m}"
+                def arr = m.split(" ")
+                    for (i in arr) {
+                    println "now got ${i}"
+                        }
+                }
+            }
+        }
+    
+    post {
+    
+        cleanup {
+            sh 'apictl logout $DEV_ENV -k'
+            deleteDir()
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+            dir("${workspace}@script") {
+                deleteDir()
+            }
+        }
+        
+    }
+}
