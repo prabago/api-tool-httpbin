@@ -3,6 +3,7 @@ pipeline {
     tools {nodejs "node"}
 
        environment {
+        API_NAME = 'api-tool-httpbin'
         DEPLOY = 'false'
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
@@ -32,7 +33,7 @@ pipeline {
                 def arr = m.split(" ")
                     for (i in arr) {
                          echo "APIS---> ${i}"
-                        def API_VER = sh(script: "echo ${i} | tail -c 3", returnStdout: true).trim()
+                        def API_VER = ${i}.replace("$API_NAME", "").replace("-", "")
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
                         build job:"${i}", parameters: [
