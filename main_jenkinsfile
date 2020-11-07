@@ -11,21 +11,26 @@ pipeline {
     stages {
         stage('Check Deployment') {
             steps {
-
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
-            
                 if (CHANGES != 'Everything is up-to-date' ){
                         DEPLOY = 'true'
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
                 }
-
+            }
+        }
+    stage('Deployment') {
+            when {
+              expression { DEPLOY == 'true' }
+             }
+            
+            steps {
                 script{
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
                 def m =  APIS.replace("(apis/", "").replace(")", " ")
@@ -45,17 +50,20 @@ pipeline {
                         }
                 }
             }
-        }
-    }
-    post {
+             post {
         success {
                script {
-                   withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
-                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
-                }
-                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true '
+                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
+                    sh 'apictl logout $DEV_ENV -k'
                 }
              }
+             }
+
+        }
+
+        
+    }
+    post {
         cleanup {
 
             deleteDir()
