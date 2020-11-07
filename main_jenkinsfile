@@ -49,6 +49,8 @@ pipeline {
                         def API_VER = "${i}".replace("$API_NAME", "").replace("-", "")
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
+                      currentBuild.rawBuild.project.description = "${i}"
+                      currentBuild.rawBuild.project.setDisplayName("${i}")
                         build job:"${i}", parameters: [
                               string(name: 'DEV_ENV', value: "$DEV_ENV"),
                               string(name: 'API_VER', value: "$API_VER")
