@@ -30,6 +30,7 @@ pipeline {
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
                 }
+             addStage('offline','open-source','webgoat')
             }
         }
     stage('Deployment') {
