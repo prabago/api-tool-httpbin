@@ -27,7 +27,7 @@ pipeline {
                 }
 
                 script{
-                def APIS = sh(script: "apictl vcs status -e local | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
+                def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
                 def m =  APIS.replace("(apis/", "").replace(")", " ")
                 echo "APIS---> ${m}"
                 def arr = m.split(" ")
@@ -50,7 +50,10 @@ pipeline {
     post {
         success {
                script {
-                    sh 'apictl vcs deploy -e $DEV_ENV'
+                   withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
+                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                }
+                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true '
                 }
              }
         cleanup {
