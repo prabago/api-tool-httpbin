@@ -33,7 +33,7 @@ pipeline {
                 def arr = m.split(" ")
                     for (i in arr) {
                          echo "APIS---> ${i}"
-                        def API_VER = "${i}".replace("$API_NAME", "").replace("-", "")
+                        def API_VER = "${i}".replace("$API_NAME", "").replace("-", "").replace("\\n", "")
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
                         build job:"${i}", parameters: [
