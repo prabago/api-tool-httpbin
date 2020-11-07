@@ -17,8 +17,14 @@ pipeline {
                 }
                 script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
-                if (CHANGES != 'Everything is up-to-date' ){
+                def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis  |  wc -l", returnStdout: true).trim()
+                if (CHANGES != 'Everything is up-to-date'){
+                    if (APIS != 0 ){    
                         DEPLOY = 'true'
+                    }else
+                    {
+                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
+                    }
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
