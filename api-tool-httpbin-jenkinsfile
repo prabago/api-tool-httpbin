@@ -53,24 +53,17 @@ pipeline {
         }
 
         stage('Run mock-server') {
+            environment{
+                MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
+            }
             steps {
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
-                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
+                
+                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -p $MOCK_PORT:4010 -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
             }
         }
 
-        stage('Post Mock-server task') {
-            environment{
-                MOCK_PORT = sh(script: 'docker port $API_NAME-$API_VER 4010 | cut -d":" -f2', , returnStdout: true).trim()
-  
-                RETRY = '80'
-            }
-            steps {
-                echo "Port to ${MOCK_PORT}"
-                sh 'find $API_DIR/$API_NAME-$API_VER -name "*.yaml" -print | xargs sed -i "s/4010/${MOCK_PORT}/g"'
-            }
-        }
 
 
         stage('Backup API') {
