@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "fd419028-0c40-42c9-9a29-d8f97c647762",
+		"name": "api-tool-httpbin-v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate AccesToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6960249e-f8af-448d-93db-e53a302e36c6",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+							"pm.collectionVariables.set(\"scope\", jsonData.scope);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "gauss",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "resource:reader",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/token",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELAY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "172dd216-e29e-4b33-9a8c-e4d85646655e",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "00cb3c49-61b2-4246-81e3-b74d35cbe4a7",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v2/delay/1",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v2",
+						"delay",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d042d3e5-02a8-4546-99de-389b02a10057",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4a8256ca-8bde-4c0e-b30f-aeb41722b3bf",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v2/get",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v2",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate AccesToken without scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5044db7d-3d29-4887-b7d1-16bb4849b67e",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+							"pm.collectionVariables.set(\"scope\", jsonData.scope);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "adminatc",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Atc01.",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/token",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELAY with scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f636b983-585d-49fb-9d48-94dae007d757",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body contains error, message and description\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"code\");",
+							"  pm.expect(pm.response.text()).to.include(\"message\");",
+							"  pm.expect(pm.response.text()).to.include(\"description\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3216c647-23b1-403c-80ef-96e37c46ea0f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhdWQiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwibmJmIjoxNjAyMDE3OTk0LCJhenAiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwic2NvcGUiOiJhbV9hcHBsaWNhdGlvbl9zY29wZSBkZWZhdWx0IiwiaXNzIjoiaHR0cHM6XC9cL2xvY2FsaG9zdDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjAyMDIxNTk0LCJpYXQiOjE2MDIwMTc5OTQsImp0aSI6Ijg5YTM2NWU5LTlhMjktNDk5NC04MTZlLTU2YTE0YmM2MzMxOSJ9.lFWf9W4wXEg49h-oP5Zj6csVMYpy4lwR_jrkboqrYZcgVnLDPdafkQ1N6Msn4XjwfjTPsJFxuM3SQn5_HDhP1sjGF0fGRA-fLx2ENpqwru_WFZTE-Tq94mGLPebv9JisXI2Nww9gOAWlSJGUeWmtOXg8feKgK9O_vc-SZ8ES1Oq93zxe1XpTvX6dQAUTh9-yJjszWoeKOsyd4Pw-tyYjBkRigtAiLRyKpI6y9Sdf_6KyESPrwOJfY5VKyu0vNNn2kfxvOO_uwGYr5gdozzajXc4iTgIQYTBE5I9Fjl-WqZUyua58ix8beGuvPui5slnoOZbYovWnFiHwrPSxALgyoA",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v2/delay/1",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v2",
+						"delay",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET with scope",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "04016a8b-dc7d-4ed6-b702-6d5611c6885b",
+						"exec": [
+							"jsonData = pm.response.json();",
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body contains error, message and description\",() => {",
+							"  pm.expect(pm.response.text()).to.include(\"code\");",
+							"  pm.expect(pm.response.text()).to.include(\"message\");",
+							"  pm.expect(pm.response.text()).to.include(\"description\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "82eb28cc-707d-46cb-933a-8ce32d360179",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhdWQiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwibmJmIjoxNjAyMDE3OTk0LCJhenAiOiI4dHo2TGY0bG5lR0pjd3J5eWJ3WlVVajJmaDhhIiwic2NvcGUiOiJhbV9hcHBsaWNhdGlvbl9zY29wZSBkZWZhdWx0IiwiaXNzIjoiaHR0cHM6XC9cL2xvY2FsaG9zdDo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjAyMDIxNTk0LCJpYXQiOjE2MDIwMTc5OTQsImp0aSI6Ijg5YTM2NWU5LTlhMjktNDk5NC04MTZlLTU2YTE0YmM2MzMxOSJ9.lFWf9W4wXEg49h-oP5Zj6csVMYpy4lwR_jrkboqrYZcgVnLDPdafkQ1N6Msn4XjwfjTPsJFxuM3SQn5_HDhP1sjGF0fGRA-fLx2ENpqwru_WFZTE-Tq94mGLPebv9JisXI2Nww9gOAWlSJGUeWmtOXg8feKgK9O_vc-SZ8ES1Oq93zxe1XpTvX6dQAUTh9-yJjszWoeKOsyd4Pw-tyYjBkRigtAiLRyKpI6y9Sdf_6KyESPrwOJfY5VKyu0vNNn2kfxvOO_uwGYr5gdozzajXc4iTgIQYTBE5I9Fjl-WqZUyua58ix8beGuvPui5slnoOZbYovWnFiHwrPSxALgyoA",
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+					}
+				],
+				"url": {
+					"raw": "https://{{api-gateway}}:{{port}}/httpbin/v2/get",
+					"protocol": "https",
+					"host": [
+						"{{api-gateway}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"httpbin",
+						"v2",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "5a9ffe92-2fce-48ee-96d2-4e3c3724af94",
+			"key": "access_token",
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDQ2Nzg5MjksImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNDY4MjUyOSwiaWF0IjoxNjA0Njc4OTI5LCJqdGkiOiJiOWNkNzVjYi02NTljLTRiMDYtOTE5NC05YmI5ZTc3ZjFjZDcifQ.kxgiJfTATFfFJU1FVdpZYdEwHdgTNybNd70bOiCi7jvRlxWtCLsH_tUEoMxd9BZXKbTJtcKveJhuDDAJHEU8OmyR6sq01rlr8tqXkbf5ol5GWIvB7AJwIKTHT_QQtzs4vlPriWD5gs8i6-ZhGmRfxo-vHn5ptTQtlgM0j-1CAAQLMwYOwLAwG2BeYPi9hFh6k8RAnG78uxU0OE5WN51lAprFhoJRdKPPUeaOxXRWR57CN222XcWqEurYHltG7rle_gp1wobgTIXe7i0lWWk2LiyxT9KwGFsToJhJloqzWb0RsJdO0ayjMDYhFIuIAC3V1i-83u50aTASKRQHNJ1i2w"
+		},
+		{
+			"id": "937d0e93-8298-41ff-95e3-540daf9920ab",
+			"key": "scope",
+			"value": "resource:reader"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
