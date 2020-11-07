@@ -35,8 +35,8 @@ pipeline {
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
                         build job:'${i}', parameters: [
-                              string(name: 'DEV_ENV', value: $DEV_ENV),
-                              string(name: 'API_VER', value: $API_VER)
+                              string(name: 'DEV_ENV', value: '$DEV_ENV'),
+                              string(name: 'API_VER', value: '$API_VER')
                         ]
                     println "now got ${i}"
                 
