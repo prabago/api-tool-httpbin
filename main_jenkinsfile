@@ -6,9 +6,10 @@ pipeline {
         DEPLOY = 'false'
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
+     choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
-                stage('Check Deployment') {
+        stage('Check Deployment') {
             steps {
 
                 echo 'Logging into ${$DEV_ENV}'
@@ -16,10 +17,21 @@ pipeline {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 script{
+                def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
+                
+                def API_FINAL = "$API_NAME-$API_VER"
+                if (API_DPL == API_FINAL ){
+                   API_BACKUP = 'true'
+                }
+                echo "API_BACKUP---> ${API_BACKUP}"
+                }
+                script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
             
                 if (CHANGES != 'Everything is up-to-date' ){
+                    if (CHANGES.contains("$API_NAME-$API_VER")){
                         DEPLOY = 'true'
+                    }
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
@@ -36,7 +48,7 @@ pipeline {
                 }
             }
         }
-    
+    }
     post {
     
         cleanup {
@@ -51,5 +63,4 @@ pipeline {
         }
         
     }
-}
 }
