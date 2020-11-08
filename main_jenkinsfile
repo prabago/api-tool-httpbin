@@ -17,8 +17,8 @@ pipeline {
                 }
                 script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
-
-                echo "APIS---> ${APIS}"
+                def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
+                echo "DEPLOY---> ${DEPLOY}"
                 if (CHANGES != 'Everything is up-to-date'){
                     if (APIS != "0"){    
                         DEPLOY = 'true'
@@ -30,7 +30,6 @@ pipeline {
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
                 }
-            
             }
         }
     stage('Deployment') {
@@ -41,8 +40,6 @@ pipeline {
             steps {
                 script{
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
-                def UPDATE = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis | grep save | wc -l", returnStdout: true).trim()
-                if (UPDATE != '0'){
                 def m =  APIS.replace("(apis/", "").replace(")", " ")
                 echo "APIS---> ${m}"
                 def arr = m.split(" ")
@@ -51,7 +48,6 @@ pipeline {
                         def API_VER = "${i}".replace("$API_NAME", "").replace("-", "")
                     echo "DEV_ENV---> $DEV_ENV"
                     echo "API_VER---> $API_VER"
-                    
                         build job:"${i}", parameters: [
                               string(name: 'DEV_ENV', value: "$DEV_ENV"),
                               string(name: 'API_VER', value: "$API_VER")
@@ -59,7 +55,6 @@ pipeline {
                     println "now got ${i}"
                 
                         }
-                    }
                 }
             }
              post {
