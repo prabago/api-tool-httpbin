@@ -17,7 +17,7 @@ pipeline {
                 }
                 script{
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
-                def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis  |  wc -l", returnStdout: true).trim()
+
                 echo "APIS---> ${APIS}"
                 if (CHANGES != 'Everything is up-to-date'){
                     if (APIS != "0"){    
@@ -40,7 +40,9 @@ pipeline {
             
             steps {
                 script{
-                def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis | grep save |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
+                def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
+                def UPDATE = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis | grep save | wc -l", returnStdout: true).trim()
+                if (UPDATE != '0'){
                 def m =  APIS.replace("(apis/", "").replace(")", " ")
                 echo "APIS---> ${m}"
                 def arr = m.split(" ")
@@ -57,6 +59,7 @@ pipeline {
                     println "now got ${i}"
                 
                         }
+                    }
                 }
             }
              post {
