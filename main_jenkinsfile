@@ -40,7 +40,7 @@ pipeline {
             
             steps {
                 script{
-                def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
+                def APIS = sh(script: "apictl vcs status -e $DEV_ENV  | grep apis | grep save |awk -F: \'{print \$3}\' | sed 's/ //g' | cut -d'.' -f1 |tr --delete '\n' ", returnStdout: true).trim()
                 def m =  APIS.replace("(apis/", "").replace(")", " ")
                 echo "APIS---> ${m}"
                 def arr = m.split(" ")
@@ -76,7 +76,16 @@ pipeline {
         
     }
     post {
+        cleanup {
 
+            deleteDir()
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+            dir("${workspace}@script") {
+                deleteDir()
+            }
+        }
         
     }
 }
