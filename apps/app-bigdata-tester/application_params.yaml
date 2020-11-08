@@ -2,5 +2,5 @@ deploy:
   import:
     update: true
     preserveOwner: true
-    skipSubscriptions: true
+    skipSubscriptions: false
     skipKeys: true
