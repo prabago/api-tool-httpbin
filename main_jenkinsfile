@@ -6,7 +6,7 @@ pipeline {
         API_NAME = 'api-tool-httpbin'
         DEPLOY = 'false'
     }
-     parameters { choice(name: 'DEV_ENV', choices: ['local', 'int'], description: '') 
+     parameters { choice(name: 'DEV_ENV', choices: ['local', 'des'], description: '') 
      }
     stages {
         stage('Check Deployment') {
