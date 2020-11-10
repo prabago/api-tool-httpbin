@@ -3,7 +3,7 @@
   "name": "app-bigdata-tester",
   "uuid": "474464a4-442b-44e2-bbab-4d682f5d4f7b",
   "subscriber": {
-    "name": "prabago",
+    "name": "adminatc",
     "id": 21,
     "tenantId": 0
   },
@@ -20,12 +20,12 @@
         "stopOnQuotaReached": true
       },
       "subscriber": {
-        "name": "prabago",
+        "name": "adminatc",
         "id": 21,
         "tenantId": 0
       },
       "apiId": {
-        "providerName": "prabago",
+        "providerName": "adminatc",
         "apiName": "api-tool-httpbin",
         "version": "v2",
         "id": 0
@@ -35,7 +35,7 @@
         "name": "app-bigdata-tester",
         "uuid": "474464a4-442b-44e2-bbab-4d682f5d4f7b",
         "subscriber": {
-          "name": "prabago",
+          "name": "adminatc",
           "id": 21,
           "tenantId": 0
         },
@@ -57,13 +57,13 @@
     "SANDBOX": {
       "Resident Key Manager": {
         "clientId": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
-        "clientName": "prabago_app-bigdata-tester_SANDBOX",
+        "clientName": "adminatc_app-bigdata-tester_SANDBOX",
         "callBackURL": "null",
         "clientSecret": "aU9UcWpBXzIwaGJKX1luSVQ1UXFoeFdBR0xrYQ\u003d\u003d",
         "parameters": {
           "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
           "redirect_uris": "null",
-          "client_name": "prabago_app-bigdata-tester_SANDBOX"
+          "client_name": "adminatc_app-bigdata-tester_SANDBOX"
         },
         "isSaasApplication": false,
         "appAttributes": {}
@@ -72,13 +72,13 @@
     "PRODUCTION": {
       "Resident Key Manager": {
         "clientId": "nYcrPfKLh810OmM6TpT0TjkHUF4a",
-        "clientName": "prabago_app-bigdata-tester_PRODUCTION",
+        "clientName": "adminatc_app-bigdata-tester_PRODUCTION",
         "callBackURL": "null",
         "clientSecret": "MmxVd0xtR2RtUDNheGY2TGJZMktuc3M5enFjYQ\u003d\u003d",
         "parameters": {
           "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
           "redirect_uris": "null",
-          "client_name": "prabago_app-bigdata-tester_PRODUCTION"
+          "client_name": "adminatc_app-bigdata-tester_PRODUCTION"
         },
         "isSaasApplication": false,
         "appAttributes": {}
@@ -88,7 +88,7 @@
   "tier": "Unlimited",
   "status": "APPROVED",
   "groupId": "",
-  "owner": "prabago",
+  "owner": "adminatc",
   "applicationAttributes": {
     "Audiencia": "interna"
   },
