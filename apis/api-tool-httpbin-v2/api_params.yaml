@@ -13,6 +13,12 @@ environments:
       sandbox:         
         url: http://localhost:32831
         
+  - name: des
+    endpoints:
+      production:
+        url: https://httpbin.org
+      sandbox:         
+        url: http://localhost:32831
 
 deploy:
   import:
