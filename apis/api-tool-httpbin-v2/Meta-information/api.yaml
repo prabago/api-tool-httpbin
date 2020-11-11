@@ -3,13 +3,13 @@ id:
   apiName: api-tool-httpbin
   version: v2
   id: 0
-uuid: 643ec8db-a71c-4cb2-955b-3bef606c1460
+uuid: 2c12e75d-3974-4ea3-897d-6cf9fdd76517
 type: HTTP
 context: /httpbin/v2
 contextTemplate: /httpbin/{version}
 tags: []
 documents: []
-lastUpdated: Nov 6, 2020, 5:29:17 PM
+lastUpdated: Nov 11, 2020, 1:16:48 PM
 availableTiers:
  -
   name: Bronze
@@ -57,7 +57,7 @@ corsConfiguration:
    - DELETE
    - PATCH
    - OPTIONS
-endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"http:\/\/localhost:32801"},"production_endpoints":{"url":"https:\/\/eu.httpbin.org"}}'
+endpointConfig: '{"endpoint_type":"http","sandbox_endpoints":{"url":"http:\/\/b77943fabb7b.ngrok.io"},"production_endpoints":{"url":"https:\/\/httpbin.org"}}'
 responseCache: Disabled
 cacheTimeout: 300
 implementation: ENDPOINT
@@ -68,9 +68,10 @@ isPublishedDefaultVersion: false
 keyManagers:
  - all
 environments:
+ - Desarrollo and Sandbox
  - local
  - int
-createdTime: "1604603619640"
+createdTime: "1605048944393"
 additionalProperties: {}
 monetizationProperties: {}
 isMonetizationEnabled: false

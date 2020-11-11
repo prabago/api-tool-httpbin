@@ -163,7 +163,7 @@ components:
         implicit:
           authorizationUrl: ""
           scopes:
-            resource:reader: Internal/reader
+            resource:reader: resource:reader
           x-scopes-bindings:
             resource:reader: Internal/reader
         password:
@@ -192,11 +192,11 @@ x-wso2-cors:
    - OPTIONS
 x-wso2-production-endpoints:
   urls:
-   - https://eu.httpbin.org
+   - https://httpbin.org
   type: http
 x-wso2-sandbox-endpoints:
   urls:
-   - http://localhost:32801
+   - http://b77943fabb7b.ngrok.io
   type: http
 x-wso2-basePath: /httpbin/v2
 x-wso2-transports:
