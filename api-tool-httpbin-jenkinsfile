@@ -75,8 +75,6 @@ pipeline {
                 echo "Import APIs to ${DEV_ENV}"
                 
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'
-                echo "Waiting 10 seconds for deployment to complete prior starting smoke testing"
-                sh 'sleep 10'
 
             }
              post
@@ -102,6 +100,8 @@ pipeline {
 
         stage('Ejecucion de Tests contra Sandbox') {
             steps {
+                echo "Waiting 30 seconds for deployment to complete prior starting smoke testing"
+                sh 'sleep 30'
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/report.html" --insecure --bail' 
