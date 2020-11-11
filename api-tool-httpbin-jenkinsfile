@@ -25,7 +25,7 @@ pipeline {
                 }
                 script{
                 def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
-                
+                def MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
                 def API_FINAL = "$API_NAME-$API_VER"
                 if (API_DPL == API_FINAL ){
                    API_BACKUP = 'true'
@@ -53,9 +53,6 @@ pipeline {
         }
 
         stage('Run mock-server') {
-            environment{
-                MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
-            }
             when {
               expression { MOCK_PORT != '' }
              }
