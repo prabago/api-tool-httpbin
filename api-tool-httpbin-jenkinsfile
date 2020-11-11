@@ -75,9 +75,9 @@ pipeline {
                 echo "Import APIs to ${DEV_ENV}"
                 
                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'
-                def time = 5
-                echo "Waiting ${SLEEP_TIME_IN_SECONDS} seconds for deployment to complete prior starting smoke testing"
-                sleep time.toInteger() // seconds
+                echo "Waiting 10 seconds for deployment to complete prior starting smoke testing"
+                sh 'sleep 10'
+
             }
              post
             {
