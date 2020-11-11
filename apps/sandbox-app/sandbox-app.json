@@ -53,7 +53,38 @@
     }
   ],
   "keys": [],
-  "keyManagerWiseOAuthApp": {},
+  "keyManagerWiseOAuthApp": {
+    "SANDBOX": {
+      "Resident Key Manager": {
+        "clientId": "9QONUN8kR0I8gqNWOgA0ENlewCoa",
+        "clientName": "adminatc_sandbox-app_SANDBOX",
+        "callBackURL": "null",
+        "clientSecret": "cUNRVmp3eW0wdUROWDJVVlJzQ3phZ3hWNnRZYQ\u003d\u003d",
+        "parameters": {
+          "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
+          "redirect_uris": "null",
+          "client_name": "adminatc_sandbox-app_SANDBOX"
+        },
+        "isSaasApplication": false,
+        "appAttributes": {}
+      }
+    },
+    "PRODUCTION": {
+      "Resident Key Manager": {
+        "clientId": "U9oTprNPtuXQkMG51F4BaF_RIRYa",
+        "clientName": "adminatc_sandbox-app_PRODUCTION",
+        "callBackURL": "null",
+        "clientSecret": "dkJvV2N1NlFGSzAxeENyNFhoMUhvaWZ4VXZVYQ\u003d\u003d",
+        "parameters": {
+          "grant_types": "refresh_token urn:ietf:params:oauth:grant-type:saml2-bearer password client_credentials iwa:ntlm urn:ietf:params:oauth:grant-type:device_code urn:ietf:params:oauth:grant-type:jwt-bearer",
+          "redirect_uris": "null",
+          "client_name": "adminatc_sandbox-app_PRODUCTION"
+        },
+        "isSaasApplication": false,
+        "appAttributes": {}
+      }
+    }
+  },
   "tier": "Unlimited",
   "description": "sandbox-app",
   "status": "APPROVED",
