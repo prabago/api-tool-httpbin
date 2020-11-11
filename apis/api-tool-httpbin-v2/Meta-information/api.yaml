@@ -68,7 +68,7 @@ isPublishedDefaultVersion: false
 keyManagers:
  - all
 environments:
- - Desarrollo and Sandbox
+ - des
  - local
  - int
 createdTime: "1605048944393"
