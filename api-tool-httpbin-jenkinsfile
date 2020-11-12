@@ -19,7 +19,7 @@ pipeline {
             steps {
                 echo "API_VER---> ${API_VER}"
                 echo "DEV_ENV---> ${DEV_ENV}"
-
+                
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
@@ -117,12 +117,14 @@ pipeline {
             
         }
 
-        stage('Ejecucion de Tests contra Sandbox') {
+        stage('Ejecución de Tests contra Sandbox') {
             steps {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/report.html" --insecure --bail' 
-                
+                withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
+                    sh 'curl -F token=$TOKEN -F channels=api-atc -F text=test-result -F username=jenkins -F file=@newman/report.html https://slack.com/api/files.upload'                       
+                }
             }
             post
             {
