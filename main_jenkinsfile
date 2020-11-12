@@ -21,7 +21,7 @@ pipeline {
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 echo "The reponame is: ${reponame}"
-                slackSend (color: '#5788d5', message: "INICIADO--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                slackSend (color: '#5788d5', message: "INICIADO MASTER--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
@@ -35,7 +35,7 @@ pipeline {
                     }
                 }else
                 {
-                    slackSend (color: '#ee930a', message: "FINALIZADO--> ESTADO [NO DESPLEGADO - NO HAY CAMBIOS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                    slackSend (color: '#ee930a', message: "FINALIZADO MASTER--> ESTADO [NO DESPLEGADO - NO HAY CAMBIOS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
@@ -75,19 +75,18 @@ pipeline {
                script {
                     sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
                     sh 'apictl logout $DEV_ENV -k'
-                        slackSend (color: '#346b09', message: "FINALIZADO--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                        slackSend (color: '#346b09', message: "FINALIZADO MASTER--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 }
              }
              }
 
         }
-
         
     }
     post {
 
         failure {
-            slackSend (color: '#ee0a0a', message: "FINALIZADO--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+            slackSend (color: '#ee0a0a', message: "FINALIZADO MASTER--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
         }
         cleanup {
 
