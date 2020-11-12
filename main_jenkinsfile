@@ -21,7 +21,7 @@ pipeline {
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 echo "The reponame is: ${reponame}"
-                slackSend (color: '#5788d5', message: "INICIADO MASTER-ENTORNO [${DEV_ENV}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                slackSend (color: '#08156e', message: "INICIADO MASTER-ENTORNO [${DEV_ENV}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
@@ -35,7 +35,7 @@ pipeline {
                     }
                 }else
                 {
-                    slackSend (color: '#ee930a', message: "FINALIZADO MASTER-ENTORNO [${DEV_ENV}]--> ESTADO [NO DESPLEGADO - NO HAY CAMBIOS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                    slackSend (color: '#803b0e', message: "FINALIZADO MASTER-ENTORNO [${DEV_ENV}]--> ESTADO [NO DESPLEGADO - NO HAY CAMBIOS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 }
                 echo "DEPLOY---> ${DEPLOY}"
                 echo "CHANGES---> ${CHANGES}"
@@ -78,7 +78,7 @@ pipeline {
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                     sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
                     sh 'apictl logout $DEV_ENV -k'
-                        slackSend (color: '#346b09', message: "FINALIZADO MASTER-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                        slackSend (color: '#053605', message: "FINALIZADO MASTER-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                 }
              }
              }

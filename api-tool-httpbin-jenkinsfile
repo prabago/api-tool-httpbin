@@ -58,7 +58,7 @@ pipeline {
                 def repoUrl = checkout(scm).GIT_URL
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[CODE REVIEW] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[CODE REVIEW] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
             }
              }
             }
@@ -97,7 +97,7 @@ pipeline {
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
                         reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                        slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[DESPLIEGUE] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                        slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[DESPLIEGUE] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
             }
         
         }
@@ -150,7 +150,7 @@ pipeline {
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
                         reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                        slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                        slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                        }
         }
             }
