@@ -122,6 +122,7 @@ pipeline {
                 echo 'Token are $TOKEN'
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/report.html" --insecure --bail' 
+                sh 'curl -F token=xoxp-662960318918-660822906245-1491178383254-34c89ae49e6b127fb3fbe3db8de40e6e -F channels=api-atc -F text=test-result -F username=jenkins -F file=@newman/report.html https://slack.com/api/files.upload'
             }
             post
             {
