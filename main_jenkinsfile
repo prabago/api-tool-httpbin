@@ -18,10 +18,10 @@ pipeline {
                 script{
                 echo 'Logging into ${DEV_ENV}'
                 def repoUrl = checkout(scm).GIT_URL
-                def key = repoUrl.tokenize('/')[3]
-                key = key.substring(0, key.lastIndexOf('.')) //Remove .git
-                echo "The projectKey is: ${key}"
-                slackSend (color: '#5788d5', message: "INICIADO: Proyecto API '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                def reponame = repoUrl.tokenize('/')[3]
+                reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
+                echo "The reponame is: ${reponame}"
+                slackSend (color: '#5788d5', message: "INICIADO: Proyecto API: ' ${reponame} ${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
                 echo "DEPLOY---> ${DEPLOY}"
