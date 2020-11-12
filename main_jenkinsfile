@@ -25,7 +25,7 @@ pipeline {
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 echo "The reponame is: ${reponame}"
-                slackSend ( iconEmoji: "${ICON}", color: '#08156e', message: "INICIADO MASTER-ENTORNO [${DEV_ENV}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :airplane:")
+                slackSend ( color: '#08156e', message: "INICIADO MASTER-ENTORNO [${DEV_ENV} ${ICON}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :airplane:")
                 
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
