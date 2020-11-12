@@ -85,6 +85,10 @@ pipeline {
         
     }
     post {
+
+        failure {
+            slackSend (color: '#ee0a0a', message: "FINALIZADO--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+        }
         cleanup {
 
             deleteDir()
