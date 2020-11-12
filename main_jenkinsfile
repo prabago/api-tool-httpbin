@@ -11,14 +11,15 @@ pipeline {
     stages {
         stage('Check Deployment') {
             steps {
-                echo 'Logging into ${DEV_ENV}'
-                def repName = checkout(scm).repoName
-                sh "echo 'Repository Name is: ${repName}'"
-                println repName
+
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 script{
+                echo 'Logging into ${DEV_ENV}'
+                def repName = checkout(scm).repoName
+                sh "echo 'Repository Name is: ${repName}'"
+                println repName
                 slackSend (color: '#5788d5', message: "INICIADO: Proyecto API '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
