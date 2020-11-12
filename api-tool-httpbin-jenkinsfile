@@ -55,6 +55,9 @@ pipeline {
                 step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
                  currentBuild.result = 'FAILURE'
                 throw err
+                def repoUrl = checkout(scm).GIT_URL
+                def reponame = repoUrl.tokenize('/')[3]
+                reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE--> ESTADO [${env.BUILD_STATUS}] ETAPA:[CODE REVIEW] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
             }
              }
@@ -88,8 +91,12 @@ pipeline {
             {
                  failure {
                      script {
-                    if (API_BACKUP == 'true')
+                    if (API_BACKUP == 'true'){
                         sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                    }
+                        def repoUrl = checkout(scm).GIT_URL
+                        def reponame = repoUrl.tokenize('/')[3]
+                        reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                         slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE--> ESTADO [${env.BUILD_STATUS}] ETAPA:[DESPLIEGUE] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
             }
         
@@ -126,7 +133,7 @@ pipeline {
                 ])
              }
             failure {
-                slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE--> ESTADO [${env.BUILD_STATUS}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                
                 junit '*.xml'
                 publishHTML (target: [
                 allowMissing: false,
@@ -137,8 +144,13 @@ pipeline {
                 reportName: "postman-test"
                ])
                    script {
-                       if (API_BACKUP == 'true')
+                       if (API_BACKUP == 'true'){
                            sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                       }
+                        def repoUrl = checkout(scm).GIT_URL
+                        def reponame = repoUrl.tokenize('/')[3]
+                        reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
+                        slackSend (color: '#ee0a0a', message: "FINALIZADO SLAVE--> ESTADO [${env.BUILD_STATUS}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
                        }
         }
             }
@@ -147,7 +159,12 @@ pipeline {
     post {
     
     success {
+        script {
+                def repoUrl = checkout(scm).GIT_URL
+                def reponame = repoUrl.tokenize('/')[3]
+                reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
             slackSend (color: '#346b09', message: "FINALIZADO SLAVE--> ESTADO [${env.BUILD_STATUS}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})]")
+                }
         }
         cleanup {
             sh 'apictl logout $DEV_ENV -k'
