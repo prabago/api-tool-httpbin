@@ -5,6 +5,9 @@ pipeline {
        environment {
         API_NAME = 'api-tool-httpbin'
         DEPLOY = 'false'
+        String determineRepoName() {
+            return scm.getUserRemoteConfigs()[0].getUrl().tokenize('/').last().split("\\.")[0]
+        }
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'des'], description: '') 
      }
@@ -16,7 +19,7 @@ pipeline {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 script{
-                slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                slackSend (color: '#5788d5', message: "INICIADO: Proyecto API '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 def CHANGES = sh(script: "apictl vcs status -e $DEV_ENV", returnStdout: true).trim()
                 def APIS = sh(script: "apictl vcs status -e $DEV_ENV |  grep apis | grep save |  wc -l", returnStdout: true).trim()
                 echo "DEPLOY---> ${DEPLOY}"
