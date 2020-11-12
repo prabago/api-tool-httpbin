@@ -123,7 +123,7 @@ pipeline {
                 echo 'Running tests in $DEV_ENV'
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/postman.html" --insecure --bail' 
                 withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
-                    sh 'curl -F token=$TOKEN  -F filetype=HTML -F channels=api-atc -F text=postman-test -F username=jenkins -F file=@newman/postman.html https://slack.com/api/files.upload'                       
+                    sh 'curl -F token=$TOKEN  -F filetype=html -F channels=api-atc -F text=postman-test -F username=jenkins -F file=@newman/postman.html https://slack.com/api/files.upload'                       
                 }
             }
             post
