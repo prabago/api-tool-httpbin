@@ -5,16 +5,16 @@ pipeline {
        environment {
         API_NAME = 'api-tool-httpbin'
         DEPLOY = 'false'
+    }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'des'], description: '') 
      }
     stages {
         stage('Check Deployment') {
             steps {
                 echo 'Logging into ${DEV_ENV}'
-                 def repName = checkout(scm).repoName
-                 sh "echo 'Repository Name is: ${repName}'"
+                def repName = checkout(scm).repoName
+                sh "echo 'Repository Name is: ${repName}'"
                 println repName
-
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
