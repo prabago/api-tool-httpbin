@@ -2,19 +2,23 @@ environments:
   - name: local
     endpoints:
       production:
-        url: 
-          https://eu.httpbin.org
+        url: https://eu.httpbin.org
       sandbox:         
-        url: http://localhost:32831
+        url: http://localhost:32768
+  
   - name: int
     endpoints:
       production:
-        url: 
-          https://eu.httpbin.org
+        url: https://httpbin.org
       sandbox:         
-        url: http://localhost:32831
+        url: http://localhost:32768
         
-
+  - name: des
+    endpoints:
+      production:
+        url: https://httpbin.org
+      sandbox:         
+        url: http://f14c362ee9f3.ngrok.io
 deploy:
   import:
     update: true
