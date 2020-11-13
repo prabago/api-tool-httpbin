@@ -49,11 +49,12 @@ pipeline {
             steps {
                 script {
                 def MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
-                }
+                
                 echo "MOCK_PORT---> ${MOCK_PORT}"
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
                 sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -P stoplight/prism:4 mock -p $MOCK_PORT:4010 -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
+                }
             }
         }
          stage('Check OpenAPI Spectral Lint') {
