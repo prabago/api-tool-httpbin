@@ -157,8 +157,7 @@ pipeline {
                        }
                         withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
                         sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}.zip https://slack.com/api/files.upload'                       
-                        
-                }
+                        }
                         
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
