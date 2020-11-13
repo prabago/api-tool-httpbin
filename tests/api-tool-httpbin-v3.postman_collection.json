@@ -46,11 +46,18 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Proxy-Authorization",
+						"value": "Basic {{proxy}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -127,6 +134,11 @@
 				"header": [
 					{
 						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
 					}
@@ -226,6 +238,16 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Proxy-Authorization",
+						"value": "Basic {{proxy}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -315,6 +337,16 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Proxy-Authorization",
+						"value": "Basic {{proxy}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -397,12 +429,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"value": "{{client-secret}}",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"value": "{{client-id}}",
 							"type": "string"
 						}
 					]
@@ -411,11 +443,18 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh"
+						"value": "Basic cEJ6dUlaaEdwaGZRbWRjVVgwbG5lRmlpdXh3YTo0U0pnV19qTU56aGpIU284OGJuZVhtTnFNMjRh",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Proxy-Authorization",
+						"value": "Basic {{proxy}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -494,6 +533,16 @@
 						"key": "Accept",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Proxy-Authorization",
+						"value": "Basic {{proxy}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -556,19 +605,19 @@
 	},
 	"variable": [
 		{
-			"id": "d738c8b3-291c-4dbe-84bb-328e685dcc3c",
+			"id": "54240377-2678-4690-8298-ebcf07fe0185",
 			"key": "baseUrl",
 			"value": "https://localhost:8243/httpbin/v3"
 		},
 		{
-			"id": "9b578414-cbcb-42f6-b883-69ec3c6cb7e0",
+			"id": "8c42e8a5-8233-4506-84b0-d59c66618a24",
 			"key": "access_token",
-			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJwcmFiYWdvIiwiYXVkIjoiS3gyZ2cyN2ZGb01kSFZnVXVmNzM4a0hyNEJrYSIsIm5iZiI6MTYwNTI4Njg1MiwiYXpwIjoiS3gyZ2cyN2ZGb01kSFZnVXVmNzM4a0hyNEJrYSIsInNjb3BlIjoiZGVmYXVsdCIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNTI5MDQ1MiwiaWF0IjoxNjA1Mjg2ODUyLCJqdGkiOiIxNDcyNmU2ZS1iYzM1LTQ2MWMtOWMzMi1hZDcyMjZjY2VlNjUifQ.anTPU0CgZc9Z1bOKAesfZZyfswYB0jwW6iHlxp_rwdReB2MzlD-5MKRhdnE1a8eS4vnmwDuJlJvh7x5YR6ay6Hbyq6KZYM4IP7uZwpKiigtqZUUi0qbdUYeU0AGRJn0y1WdBkytACgv7RiFXcdorem7xTJlEL8E-oZi33iisQ1siYtjicuHe0pQ41dGMj2ZDgcsYlQo3A_9P0wKDb4_mt8o2TVohKsaqEp6RLR8JTC5WTIFoUslIzqeXXQwvV6zXy2PlGg4NGvGHrY_fJl87-aVETo63e1daIhsUH1In6sWJZHoCUakAco9YSnznpQ3LuKlXOPNkJAbDNlBhI7fzEw"
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbmF0YyIsImF1ZCI6IjlRT05VTjhrUjBJOGdxTldPZ0EwRU5sZXdDb2EiLCJuYmYiOjE2MDUyODkyNjUsImF6cCI6IjlRT05VTjhrUjBJOGdxTldPZ0EwRU5sZXdDb2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNTI5Mjg2NSwiaWF0IjoxNjA1Mjg5MjY1LCJqdGkiOiI2ODQwNDc4Mi0wMTRlLTQwMGMtOTNlMC1hZDhmMDNjYmEzMzYifQ.CVlGBGdB0_6XeZYcIVbnMe5GYJBPJV2KqOHl-nEU9mxyqaEaTYj8rIcOnAWY_tZkX2iaeuuL4kCvpGrWNjB9GcdIKJEa4Nt4wognFqzoOgYqaXR9kv5mo3Tg_Gt9dLFzEnP8Qft2SqCUyGPO2spJEvk-6d-Guq1kDInc0y9jKKfdMH3hqh2grQhIImfG_3CgqAGfQG9mxalNvWjcKPgZRB8VVBIFhXAMGRrInRoN453S8oZUQHiW96hPwi-iU-kaphGf-A99DVQO8ow-Qnp8r-1oHbnKymzQjIQ00hzYglip8G9sbui3CSNm99wytw5QDPRjrFcZMip6hocSIYGZ4Q"
 		},
 		{
-			"id": "7186c4e6-a997-4789-a4d6-ca685ed83051",
+			"id": "4367b4cf-e7d5-4d21-b9f1-57d9e87d831f",
 			"key": "scope",
-			"value": "default"
+			"value": "resource:reader"
 		}
 	],
 	"protocolProfileBehavior": {}
