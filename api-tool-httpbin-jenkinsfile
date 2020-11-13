@@ -132,7 +132,7 @@ pipeline {
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/postman.html" --insecure --bail' 
                 sh 'zip -q postman_report-$API_NAME-${API_VER}-${DEV_ENV} ./newman/postman.html'
                 withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
-                    sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}.zip https://slack.com/api/files.upload'                       
+                    sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}-${DEV_ENV}.zip https://slack.com/api/files.upload'                       
                         
                 }
             }
@@ -172,7 +172,7 @@ pipeline {
                         sh 'zip -q postman_report-$API_NAME-${API_VER}-${DEV_ENV} ./newman/postman.html'
                         slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :test_tube: :x:")
                           withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
-                        sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}.zip https://slack.com/api/files.upload'                       
+                        sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}-${DEV_ENV}.zip https://slack.com/api/files.upload'                       
                         }
                        }
         }
