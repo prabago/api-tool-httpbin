@@ -68,6 +68,7 @@ isPublishedDefaultVersion: false
 keyManagers:
  - all
 environments:
+ - des
  - local
  - int
 createdTime: "1603874885902"
