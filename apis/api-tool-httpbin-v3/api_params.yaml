@@ -1,0 +1,23 @@
+environments:
+  - name: local
+    endpoints:
+      production:
+        url: 
+          https://eu.httpbin.org
+          https://httpbin.org 
+      sandbox:         
+        url: http://localhost:4010
+  - name: int
+    endpoints:
+      production:
+        url: 
+          https://eu.httpbin.org
+          https://httpbin.org 
+      sandbox:         
+        url: http://localhost:4010
+        
+
+deploy:
+  import:
+    update: true
+    preserveProvider: true
