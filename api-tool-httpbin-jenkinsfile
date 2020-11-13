@@ -53,7 +53,7 @@ pipeline {
                echo "MOCK_PORT---> ${MOCK_PORT}"
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
-                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -p $MOCK_PORT:4010 -v $(pwd):/tmp -P stoplight/prism:4 mock  -h 0.0.0.0  "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
+                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -p $MOCK_PORT:4010-v $(pwd):/tmp -P stoplight/prism:4 mock  -h 0.0.0.0  "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
             }
         }
          stage('Check OpenAPI Spectral Lint') {
@@ -130,7 +130,7 @@ pipeline {
             steps {
                 echo 'Running tests in ${DEV_ENV}'
                 sh 'newman run ./tests/$API_NAME-${API_VER}.postman_collection.json  -e ./tests/$DEV_ENV.postman_environment.json --reporters cli,junit,htmlextra --reporter-junit-export "postman.xml" -n 1 --reporter-htmlextra-export "newman/postman.html" --insecure --bail' 
-                sh 'zip -q postman_report-$API_NAME-$API_VER-$DEV_ENV ./newman/postman.html'
+                sh 'zip -q postman_report-$API_NAME-${API_VER} ./newman/postman.html'
                 withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
                     sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}.zip https://slack.com/api/files.upload'                       
                         
@@ -169,7 +169,7 @@ pipeline {
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
                         reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                        sh 'zip -q postman_report-$API_NAME-$API_VER-$DEV_ENV ./newman/postman.html'
+                        sh 'zip -q postman_report-$API_NAME-${API_VER} ./newman/postman.html'
                         slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :test_tube: :x:")
                           withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
                         sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}.zip https://slack.com/api/files.upload'                       
