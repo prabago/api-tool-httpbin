@@ -46,7 +46,13 @@ pipeline {
                 }
             }
         }
-    
+        stage('Run mock-server') {
+            steps {
+                sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
+                sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
+                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -P stoplight/prism:4 mock -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
+            }
+        }
          stage('Check OpenAPI Spectral Lint') {
             steps {
             sh 'git submodule foreach git checkout master'
