@@ -33,9 +33,7 @@ pipeline {
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 echo "The reponame is: ${reponame}"
                 slackSend (color: '#5788d5', message: "INICIADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket:")
-                
                 def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
-                def MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
                 def API_FINAL = "$API_NAME-$API_VER"
                 echo "MOCK_PORT---> ${MOCK_PORT}"
                 
@@ -48,6 +46,7 @@ pipeline {
         }
         stage('Run mock-server') {
             steps {
+                def MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
                 sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -v $(pwd):/tmp -P stoplight/prism:4 mock -p $MOCK_PORT:4010 -h 0.0.0.0 "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
