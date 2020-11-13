@@ -4,14 +4,14 @@ environments:
       production:
         url: https://eu.httpbin.org
       sandbox:         
-        url: http://localhost:32768
+        url: http://localhost:32832
   
   - name: int
     endpoints:
       production:
         url: https://httpbin.org
       sandbox:         
-        url: http://localhost:32768
+        url: http://localhost:32832
         
   - name: des
     endpoints:
