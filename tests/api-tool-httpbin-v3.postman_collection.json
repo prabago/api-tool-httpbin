@@ -31,13 +31,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "iOTqjA_20hbJ_YnIT5QqhxWAGLka",
+							"key": "username",
+							"value": "{{client-id}}",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "Kx2gg27fFoMdHVgUuf738kHr4Bka",
+							"key": "password",
+							"value": "{{client-secret}}",
 							"type": "string"
 						}
 					]
@@ -63,12 +63,12 @@
 						},
 						{
 							"key": "username",
-							"value": "gauss",
+							"value": "adminatc",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "password",
+							"value": "Atc01.",
 							"type": "text"
 						},
 						{
@@ -428,12 +428,12 @@
 						},
 						{
 							"key": "username",
-							"value": "nobel",
+							"value": "prabago",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "password",
+							"value": "prabago",
 							"type": "text"
 						},
 						{
@@ -556,19 +556,19 @@
 	},
 	"variable": [
 		{
-			"id": "493a62d7-2b5d-4ff6-b14e-4ec3394e0a46",
+			"id": "d738c8b3-291c-4dbe-84bb-328e685dcc3c",
 			"key": "baseUrl",
 			"value": "https://localhost:8243/httpbin/v3"
 		},
 		{
-			"id": "1a36f915-2ff3-44d9-9409-8c6eceee17de",
+			"id": "9b578414-cbcb-42f6-b883-69ec3c6cb7e0",
 			"key": "access_token",
-			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJnYXVzcyIsImF1ZCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJuYmYiOjE2MDQ2ODY2MjYsImF6cCI6Ikt4MmdnMjdmRm9NZEhWZ1V1ZjczOGtIcjRCa2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNDY5MDIyNiwiaWF0IjoxNjA0Njg2NjI2LCJqdGkiOiJjMDU5NTMxOS1kZDE3LTQ0ZjgtYTM2Mi00MWMzNzhlNzc4ODcifQ.A9i5K3OeGAfNHpcHBgha73gABelemvOn8zl4KPJUwuoU-f4-SeYRU6GiPkRsqw4xFpSeKYdRTicSvi7Blu6i-JOwCr4hc6fobeQxipZ9j7UgNYW741LZ_N0ZiIH6Vrx3yWTwfUl4RVwOCA1CRgQGpamVWCdYYfrMsH01RZrRBWZ6whKtapACF69ZAOXZLsFGo3mX_5P5pUIbh4Jei9kygNuaW9qbIa9JZaeYirtY-xCGMC_lRvU9DGtfRCfFqOZng0YytbFLc4SC9U6ZzzCKUE8iCzaaLZPY4REucMicH8qAlLBwT6KRjZRtGXJVKGgQ4OIXOZ2xK2N2j66VY-5wpA"
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJwcmFiYWdvIiwiYXVkIjoiS3gyZ2cyN2ZGb01kSFZnVXVmNzM4a0hyNEJrYSIsIm5iZiI6MTYwNTI4Njg1MiwiYXpwIjoiS3gyZ2cyN2ZGb01kSFZnVXVmNzM4a0hyNEJrYSIsInNjb3BlIjoiZGVmYXVsdCIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNTI5MDQ1MiwiaWF0IjoxNjA1Mjg2ODUyLCJqdGkiOiIxNDcyNmU2ZS1iYzM1LTQ2MWMtOWMzMi1hZDcyMjZjY2VlNjUifQ.anTPU0CgZc9Z1bOKAesfZZyfswYB0jwW6iHlxp_rwdReB2MzlD-5MKRhdnE1a8eS4vnmwDuJlJvh7x5YR6ay6Hbyq6KZYM4IP7uZwpKiigtqZUUi0qbdUYeU0AGRJn0y1WdBkytACgv7RiFXcdorem7xTJlEL8E-oZi33iisQ1siYtjicuHe0pQ41dGMj2ZDgcsYlQo3A_9P0wKDb4_mt8o2TVohKsaqEp6RLR8JTC5WTIFoUslIzqeXXQwvV6zXy2PlGg4NGvGHrY_fJl87-aVETo63e1daIhsUH1In6sWJZHoCUakAco9YSnznpQ3LuKlXOPNkJAbDNlBhI7fzEw"
 		},
 		{
-			"id": "cab2ac74-2277-4ed0-a1e2-5b9da66bc045",
+			"id": "7186c4e6-a997-4789-a4d6-ca685ed83051",
 			"key": "scope",
-			"value": "resource:reader"
+			"value": "default"
 		}
 	],
 	"protocolProfileBehavior": {}
