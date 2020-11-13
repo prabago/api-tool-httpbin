@@ -103,8 +103,16 @@
 						"id": "172dd216-e29e-4b33-9a8c-e4d85646655e",
 						"exec": [
 							"jsonData = pm.response.json();",
+							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test('Has data', function() {",
+							"  pm.expect(jsonData).to.have.property('headers');",
+							"  pm.expect(jsonData.headers).to.have.property('Accept');",
+							"  pm.expect(jsonData.headers).to.have.property('Host');",
 							"});",
 							""
 						],
@@ -153,7 +161,8 @@
 					{
 						"key": "Proxy-Authorization",
 						"value": "Basic {{proxy}}",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": {
@@ -182,9 +191,18 @@
 						"id": "d042d3e5-02a8-4546-99de-389b02a10057",
 						"exec": [
 							"jsonData = pm.response.json();",
+							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
-							"});"
+							"});",
+							"",
+							"",
+							"pm.test('Has data', function() {",
+							"  pm.expect(jsonData).to.have.property('headers');",
+							"  pm.expect(jsonData.headers).to.have.property('Accept');",
+							"  pm.expect(jsonData.headers).to.have.property('Host');",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -469,12 +487,12 @@
 	],
 	"variable": [
 		{
-			"id": "14001ac8-9161-42de-b5f1-7b1ed64625ea",
+			"id": "bf5655c0-8021-4670-b83b-496a33913aba",
 			"key": "access_token",
-			"value": "eyJ4NXQiOiJOek0yWkdJNFlXVXlNRGMxTnpZeVlqVm1OVEl5T1dRME16ZG1aVFJtWTJZeU9UVmtabU0wWWpkbE1qZzFNalkyWVdKbVpEQXpNemc0WkRkaE1EUmpPUSIsImtpZCI6Ik56TTJaR0k0WVdVeU1EYzFOell5WWpWbU5USXlPV1EwTXpkbVpUUm1ZMll5T1RWa1ptTTBZamRsTWpnMU1qWTJZV0ptWkRBek16ZzRaRGRoTURSak9RX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbmF0YyIsImF1dCI6IkFQUExJQ0FUSU9OX1VTRVIiLCJhdWQiOiI5UU9OVU44a1IwSThncU5XT2dBMEVObGV3Q29hIiwibmJmIjoxNjA1MTIzMzA4LCJhenAiOiI5UU9OVU44a1IwSThncU5XT2dBMEVObGV3Q29hIiwic2NvcGUiOiJyZXNvdXJjZTpyZWFkZXIiLCJpc3MiOiJodHRwczpcL1wvYW0xOGNvN2FwaWJ1cy5sb2NhbGRvbWFpbjo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjA1MTI2OTA4LCJpYXQiOjE2MDUxMjMzMDgsImp0aSI6IjllODBjNjc1LTA3YzAtNGE4MC05YzRkLTY3YTYwMTA0NzE0NiJ9.NgUg7S2oaMZ648tAkBQibYb1qF41uA5n-M64xvSq6BeueMSoKGQaiYCnDxH9wVPFFOlQE5EGgvUlGMu0Wl6tQg4HFbwFUfMa2JkrwZjHfxf54KQ49AQoXbE31K1vFFkbDh2mzGlXGh9k-FO5_5V5rX_T6IPPqdl1wGVkuuSQgD66lSBcfJ6--SZyCAF3A7MbHmWLQFLl-yLanGr9pBYoK7YAptUAPgOtYpQD3BySsDKfwL-PYcVA6zj39pFIzYzAw24Z9c0nFN0_BrlKFfhEPrt8nhYImzUv6RPquzwSl4pyJy5wU8QMpkta4IwbFVeIU5mWBW0-BuiD99AR5Debkw"
+			"value": "eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbmF0YyIsImF1ZCI6IjlRT05VTjhrUjBJOGdxTldPZ0EwRU5sZXdDb2EiLCJuYmYiOjE2MDUyNTU3NzAsImF6cCI6IjlRT05VTjhrUjBJOGdxTldPZ0EwRU5sZXdDb2EiLCJzY29wZSI6InJlc291cmNlOnJlYWRlciIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTYwNTI1OTM3MCwiaWF0IjoxNjA1MjU1NzcwLCJqdGkiOiJiZjA0MzRjNi1mMTJhLTRhNWQtOGIzZC0xNTVmOTljYjYxMTcifQ.POdGhsF9O9NBODv3XtManJeeuopTJnFHhRb7wiDUetaS-LDPtEXTbkF5miyGq6jBZm7tKzRbKedPcjh6O0kh2KSQNe8Yx6_TiTHhd3WGjmyq537aADlLp-g_NH99_sw1IoW1x0haf_N_K-8xd2dA8MTrKsDtoJJbzcertSo_80heWcW7lKk-ZW3s5b0xyB2_upFa877hUq9y0hVt5jr-YhJCcFEkxb-mkvp5mV2PD11rdx2-ikI7LjV7i5lyQMOsVXWN1KTDIr7DH2PSRlYQBwHo_4021MiRkbGwTg-4a10JtEX2I0TqPhZ-by8lbedPV8to5mgi7jT1TCoug7WbJg"
 		},
 		{
-			"id": "06c4eec3-6364-4f1d-9463-2454e2192e99",
+			"id": "5980ab0c-bac5-4be0-bf38-d917952ef0c0",
 			"key": "scope",
 			"value": "resource:reader"
 		}
