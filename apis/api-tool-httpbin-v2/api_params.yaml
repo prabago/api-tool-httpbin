@@ -18,9 +18,8 @@ environments:
       production:
         url: https://httpbin.org
       sandbox:         
-        url: http://localhost:32831
+        url: http://am18co7apibus.localdomain:32831
 deploy:
   import:
     update: true
     preserveProvider: true
-  
