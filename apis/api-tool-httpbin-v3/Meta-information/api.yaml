@@ -70,7 +70,6 @@ keyManagers:
 environments:
  - des
  - local
- - int
 createdTime: "1603874885902"
 additionalProperties: {}
 monetizationProperties: {}
