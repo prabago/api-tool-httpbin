@@ -36,7 +36,7 @@ pipeline {
                         DEPLOY = 'true'
                     }else
                     {
-                    sh 'sudo apictl vcs deploy -e $DEV_ENV --skipRollback=true --verbose'
+                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true --verbose'
                     }
                 }else
                 {
@@ -102,7 +102,16 @@ pipeline {
             slackSend (color: '#ee0a0a', message: "FINALIZADO MASTER-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :red_circle:")
             }
         }
-        
+        cleanup {
+
+            deleteDir()
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+            dir("${workspace}@script") {
+                deleteDir()
+            }
+        }
         
     }
 }
