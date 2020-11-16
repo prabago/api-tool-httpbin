@@ -50,49 +50,6 @@
       "keys": [],
       "uuid": "ea6a9853-fd16-4ff1-98f9-a16ddb838209",
       "isBlocked": false
-    },
-    {
-      "subscriptionId": 41,
-      "tier": {
-        "name": "Bronze",
-        "displayName": "Bronze",
-        "requestsPerMin": 0,
-        "requestCount": 0,
-        "unitTime": 0,
-        "timeUnit": "ms",
-        "stopOnQuotaReached": true
-      },
-      "subscriber": {
-        "name": "adminatc",
-        "id": 1,
-        "tenantId": 0
-      },
-      "apiId": {
-        "providerName": "prabago",
-        "apiName": "api-tool-httpbin",
-        "version": "v3",
-        "id": 0
-      },
-      "application": {
-        "id": 0,
-        "name": "sandbox-app",
-        "uuid": "e515995f-53e3-4225-b41c-78a897f2de19",
-        "subscriber": {
-          "name": "adminatc",
-          "id": 1,
-          "tenantId": 0
-        },
-        "subscribedAPIs": [],
-        "keys": [],
-        "keyManagerWiseOAuthApp": {},
-        "applicationAttributes": {},
-        "subscriptionCount": 0
-      },
-      "subStatus": "UNBLOCKED",
-      "subCreatedStatus": "SUBSCRIBE",
-      "keys": [],
-      "uuid": "34958e75-919c-4228-a434-c2b10c29f501",
-      "isBlocked": false
     }
   ],
   "keys": [],
