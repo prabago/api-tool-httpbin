@@ -18,7 +18,7 @@ environments:
       production:
         url: https://httpbin.org
       sandbox:         
-        url: http://7626b201e988.ngrok.io
+        url: http://localhost:32831
 deploy:
   import:
     update: true
