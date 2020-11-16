@@ -21,7 +21,7 @@ pipeline {
                         ICON = ':atc:'
                 }   
                 echo 'Logging into ${DEV_ENV}'
-
+                sh 'apictl set --vcs-deletion-enabled=true'
                 def repoUrl = checkout(scm).GIT_URL
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
