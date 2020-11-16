@@ -36,7 +36,7 @@ pipeline {
                         DEPLOY = 'true'
                     }else
                     {
-                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true --verbose'
+                    sh 'sudo apictl vcs deploy -e $DEV_ENV --skipRollback=true --verbose'
                     }
                 }else
                 {
