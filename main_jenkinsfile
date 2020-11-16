@@ -21,6 +21,7 @@ pipeline {
                         ICON = ':atc:'
                 }   
                 echo 'Logging into ${DEV_ENV}'
+                sh 'apictl vcs init --verbose'
                 def repoUrl = checkout(scm).GIT_URL
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
@@ -35,7 +36,7 @@ pipeline {
                         DEPLOY = 'true'
                     }else
                     {
-                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true'
+                    sh 'apictl vcs deploy -e $DEV_ENV --skipRollback=true --verbose'
                     }
                 }else
                 {
