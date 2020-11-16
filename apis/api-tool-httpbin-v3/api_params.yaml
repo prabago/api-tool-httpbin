@@ -1,0 +1,26 @@
+environments:
+  - name: local
+    endpoints:
+      production:
+        url: https://eu.httpbin.org
+      sandbox:         
+        url: http://localhost:32832
+  
+  - name: int
+    endpoints:
+      production:
+        url: https://httpbin.org
+      sandbox:         
+        url: http://localhost:32832
+        
+  - name: des
+    endpoints:
+      production:
+        url: https://httpbin.org
+      sandbox:         
+        url: http://c3515baf391f.ngrok.io
+deploy:
+  import:
+    update: true
+    preserveProvider: true
+    
