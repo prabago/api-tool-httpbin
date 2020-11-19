@@ -10,6 +10,7 @@ pipeline {
         API_BACKUP = 'false'
         DEPLOY = 'false'
         ICON = ":indra:"
+        TENANT= "@int.atc"
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'des', 'int.atc'], description: '') 
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
@@ -22,7 +23,7 @@ pipeline {
                 
                 echo 'Logging into ${$DEV_ENV}'
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
-                    sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
+                    sh 'apictl login $DEV_ENV@TENANT -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
                 script{
                 if (DEV_ENV != 'local'){
