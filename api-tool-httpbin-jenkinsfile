@@ -16,7 +16,7 @@ pipeline {
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
-                stage('Check Deployment') {
+            stage('Check Deployment') {
             steps {
                 echo "API_VER---> ${API_VER}"
                 echo "DEV_ENV---> ${DEV_ENV}"
@@ -97,8 +97,11 @@ pipeline {
             steps {
                 
                 echo "Import APIs to ${DEV_ENV}"
-                
-                sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'
+                 if (DEV_ENV == 'int.atc'){
+                sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider=false --update --verbose'}
+                else{
+                 sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'   
+                }
 
             }
              post
@@ -106,7 +109,11 @@ pipeline {
                  failure {
                      script {
                     if (API_BACKUP == 'true'){
-                        sh 'apictl import-api -f ${API_BCK}/${DEV_ENV}/${API_NAME}_${API_VER}.zip -e $DEV_ENV -k --preserve-provider --update --verbose'
+                        if (DEV_ENV == 'int.atc'){
+                            sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider=false --update --verbose'}
+                         else{
+                            sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'   
+                        }
                     }
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
@@ -121,6 +128,7 @@ pipeline {
         stage('Despliegue APPs') {
             steps {
                 echo "Import APPs to ${DEV_ENV}"
+                
                 sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
 
             }
