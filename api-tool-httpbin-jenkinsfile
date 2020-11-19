@@ -127,9 +127,14 @@ pipeline {
 
         stage('Despliegue APPs') {
             steps {
+                script {
                 echo "Import APPs to ${DEV_ENV}"
-                
-                sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
+                if (DEV_ENV == 'int.atc'){
+                  sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner=false --update --verbose'}
+                else{
+                   sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
+                }
+                }
 
             }
             
