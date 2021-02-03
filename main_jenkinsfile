@@ -6,7 +6,7 @@ pipeline {
         API_NAME = 'api-tool-httpbin'
         DEPLOY = 'false'
         ICON = ":indra:"
-        TENANT= "@int.atc"
+        TENANT= ""
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'des', 'int.atc'], description: '') 
      }
