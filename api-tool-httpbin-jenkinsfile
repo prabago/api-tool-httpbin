@@ -10,7 +10,7 @@ pipeline {
         API_BACKUP = 'false'
         DEPLOY = 'false'
         ICON = ":indra:"
-        TENANT= "@int.atc"
+        TENANT= ""
     }
      parameters { choice(name: 'DEV_ENV', choices: ['local', 'des', 'int.atc'], description: '') 
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
