@@ -52,7 +52,7 @@ pipeline {
             //   }
             steps {
 
-               echo "MOCK_PORT---> ${MOCK_PORT}"
+              // echo "MOCK_PORT---> ${MOCK_PORT}"
                 sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
                 sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
                 sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -p $MOCK_PORT:4010 -v $(pwd):/tmp -P stoplight/prism:4 mock  -h 0.0.0.0  "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
