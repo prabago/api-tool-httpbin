@@ -53,11 +53,9 @@ pipeline {
             steps {
                 script {
                 echo "Import APIs to ${DEV_ENV}"
-                 if (DEV_ENV == 'int.atc'){
-                sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider=false --update --verbose'}
-                else{
+                
                  sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'   
-                }
+                
                 }
             }
              post
