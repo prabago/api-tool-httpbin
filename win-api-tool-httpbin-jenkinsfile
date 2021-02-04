@@ -4,7 +4,7 @@ pipeline {
 
        environment {
         API_NAME = 'api-tool-httpbin'
-        API_DIR = '..\apis'
+        API_DIR = '.\apis'
         APP_DIR = '.\apps'
         API_BCK = ' C:\Users\prabago\.wso2apictl\exported\apis\'
         API_BACKUP = 'false'
