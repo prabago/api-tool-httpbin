@@ -25,7 +25,7 @@
         "tenantId": 0
       },
       "apiId": {
-        "providerName": "adminatc-AT-int.atc",
+        "providerName": "adminatc-AT-int",
         "apiName": "api-tool-httpbin",
         "version": "v2",
         "id": 0
