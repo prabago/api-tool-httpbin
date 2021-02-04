@@ -20,7 +20,7 @@
         "stopOnQuotaReached": true
       },
       "subscriber": {
-        "name": "adminatc@int.atc",
+        "name": "adminatc",
         "id": 61,
         "tenantId": 0
       },
@@ -35,7 +35,7 @@
         "name": "sandbox-app",
         "uuid": "767bdd6d-c5d9-442e-aead-dda620b98fc0",
         "subscriber": {
-          "name": "adminatc@int.atc",
+          "name": "adminatc",
           "id": 61,
           "tenantId": 0
         },
