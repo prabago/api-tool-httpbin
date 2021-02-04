@@ -46,51 +46,6 @@ pipeline {
             //    }
             }
         }
-        stage('Run mock-server') {
-            //environment{
-            //    MOCK_PORT = sh(script: 'find $API_DIR/$API_NAME-$API_VER -name "api_params.yaml" -print | xargs grep "localhost:" | head -1 | awk -F: \'{print \$4}\'', , returnStdout: true).trim()
-            //   }
-            steps {
-
-              // echo "MOCK_PORT---> ${MOCK_PORT}"
-                sh 'docker ps -f name=$API_NAME-$API_VER  -q | xargs --no-run-if-empty docker container stop'
-                sh 'docker container ls -a -fname=$API_NAME-$API_VER -q | xargs -r docker container rm'
-                sh 'docker run --init --rm -it -d --name $API_NAME-$API_VER -p $MOCK_PORT:4010 -v $(pwd):/tmp -P stoplight/prism:4 mock  -h 0.0.0.0  "/tmp/apis/$API_NAME-$API_VER/Meta-information/swagger.yaml"'
-            }
-        }
-         stage('Check OpenAPI Spectral Lint') {
-            steps {
-            sh 'git submodule foreach git checkout master'
-            sh 'git submodule foreach git pull'
-
-                script {
-            try {
-                sh 'spectral lint "./apis/$API_NAME/Meta-information/swagger.yaml" -r ./apim-arq/rules/atc-spectral.yaml --format junit --output ./report.xml'
-            } catch(err) {
-                step([$class: 'JUnitResultArchiver', testResults: './report.xml'])
-                 currentBuild.result = 'FAILURE'
-                throw err
-                def repoUrl = checkout(scm).GIT_URL
-                def reponame = repoUrl.tokenize('/')[3]
-                reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[CODE REVIEW] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :flashlight: :x:")
-            }
-             }
-            }
-        }
-
-       
-
-
-
-        stage('Backup API') {
-            when {
-              expression { API_BACKUP == 'true' }
-             }
-            steps {
-                sh 'apictl export-api -n $API_NAME -v $API_VER -e $DEV_ENV -k --verbose'
-            }
-        }
             stage('Despliegue APIS') {
             environment{
                 RETRY = '80'
