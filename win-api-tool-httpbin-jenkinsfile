@@ -34,7 +34,7 @@ pipeline {
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                 echo "The reponame is: ${reponame}"
-                slackSend (color: '#5788d5', message: "INICIADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket:")
+                //slackSend (color: '#5788d5', message: "INICIADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket:")
                 
                 def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
                 def API_FINAL = "$API_NAME-$API_VER"
