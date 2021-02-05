@@ -24,6 +24,12 @@
         "id": 1,
         "tenantId": 0
       },
+      "apiId": {
+        "providerName": "prabago",
+        "apiName": "api-tool-httpbin",
+        "version": "v2",
+        "id": 0
+      },
       "application": {
         "id": 0,
         "name": "sandbox-app",
