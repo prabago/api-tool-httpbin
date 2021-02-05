@@ -84,7 +84,7 @@ pipeline {
                 script {
                 echo "Import APPs to ${DEV_ENV}"
                
-                   sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose'
+                   sh 'apictl import-app -f $APP_DIR/* -e $DEV_ENV -k --preserveOwner --update --verbose --skipCleanup'
                 
                 }
 
