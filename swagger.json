@@ -1,0 +1,2020 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "api-cita-previa-gaudi",
+    "description": "Servei de gestió de cites prèvies amb les operacions disponibles de: \n- Recuperar la cita prèvia\n- Recuperar Temes\n- Obtenir dies lliures\n- Recuperar dades de l'oficina\n- Recuperar Oficina\n- Gravar nova cita\n- Eliminar cita\n- Recuperar dades del tema\n- Sol·licitud d'hores lliures",
+    "contact": {
+      "name": "Pablo Rábago",
+      "email": "prabago@minsait.com"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:8243/gaudi/cita-previa/v1",
+      "description": "local"
+    }
+  ],
+  "security": [
+    {
+      "default": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "consulta"
+    },
+    {
+      "name": "creació"
+    },
+    {
+      "name": "esborrat"
+    },
+    {
+      "name": "modificació"
+    }
+  ],
+  "paths": {
+    "/recuperarDadesTema": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "recuperarDadesTema",
+        "description": "Operació per a l'obtenció de les dades associat al tema enviat en la petició",
+        "operationId": "post-recuperarDadesTema",
+        "requestBody": {
+          "description": "Cos de la petició per a l'obtenció del detall associat al codi del tema a consultar",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "recuperarDadesTema"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "recuperarDadesTema": {
+                            "minLength": 1,
+                            "type": "string",
+                            "example": "SUDO",
+                            "default": "SUDO"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Per SUDO tema": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesTema": "SUDO"
+                      }
+                    }
+                  }
+                },
+                "Per TPAJ Tema": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesTema": "TPAJ"
+                      }
+                    }
+                  }
+                },
+                "Per ASSV Tema": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesTema": "ASSV"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Exemple de respostes segons la dada consultada",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "recuperarDadesTemaResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "recuperarDadesTemaResponse": {
+                              "required": [
+                                "codiError",
+                                "dataFi",
+                                "dataInici"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "codiError": {
+                                  "type": "number"
+                                },
+                                "dataFi": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "dataInici": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "texteComentari": {},
+                                "texteDocumentacio": {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "200-OK-SUDO": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesTemaResponse": {
+                            "codiError": 0,
+                            "dataFi": "31/12/2050",
+                            "dataInici": "19/02/2007",
+                            "texteComentari": null,
+                            "texteDocumentacio": "- FotocÃ²pia del DNI del donatari i del donant\r\n- Document pel qual es formalitzi l'acte o contracte.\r\n- En el cas de bÃ©ns immobles, fotocÃ²pia de l'Ãºltim rebut de l'impost sobre bÃ©ns immobles."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "200-OK-ASSV": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesTemaResponse": {
+                            "codiError": 0,
+                            "dataFi": "31/12/2050",
+                            "dataInici": "23/10/2006",
+                            "texteComentari": null,
+                            "texteDocumentacio": "- Original i cÃ²pia del certificat que expedeix l'entitat asseguradora\r\n- Original i cÃ²pia del certificat de defunciÃ³\r\n- Original i cÃ²pia del DNI del causant del beneficiari\r\n"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "200-OK-TPAJ": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesTemaResponse": {
+                            "codiError": 0,
+                            "dataFi": "31/12/2050",
+                            "dataInici": "30/10/2008",
+                            "texteComentari": null,
+                            "texteDocumentacio": null
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-wso2-soap": {
+          "soap-operation": "recuperarDadesTema",
+          "namespace": "http://wsgaudi.e-tributs.net/GENTRI_WS",
+          "x-soap-version": "1.1"
+        },
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        },
+        "x-codegen-request-body-name": "Payload"
+      }
+    },
+    "/recuperarTemes": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "recuperarTemes",
+        "description": "Operació per a l'obtenció dels temes disponibles.\nNo requereix que sigui informat valor cap en la sol·licitud.",
+        "operationId": "post-recuperarTemes",
+        "requestBody": {
+          "description": "Cos de la petició per a l'obtenció del llistat de temes disponibles",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "recuperarTemes"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "recuperarTemes": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Per Null Temes": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarTemes": "null"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Exemple de respostes segons la dada consultada",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "recuperarTemesResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "recuperarTemesResponse": {
+                              "required": [
+                                "item"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "item": {
+                                  "minItems": 1,
+                                  "uniqueItems": true,
+                                  "type": "array",
+                                  "items": {
+                                    "required": [
+                                      "codigo",
+                                      "descripcion",
+                                      "textoCompetencia"
+                                    ],
+                                    "properties": {
+                                      "codigo": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "descripcion": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "textoCompetencia": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "200-OK-recuperarTemes": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarTemesResponse": {
+                            "item": [
+                              {
+                                "codigo": "ASSV",
+                                "descripcion": "ASSEGURANCES VIDA",
+                                "textoCompetencia": ""
+                              },
+                              {
+                                "codigo": "TPAJ",
+                                "descripcion": "TR. PATRIMONIALS I AJD",
+                                "textoCompetencia": ""
+                              },
+                              {
+                                "codigo": "SUDO",
+                                "descripcion": "SUCCESSIONS I DONACIONS",
+                                "textoCompetencia": ""
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-wso2-soap": {
+          "soap-operation": "recuperarTemes",
+          "namespace": "http://wsgaudi.e-tributs.net/GENTRI_WS",
+          "x-soap-version": "1.1"
+        },
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited",
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        },
+        "x-codegen-request-body-name": "Payload"
+      }
+    },
+    "/recuperarDadesOficina": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "recuperarDadesOficina",
+        "description": "Operació per a l'obtenció de les dades associat al codi d'oficina enviat en la petició",
+        "operationId": "post-recuperarDadesOficinaa",
+        "requestBody": {
+          "description": "Cos de la petició en l'es informa del codi de l'oficina a consultar",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "recuperarDadesOficina"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "recuperarDadesOficina": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Per codi d'oficina amb valor 03": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesOficina": "O3"
+                      }
+                    }
+                  }
+                },
+                "Per codi d'oficina amb valor 02": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesOficina": "O2"
+                      }
+                    }
+                  }
+                },
+                "Per codi d'oficina amb valor 01": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarDadesOficina": "O1"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "recuperarDadesOficinaResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "recuperarDadesOficinaResponse": {
+                              "required": [
+                                "adreca",
+                                "codiError",
+                                "codiPostal",
+                                "email",
+                                "idCentro",
+                                "idOficina",
+                                "municipi",
+                                "nomOficina",
+                                "telefon",
+                                "tipoOficina"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "adreca": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "codiError": {
+                                  "type": "number"
+                                },
+                                "codiPostal": {
+                                  "type": "number"
+                                },
+                                "email": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "idCentro": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "idOficina": {
+                                  "type": "number"
+                                },
+                                "municipi": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "nomOficina": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "telefon": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                },
+                                "tipoOficina": {
+                                  "minLength": 1,
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "idOficina=3": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesOficinaResponse": {
+                            "adreca": "LluÃ­s Companys, 1",
+                            "codiError": 0,
+                            "codiPostal": 25003,
+                            "email": "null",
+                            "idCentro": "O3",
+                            "idOficina": 3,
+                            "municipi": "Lleida",
+                            "nomOficina": "DelegaciÃ³ Territorial a Lleida",
+                            "telefon": "973 28 17 00",
+                            "tipoOficina": "D"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "idOficina=1": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesOficinaResponse": {
+                            "adreca": "Passeig de la Zona Franca, 46",
+                            "codiError": 0,
+                            "codiPostal": 8038,
+                            "email": "mail@proves.es",
+                            "idCentro": "O1",
+                            "idOficina": 1,
+                            "municipi": "Barcelona",
+                            "nomOficina": "Oficina Central",
+                            "telefon": "935515000",
+                            "tipoOficina": "D"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "idOficina=2": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarDadesOficinaResponse": {
+                            "adreca": "Ctra. de Barcelona, 54",
+                            "codiError": 0,
+                            "codiPostal": 17002,
+                            "email": "null",
+                            "idCentro": "O2",
+                            "idOficina": 2,
+                            "municipi": "Girona",
+                            "nomOficina": "DelegaciÃ³ Territorial a Girona",
+                            "telefon": "972 22 40 52",
+                            "tipoOficina": "D"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/recuperarOficines": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "recuperarOficines",
+        "description": "Operació que recupera les dades d'oficina associats a un determinat tema",
+        "operationId": "post-recuperarOficines",
+        "requestBody": {
+          "description": "Cos de la petició per a l'obtenció de les dades d'oficina associat al codi del tema a consultar",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "recuperarOficines"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "recuperarOficines": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Per teme=SUDO": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarOficines": "SUDO"
+                      }
+                    }
+                  }
+                },
+                "Per teme=ASSV": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarOficines": "ASSV"
+                      }
+                    }
+                  }
+                },
+                "Per teme=TPAJ": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "recuperarOficines": "TPAJ"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "string",
+                  "default": "true"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "recuperarOficinesResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "recuperarOficinesResponse": {
+                              "required": [
+                                "item"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "item": {
+                                  "minItems": 1,
+                                  "uniqueItems": true,
+                                  "type": "array",
+                                  "items": {
+                                    "required": [
+                                      "codPostal",
+                                      "codigo",
+                                      "descripcion",
+                                      "direccion",
+                                      "municipio"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                      "codPostal": {
+                                        "type": "number"
+                                      },
+                                      "codigo": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "descripcion": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "direccion": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      },
+                                      "municipio": {
+                                        "minLength": 1,
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Tema=TPAJ": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarOficinesResponse": {
+                            "item": [
+                              {
+                                "codPostal": 17002,
+                                "codigo": "O2",
+                                "descripcion": "DelegaciÃ³ Territorial a Girona",
+                                "direccion": "Ctra. de Barcelona, 54",
+                                "municipio": "Girona"
+                              },
+                              {
+                                "codPostal": 25003,
+                                "codigo": "O3",
+                                "descripcion": "DelegaciÃ³ Territorial a Lleida",
+                                "direccion": "LluÃ­s Companys, 1",
+                                "municipio": "Lleida"
+                              },
+                              {
+                                "codPostal": 43002,
+                                "codigo": "O4",
+                                "descripcion": "DelegaciÃ³ Territorial a Tarragona",
+                                "direccion": "Monestir de Poblet, 3",
+                                "municipio": "Tarragona"
+                              },
+                              {
+                                "codPostal": 8038,
+                                "codigo": "O1",
+                                "descripcion": "Oficina Central",
+                                "direccion": "Passeig de la Zona Franca, 46",
+                                "municipio": "Barcelona"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Tema=SUDO": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarOficinesResponse": {
+                            "item": [
+                              {
+                                "codPostal": 17002,
+                                "codigo": "O2",
+                                "descripcion": "DelegaciÃ³ Territorial a Girona",
+                                "direccion": "Ctra. de Barcelona, 54",
+                                "municipio": "Girona"
+                              },
+                              {
+                                "codPostal": 25003,
+                                "codigo": "O3",
+                                "descripcion": "DelegaciÃ³ Territorial a Lleida",
+                                "direccion": "LluÃ­s Companys, 1",
+                                "municipio": "Lleida"
+                              },
+                              {
+                                "codPostal": 43002,
+                                "codigo": "O4",
+                                "descripcion": "DelegaciÃ³ Territorial a Tarragona",
+                                "direccion": "Monestir de Poblet, 3",
+                                "municipio": "Tarragona"
+                              },
+                              {
+                                "codPostal": 0,
+                                "codigo": "P21",
+                                "descripcion": "Final Boss",
+                                "direccion": "direcció FB",
+                                "municipio": "Barcelona"
+                              },
+                              {
+                                "codPostal": 8038,
+                                "codigo": "O1",
+                                "descripcion": "Oficina Central",
+                                "direccion": "Passeig de la Zona Franca, 46",
+                                "municipio": "Barcelona"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Tema=ASSV": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "recuperarOficinesResponse": {
+                            "item": [
+                              {
+                                "codPostal": 17002,
+                                "codigo": "O2",
+                                "descripcion": "DelegaciÃ³ Territorial a Girona",
+                                "direccion": "Ctra. de Barcelona, 54",
+                                "municipio": "Girona"
+                              },
+                              {
+                                "codPostal": 25003,
+                                "codigo": "O3",
+                                "descripcion": "DelegaciÃ³ Territorial a Lleida",
+                                "direccion": "LluÃ­s Companys, 1",
+                                "municipio": "Lleida"
+                              },
+                              {
+                                "codPostal": 43002,
+                                "codigo": "O4",
+                                "descripcion": "DelegaciÃ³ Territorial a Tarragona",
+                                "direccion": "Monestir de Poblet, 3",
+                                "municipio": "Tarragona"
+                              },
+                              {
+                                "codPostal": 0,
+                                "codigo": "P21",
+                                "descripcion": "Final Boss",
+                                "direccion": "direcció FB",
+                                "municipio": "Barcelona"
+                              },
+                              {
+                                "codPostal": 8038,
+                                "codigo": "O1",
+                                "descripcion": "Oficina Central",
+                                "direccion": "Passeig de la Zona Franca, 46",
+                                "municipio": "Barcelona"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/solicitarHoresLliures": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "solicitarHoresLliures",
+        "description": "Operació per a la sol·licitud d'hores disponibles per a un determinat tema i oficina",
+        "operationId": "post-solicitarHoresLliures",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "solicitarHoresLliures"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "solicitarHoresLliures": {
+                            "required": [
+                              "codigoTema",
+                              "dataDemanada",
+                              "idOficina"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "codigoTema": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "dataDemanada": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "idOficina": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Per tema=SUDO y Oficina=02": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "solicitarHoresLliures": {
+                          "codigoTema": "SUDO",
+                          "dataDemanada": "25/05/2021",
+                          "idOficina": "02"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "header-0": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "solicitarHoresLliuresResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "solicitarHoresLliuresResponse": {
+                              "required": [
+                                "codiError",
+                                "horesLliures",
+                                "idSequencia"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "codiError": {
+                                  "type": "number"
+                                },
+                                "horesLliures": {
+                                  "type": "string"
+                                },
+                                "idSequencia": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Sense hores disponibles": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "solicitarHoresLliuresResponse": {
+                            "codiError": 0,
+                            "horesLliures": "",
+                            "idSequencia": 84470
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/retornarCitaPrevia": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "retornarCitaPrevia",
+        "description": "Operació que retorna el detall d'una cita",
+        "operationId": "post-retornarCitaPrevia",
+        "requestBody": {
+          "description": "Cos de la petició en la qual s'envia el codi de la cita a consultar",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "retornarCitaPrevia"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "retornarCitaPrevia": {
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Pel codi d'una cita": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "retornarCitaPrevia": "EIF20210O147308"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/gravarNovaCita": {
+      "post": {
+        "tags": [
+          "creació"
+        ],
+        "summary": "gravarNovaCita",
+        "description": "Operació que permet poder gravar una nova cita.",
+        "operationId": "post-gravarNovaCita",
+        "requestBody": {
+          "description": "Cos de la petició en la qual es genera l'enregistrament d'una nova cita a partir dels paràmetres d'entrada.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "gravarNovaCita"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "gravarNovaCita": {
+                            "required": [
+                              "EMail",
+                              "codTema",
+                              "dataHora",
+                              "idFiscal",
+                              "idOficina",
+                              "idSequencia",
+                              "movil",
+                              "nombre",
+                              "origen"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "EMail": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "codTema": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "dataHora": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "idFiscal": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "idOficina": {
+                                "type": "string"
+                              },
+                              "idSequencia": {
+                                "type": "number"
+                              },
+                              "movil": {
+                                "type": "string"
+                              },
+                              "nombre": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "origen": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Cite": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "gravarNovaCita": {
+                          "EMail": "prabago@minsait.com",
+                          "codTema": "SUDO",
+                          "dataHora": "25/05/2021 09:00",
+                          "idFiscal": "47852155B",
+                          "idOficina": "02",
+                          "idSequencia": 84139,
+                          "movil": "666666666",
+                          "nombre": "Marc Camps",
+                          "origen": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "gravarNovaCitaResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "gravarNovaCitaResponse": {
+                              "required": [
+                                "codiError",
+                                "descMesa",
+                                "idCita"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "codiError": {
+                                  "type": "number"
+                                },
+                                "descMesa": {
+                                  "type": "string"
+                                },
+                                "idCita": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Error": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "gravarNovaCitaResponse": {
+                            "codiError": 1,
+                            "descMesa": "",
+                            "idCita": ""
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/eliminarCita": {
+      "post": {
+        "tags": [
+          "esborrat"
+        ],
+        "summary": "eliminarCita",
+        "description": "Operació que permet poder eliminar una cita.",
+        "operationId": "post-eliminarCita",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body",
+                      "Header"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Header": {
+                        "type": "string"
+                      },
+                      "Body": {
+                        "required": [
+                          "eliminarCita"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "eliminarCita": {
+                            "required": [
+                              "idCita",
+                              "usuari"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "idCita": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "usuari": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Exemple-1": {
+                  "value": {
+                    "Envelope": {
+                      "Header": "",
+                      "Body": {
+                        "eliminarCita": {
+                          "idCita": "EIF20210O147308",
+                          "usuari": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "Envelope"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "required": [
+                        "Body"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "required": [
+                            "eliminarCitaResponse"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "eliminarCitaResponse": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Exemple-OK": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "eliminarCitaResponse": "OK"
+                        }
+                      }
+                    }
+                  },
+                  "Exemple-KO": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "eliminarCitaResponse": "KO"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    },
+    "/obtenirDiesLliures": {
+      "post": {
+        "tags": [
+          "consulta"
+        ],
+        "summary": "obtenirDiesLliures",
+        "description": "Operació que permet poder obtenir els dies lliure per a una determinada oficina, tema, mes i any.",
+        "operationId": "post-obtenirDiesLliures",
+        "requestBody": {
+          "description": "Cos de la petició per a poder obtenir els dies lliure per a una determinada oficina, tema, mes i any.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "Envelope"
+                ],
+                "type": "object",
+                "properties": {
+                  "Envelope": {
+                    "required": [
+                      "Body"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "Body": {
+                        "required": [
+                          "obtenirDiesLliures"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "obtenirDiesLliures": {
+                            "required": [
+                              "anyo",
+                              "codTema",
+                              "idOficina",
+                              "mes"
+                            ],
+                            "type": "object",
+                            "properties": {
+                              "anyo": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "codTema": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "idOficina": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "mes": {
+                                "minLength": 1,
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "exemple-1": {
+                  "value": {
+                    "Envelope": {
+                      "Body": {
+                        "obtenirDiesLliures": {
+                          "anyo": "2021",
+                          "codTema": "TPAJ",
+                          "idOficina": "01",
+                          "mes": "2"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-atc-mocked": {
+                "description": "Aquesta capçalera indica que la resposta ha estat mockeada, no és una resposta enviada des del backend real",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "Envelope": {
+                      "type": "object",
+                      "properties": {
+                        "Body": {
+                          "type": "object",
+                          "properties": {
+                            "obtenirDiesLliuresResponse": {
+                              "type": "object",
+                              "properties": {
+                                "codiError": {
+                                  "type": "number"
+                                },
+                                "diesLliures": {
+                                  "type": "object",
+                                  "properties": {
+                                    "GTH30_DiaLliure": {
+                                      "type": "array",
+                                      "uniqueItems": true,
+                                      "minItems": 1,
+                                      "items": {
+                                        "required": [
+                                          "numDia",
+                                          "tipusDia"
+                                        ],
+                                        "properties": {
+                                          "numDia": {
+                                            "type": "number"
+                                          },
+                                          "tipusDia": {
+                                            "type": "string",
+                                            "minLength": 1
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "GTH30_DiaLliure"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "codiError",
+                                "diesLliures"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "obtenirDiesLliuresResponse"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "Body"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Envelope"
+                  ]
+                },
+                "examples": {
+                  "exemple-DiaLliure": {
+                    "value": {
+                      "Envelope": {
+                        "Body": {
+                          "obtenirDiesLliuresResponse": {
+                            "codiError": 0,
+                            "diesLliures": {
+                              "GTH30_DiaLliure": [
+                                {
+                                  "numDia": 1,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 2,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 3,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 4,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 5,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 6,
+                                  "tipusDia": "S"
+                                },
+                                {
+                                  "numDia": 7,
+                                  "tipusDia": "D"
+                                },
+                                {
+                                  "numDia": 8,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 9,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 10,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 11,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 12,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 13,
+                                  "tipusDia": "S"
+                                },
+                                {
+                                  "numDia": 14,
+                                  "tipusDia": "D"
+                                },
+                                {
+                                  "numDia": 15,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 16,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 17,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 18,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 19,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 20,
+                                  "tipusDia": "S"
+                                },
+                                {
+                                  "numDia": 21,
+                                  "tipusDia": "D"
+                                },
+                                {
+                                  "numDia": 22,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 23,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 24,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 25,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 26,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 27,
+                                  "tipusDia": "S"
+                                },
+                                {
+                                  "numDia": 28,
+                                  "tipusDia": "D"
+                                },
+                                {
+                                  "numDia": 29,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 30,
+                                  "tipusDia": "L"
+                                },
+                                {
+                                  "numDia": 31,
+                                  "tipusDia": "L"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default": []
+          }
+        ],
+        "x-auth-type": null,
+        "x-throttling-tier": null,
+        "x-wso2-application-security": {
+          "security-types": [
+            "oauth2",
+            "oauth2",
+            "oauth2"
+          ],
+          "optional": false
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "examples": {},
+    "securitySchemes": {
+      "default": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "",
+            "scopes": {}
+          },
+          "password": {
+            "tokenUrl": "https://localhost:8243/token",
+            "refreshUrl": "https://localhost:8243/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  },
+  "x-wso2-auth-header": "Authorization",
+  "x-wso2-cors": {
+    "corsConfigurationEnabled": false,
+    "accessControlAllowOrigins": [
+      "*"
+    ],
+    "accessControlAllowCredentials": false,
+    "accessControlAllowHeaders": [
+      "x-requested-with",
+      "authorization",
+      "Access-Control-Allow-Origin",
+      "Content-Type",
+      "SOAPAction",
+      "apikey",
+      "testKey"
+    ],
+    "accessControlAllowMethods": [
+      "GET",
+      "PUT",
+      "POST",
+      "DELETE",
+      "PATCH",
+      "OPTIONS"
+    ]
+  },
+  "x-wso2-production-endpoints": {
+    "urls": [
+      "http://192.168.230.114:7103/gt_web/cita_previa/GTWS30_CitaPrevia.jws"
+    ],
+    "type": "address"
+  },
+  "x-wso2-sandbox-endpoints": {
+    "urls": [
+      "http://am18co7apibus.localdomain:8080/castlemock/mock/soap/project/mMuplM/GTWS30_CitaPreviaPort"
+    ],
+    "type": "address"
+  },
+  "x-wso2-basePath": "/gaudi/cita-previa/v1",
+  "x-wso2-transports": [
+    "http",
+    "https"
+  ],
+  "x-wso2-application-security": {
+    "security-types": [
+      "oauth2",
+      "oauth2"
+    ],
+    "optional": false
+  },
+  "x-wso2-response-cache": {
+    "enabled": false,
+    "cacheTimeoutInSeconds": 300
+  }
+}
