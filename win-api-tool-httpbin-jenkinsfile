@@ -12,7 +12,7 @@ pipeline {
         ICON = ":indra:"
 
     }
-     parameters { choice(name: 'DEV_ENV', choices: ['local', 'des', 'int.atc'], description: '') 
+     parameters { choice(name: 'DEV_ENV', choices: ['local', 'pde-local', 'int.atc'], description: '') 
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
