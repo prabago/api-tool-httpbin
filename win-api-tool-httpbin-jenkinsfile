@@ -24,7 +24,7 @@ pipeline {
                 echo 'Logging into ${$DEV_ENV}'
                 //sh 'apictl add-env -e $DEV_ENV --apim https://localhost:9443'   
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
-                    sh 'apictl set  C:\Users\prabago\.wso2apictl\exported'
+                    sh 'apictl set  C:/Users/prabago/.wso2apictl/exported'
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
             //    script{
