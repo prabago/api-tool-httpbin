@@ -126,6 +126,7 @@ pipeline {
                 def repoUrl = checkout(scm).GIT_URL
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
+                slackSend (color: '#346b09', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket: :white_check_mark:")
                 }
         }
 
