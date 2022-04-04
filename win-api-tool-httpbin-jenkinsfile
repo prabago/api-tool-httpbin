@@ -12,7 +12,7 @@ pipeline {
         ICON = ":indra:"
 
     }
-     parameters { choice(name: 'DEV_ENV', choices: ['local', 'pde-local', 'int.atc'], description: '') 
+     parameters { choice(name: 'DEV_ENV', choices: ['pde-local'], description: '') 
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
@@ -26,24 +26,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'apim_dev', usernameVariable: 'DEV_USERNAME', passwordVariable: 'DEV_PASSWORD')]) {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
-            //    script{
-            //    if (DEV_ENV != 'local'){
-            //            ICON = ':atc:'
-            //    }   
-            //    def repoUrl = checkout(scm).GIT_URL
-            //    def reponame = repoUrl.tokenize('/')[3]
-            //    reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-            //    echo "The reponame is: ${reponame}"
-            //    //slackSend (color: '#5788d5', message: "INICIADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket:")
-            //    
-            //    def API_DPL = sh(script: "apictl list apis -e $DEV_ENV |  awk \'{print \$2\"-\"\$3}\' | grep $API_NAME-$API_VER | tr -d '\r'", returnStdout: true).trim()
-            //    def API_FINAL = "$API_NAME-$API_VER"
-            //    
-            //    if (API_DPL == API_FINAL ){
-            //       API_BACKUP = 'true'
-            //    }
-            //        echo "API_BACKUP---> ${API_BACKUP}"
-            //    }
             }
         }
             stage('Despliegue APIS') {
@@ -72,7 +54,7 @@ pipeline {
                         def repoUrl = checkout(scm).GIT_URL
                         def reponame = repoUrl.tokenize('/')[3]
                         reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-                        slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[DESPLIEGUE] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket: :x:")
+                        //slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[DESPLIEGUE] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket: :x:")
             }
         
         }
@@ -136,9 +118,9 @@ pipeline {
                         def reponame = repoUrl.tokenize('/')[3]
                         reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
                         sh 'zip -q postman_report-$API_NAME-${API_VER}-${DEV_ENV} ./newman/postman.html'
-                        slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :test_tube: :x:")
-                          withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
-                        sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}-${DEV_ENV}.zip https://slack.com/api/files.upload'                       
+                        //slackSend (color: '#ee5c5c', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] ETAPA:[TESTING] ] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :test_tube: :x:")
+                        // withCredentials([string(credentialsId: 'slack-bot', variable: 'TOKEN')]) {
+                        //sh 'curl -F token=$TOKEN -F channels=api-atc -F text=Hello -F username=jenkins -F file=@postman_report-$API_NAME-${API_VER}-${DEV_ENV}.zip https://slack.com/api/files.upload'                       
                         }
                        }
         }
@@ -152,7 +134,7 @@ pipeline {
                 def repoUrl = checkout(scm).GIT_URL
                 def reponame = repoUrl.tokenize('/')[3]
                 reponame = reponame.substring(0, reponame.lastIndexOf('.')) //Remove .git
-            slackSend (color: '#346b09', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket: :white_check_mark:")
+            //slackSend (color: '#346b09', message: "FINALIZADO SLAVE-ENTORNO [${DEV_ENV} ${ICON}]--> ESTADO [${currentBuild.currentResult}] [Proyecto API: ${reponame}] [JOB: ${env.JOB_NAME}] [NUMERO: ${env.BUILD_NUMBER}][ URL: (${env.BUILD_URL})] :rocket: :white_check_mark:")
                 }
         }
 
