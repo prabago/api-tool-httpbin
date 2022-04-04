@@ -28,10 +28,7 @@ pipeline {
                     sh 'apictl login $DEV_ENV -u $DEV_USERNAME -p $DEV_PASSWORD -k'                        
                 }
             //    script{
-                    def build = currentBuild.rawBuild
-                    def cause = build.getCause(hudson.model.Cause.UserIdCause.class)
-                    def name = cause.getUserName()
-                    echo "User: " + name
+                 
             //    if (DEV_ENV != 'local'){
             //            ICON = ':atc:'
             //    }   
@@ -57,6 +54,10 @@ pipeline {
             }
             steps {
                 script {
+                   def build = currentBuild.rawBuild
+                    def cause = build.getCause(hudson.model.Cause.UserIdCause.class)
+                    def name = cause.getUserName()
+                    echo "User: " + name
                 echo "Import APIs to ${DEV_ENV}"
                 
                  sh 'apictl import-api -f $API_DIR/$API_NAME-$API_VER -e $DEV_ENV -k --preserve-provider --update --verbose'   
