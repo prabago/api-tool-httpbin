@@ -16,6 +16,26 @@ pipeline {
      choice(name: 'API_VER', choices: ['v1', 'v2', 'v3'], description: '')
      }
     stages {
+     stage('Setup Environment for APICTL') {
+            steps {
+                script {
+
+                if( env.DEV_ENV == "pde-local") {
+                    HOST = "local-apim.puertos.es"
+                    }
+                if( env.DEV_ENV == "pde-dev") {
+                    HOST = "dev-am.puertos.es"
+                    }
+                }   
+                sh 'apictl version'
+                sh """#!/bin/bash
+                ENVCOUNT=\$(apictl list envs --format {{.}} | grep $DEV_ENV | wc -l)
+                if [ "\$ENVCOUNT" == "0" ]; then
+                    apictl add-env -e $DEV_ENV --apim https://$HOST
+                fi
+                """
+            }
+        }
             stage('Check Deployment') {
             steps {
                 echo "API_VER---> ${API_VER}"
