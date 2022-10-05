@@ -1,0 +1,2582 @@
+openapi: 3.0.0
+info:
+  version: 0.0.8
+  title: Banco Santander - CDCJ - API Servicios Interoperabilidad
+  description: >-
+    API de sevicios para la interoperabilidad de CDCJ con todos los sistemas de gestión procesal (SGPs) nacionales
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: API Servicios Interoperabilidad
+    email: correo@gruposantander.es
+    url: '-'
+  license:
+    name: ''
+    url: ''
+servers:
+  - url: 'http://localhost:8083'
+tags:
+  - name: cuenta_expediente
+    description: Servicios para gestionar Cuentas Expediente
+  - name: operaciones
+    description: Servicios para gestionar Operaciones Pendientes
+  - name: ingresos
+    description: Servicios para gestionar Ingresos
+  - name: pagos
+    description: Servicios para gestionar Pagos
+  - name: embargos
+    description: Servicios para gestiones relativas a Juzgados
+paths:
+  /api/v1/cuenta_expediente:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - cuenta_expediente
+      summary: Alta de una Cuenta Expediente
+      description: Da de alta una nueva Cuenta Expediente en el sistema del CDCJ a partir de la información facilitada por el actor del SGP
+      operationId: altaCuentaExpediente
+      requestBody:
+        description: Información de la Cuenta Expediente a dar de alta
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAltaCuentaExpediente'
+      responses:
+        '201':
+          description: Detalles de la operación de creación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAltaCuentaExpediente'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expediente/{cod_expediente}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - cuenta_expediente
+      summary: Detalle de una Cuenta Expediente
+      description: Devuelve el detalle de una Cuenta Expediente en el sistema del CDCJ a partir de la información registrada en el SGP
+      operationId: consultaCuentaExpediente
+      parameters:
+        - name: cod_expediente
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456'
+        - name: tip_documento
+          in: query
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/TipoDocumentoEnum'
+        - name: cod_documento
+          in: query
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            type: string
+            maxLength: 10
+            example: '123456789N'
+        - name: fecha_ini
+          in: query
+          description: 'Fecha inicio para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '20/09/2022'
+        - name: fecha_fin
+          in: query
+          description: 'Fecha fin para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '21/09/2022'         
+        - name: importe_desde
+          in: query
+          description: 'Importe desde para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 1.00         
+        - name: importe_hasta
+          in: query
+          description: 'Importe hasta para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 500.00                 
+        - name: moneda
+          in: query
+          description: 'Moneda para la búsqueda de operaciones'
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 3
+            example: 'EUR'          
+        - name: tipo_movimiento
+          in: query
+          description: 'Tipo operación para la búsqueda de operaciones'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '01' 
+        - name: ordenacion
+          in: query
+          description: 'Tipo ordenación: A -> Ascendente, D -> Descendente'
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1
+            enum:
+              - 'A'
+              - 'D'
+            example: 'D'
+        - name: num_pagina
+          in: query
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 2
+            example: 1   
+        - name: tam_pagina
+          in: query
+          description: 'Número de resultados que devolverá en una página determinada'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 3
+            example: 20
+      responses:
+        '200':
+          description: Detalles de la Cuenta Expediente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseConsultaCuentaExpediente'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expediente/{cod_expediente}/ingresos:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - ingresos
+      summary: Alta Formulario de Ingreso
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará el alta de un nuevo formulario de ingreso en la cuenta de expediente especificada y se obtendrá el recibo para que sea entregado al ciudadano.
+      operationId: altaPagoFormulario
+      parameters:
+        - name: cod_expediente
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456'  
+      requestBody:
+        description: Alta Formulario de Pago para una Cuenta Expediente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAltaPagoFormulario'
+      responses:
+        '201':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAltaPagoFormulario'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expendiente/{cod_expediente}/pagos/mandamiento:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - pagos
+      summary: Alta Mandamiento de Pago
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará el alta de un nuevo mandamiento de pago que quedará registrado en las cuentas de expediente a espera de la confirmación de dicho movimiento.
+      operationId: altaPagoMandamiento
+      parameters:
+        - name: cod_expediente
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456'
+      requestBody:
+        description: Alta Mandamiento de Pago para una Cuenta Expediente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAltaPagoMandamiento'
+      responses:
+        '201':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAltaPagoMandamiento'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expediente/{cod_expediente_origen}/transferencia:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - cuenta_expediente
+      summary: Transferencia entre dos Cuentas Expediente
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará la orden de transferencia entre dos cuentas de expediente que quedará registrada en las cuentas de expediente a espera de la confirmación de dicho movimiento.
+      operationId: transferenciaCuentaExpediente
+      parameters:
+        - name: cod_expediente_origen
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456' 
+      requestBody:
+        description: Información de las dos Cuentas Expediente para realizar la operación
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestTransferenciaCuentaExpediente'
+      responses:
+        '201':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTransferenciaCuentaExpediente'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expediente/{cod_expediente_origen}/traspaso:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - cuenta_expediente
+      summary: Traspaso entre dos Cuentas Expediente
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará la orden de traspaso entre dos cuentas de expediente que quedará registrada en las cuentas de expediente a espera de la confirmación de dicho movimiento.
+      operationId: traspasoCuentaExpediente
+      parameters:
+        - name: cod_expediente_origen
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456'
+      requestBody:
+        description: Información de las dos Cuentas Expediente para realizar la operación
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestTraspasoCuentaExpediente'
+      responses:
+        '201':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTraspasoCuentaExpediente'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/juzgados/{cod_juz_dest}/embargos:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - embargos
+      summary: Alta Embargo
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará el alta de un nuevo embargo que quedará registrado en las cuentas de expediente a espera de la confirmación de dicho movimiento.
+      operationId: altaEmbargo
+      parameters:
+        - name: cod_juz_dest
+          in: path
+          description: 'Código del juzgado destino'
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+      requestBody:
+        description: Formulario de Alta de un Embargo
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAltaEmbargo'
+      responses:
+        '201':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAltaEmbargo'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/ingresos/erroneos:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - ingresos
+      summary: Trazabilidad de ingresos erróneos
+      description: A través de los parámetros recibidos en este servicio se podrán obtener la lista de ingresos caracterizados como erróneos de una cuenta de expediente.
+      operationId: trazabilidadIngresosErroneos
+      parameters:
+        - name: tip_documento
+          in: query
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/TipoDocumentoEnum'
+        - name: cod_documento
+          in: query
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            type: string
+            maxLength: 10
+            example: '123456789N'
+        - name: cod_juz_dest
+          in: query
+          description: 'Código del Juzgado del expediente. El usuario debe tener permisos para actuar en este juzgado'
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: cod_juz_ori
+          in: query
+          description: 'Código Juzgado origen'
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: cod_proced
+          in: query
+          description: 'Código de procedimiento'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'
+        - name: num_expediente
+          in: query
+          description: 'Número del expediente'
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: aa_expediente
+          in: query
+          description: 'Año del expediente'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'
+        - name: tip_documento_erroneo
+          in: query
+          description: 'Tipo documento del ingreso erróneo'
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/TipoDocumentoEnum'
+        - name: cod_documento_erroneo
+          in: query
+          description: 'Código documento del ingreso erróneo'
+          schema:
+            type: string
+            maxLength: 10
+            example: '123456789N'
+        - name: serie_mandamiento
+          in: query
+          description: 'Serie del mandamiento del ingreso erróneo'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'
+        - name: numero_mandamiento
+          in: query
+          description: 'Número del mandamiento del ingreso erróneo'
+          schema:
+            type: string
+            minLength: 7
+            maxLength: 7
+            example: '1234567'              
+        - name: importe_desde
+          in: query
+          description: 'Importe desde para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 1.00         
+        - name: importe_hasta
+          in: query
+          description: 'Importe hasta para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 500.00 
+        - name: moneda
+          in: query
+          description: 'Moneda para la búsqueda de operaciones'
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 3
+            example: 'EUR'              
+        - name: fecha_ini
+          in: query
+          description: 'Fecha inicio para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '20/07/2022'
+        - name: fecha_fin
+          in: query
+          description: 'Fecha fin para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '21/07/2022'            
+        - name: estado_movimiento
+          in: query
+          description: 'Estado para la búsqueda de ingresos erróneos: TD -> Todos, PE -> No Recuperado, RC -> Reclamado, RE -> Recuperado'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            enum:
+              - 'TD'
+              - 'PE'
+              - 'RC'
+              - 'RE'
+            example: 'TD'           
+        - name: ordenacion
+          in: query
+          description: 'Tipo ordenación: A -> Ascendente, D -> Descendente'
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1
+            enum:
+              - 'A'
+              - 'D'
+            example: 'D'
+        - name: num_pagina
+          in: query
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 2
+            example: 1   
+        - name: tam_pagina
+          in: query
+          description: 'Número de resultados que devolverá en una página determinada'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 3
+            example: 20
+      responses:
+        '200':
+          description: Lista con expedientes del ingreso erróneo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrazabilidadIngresosErroneos'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/cuenta_expediente/{cod_expediente}/acceso_profesionales:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - cuenta_expediente
+      summary: Acceso de profesionales a una Cuenta Expediente
+      description: A partir de los parámetros recibidos de la llamada a este servicio se dará acceso a los profesionales del Ministerio de Justicia al detalle de las cuentas de expediente. Con esta operación, el usuario otorgará permisos de lectura al profesional en el sistema de las CDCJ.
+      operationId: accesoCuentaExpediente
+      parameters:
+        - name: cod_expediente
+          in: path
+          description: 'Código de la cuenta expediente'
+          required: true
+          schema:
+            type: string
+            minLength: 16
+            maxLength: 16
+            example: '1234567890123456'
+      requestBody:
+        description: Información de la Cuenta Expediente a consultar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAccesoCuentaExpediente'
+      responses:
+        '200':
+          description: Estado de la solicitud
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAccesoCuentaExpediente'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/juzgados/{cod_juz_dest}/operaciones/pendientes:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - operaciones
+      summary: Listado Operaciones Pendientes
+      description: A partir de los parámetros recibidos de la llamada a este servicio se obtiene el listado de operaciones pendientes de confirmar en las cuentas expediente registradas en el sistema de las CDCJ a partir de la información del SGP al que pertenece el usuario. Estas operaciones son del tipo mandamiento de pago, traspaso de cuentas y transferencias de cuentas.
+      operationId: listadoOpPendientes
+      parameters:
+        - name: cod_juz_dest
+          in: path
+          description: 'Código del Juzgado del expediente. El usuario debe tener permisos para actuar en este juzgado'
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: tip_documento
+          in: query
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/TipoDocumentoEnum'
+        - name: cod_documento
+          in: query
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            type: string
+            maxLength: 10
+            example: '123456789N'
+        - name: cod_juz_ori
+          in: query
+          description: 'Código Juzgado origen'
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'           
+        - name: cod_proced
+          in: query
+          description: 'Código de procedimiento'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'
+        - name: num_expediente
+          in: query
+          description: 'Número del expediente'
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234' 
+        - name: aa_expediente
+          in: query
+          description: 'Año del expediente'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'               
+        - name: fecha_ini
+          in: query
+          description: 'Fecha inicio para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '20/07/2022'
+        - name: fecha_fin
+          in: query
+          description: 'Fecha fin para la búsqueda de operaciones'
+          schema:
+            type: string
+            format: date
+            example: '20/07/2022'        
+        - name: serie_mandamiento
+          in: query
+          description: 'Serie del mandamiento de la operación'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '12'
+        - name: numero_mandamiento
+          in: query
+          description: 'Número del mandamiento de la operación'
+          schema:
+            type: string
+            minLength: 7
+            maxLength: 7
+            example: '1234567'
+        - name: tipo_operacion
+          in: query
+          description: 'Tipo operación para la búsqueda de operaciones'
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: '01'
+        - name: importe_desde
+          in: query
+          description: 'Importe desde para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 1.00         
+        - name: importe_hasta
+          in: query
+          description: 'Importe hasta para la búsqueda de operaciones'
+          schema:
+            type: number
+            minimum: 0
+            maximum: 123456789012345.12
+            example: 500.00 
+        - name: moneda
+          in: query
+          description: 'Moneda para la búsqueda de operaciones'
+          schema:
+            type: string
+            minLength: 3
+            maxLength: 3
+            example: 'EUR'                        
+        - name: estado
+          in: query
+          description: 'Estado de la operación: P -> Pte. Cobro, F -> Pte. Confirmar, I -> Pte. Ingreso, A -> Ejecutada'
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 2
+            enum:
+              - 'P'
+              - 'F'
+              - 'I'
+              - 'A'
+            example: 'A'           
+        - name: ordenacion
+          in: query
+          description: 'Tipo ordenación: A -> Ascendente, D -> Descendente'
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1
+            enum:
+              - 'A'
+              - 'D'
+            example: 'D'
+        - name: num_pagina
+          in: query
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 2
+            example: 1   
+        - name: tam_pagina
+          in: query
+          description: 'Número de resultados que devolverá en una página determinada'
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 3
+            example: 20
+      responses:
+        '200':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseListadoOpPendientes'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/juzgados/{cod_juz_dest}/operaciones/{numero_operacion}/pendientes/confirmacion:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - operaciones
+      summary: Confirmación Operaciones Pendientes
+      description: A partir de los parámetros recibidos de la llamada a este servicio se puede confirmar las operaciones realizadas en una cuenta de expediente que están pendientes de validación en el sistema de las CDCJ a partir de la información registrada en el SGP. Con esta acción, el usuario podrá confirmar, dependiendo de sus permisos, operaciones como el mandamiento de pago, traspaso de cuentas y transferencias de cuentas.
+      operationId: confirmacionOpPendientes
+      parameters:
+        - name: cod_juz_dest
+          in: path
+          description: 'Código del Juzgado del expediente. El usuario debe tener permisos para actuar en este juzgado'
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: numero_operacion
+          in: path
+          description: 'Número de la operación origene'
+          required: true
+          schema:
+            type: string
+            minLength: 11
+            maxLength: 11
+            example: '12345678901' 
+      requestBody:
+        description: Información de Operaciones Pendientes a confirmar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestConfirmacionOpPendientes'
+      responses:
+        '200':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseConfirmacionOpPendientes'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+  /api/v1/juzgados/{cod_juz_dest}/embargos/{num_embargo}:
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - embargos
+      summary: Baja Embargo
+      description: A partir de los parámetros recibidos de la llamada a este servicio se generará la baja de un embargo que quedará registrado en las cuentas de expediente a espera de la confirmación de dicho movimiento.
+      operationId: bajaEmbargo
+      parameters:
+        - name: cod_juz_dest
+          in: path
+          description: 'Código del juzgado destino'
+          required: true
+          schema:
+            type: string
+            minLength: 4
+            maxLength: 4
+            example: '1234'
+        - name: num_embargo
+          in: path
+          description: 'Número de embargo de cada embargo dado de alta'
+          required: true
+          schema:
+            type: string
+            minLength: 7
+            maxLength: 7
+            example: '1234567'
+        - name: tip_documento
+          in: query
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/TipoDocumentoEnum'
+        - name: cod_documento
+          in: query
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          required: true
+          schema:
+            type: string
+            maxLength: 10
+            example: '123456789N'
+        - name: des_motivo
+          in: query
+          description: 'Observaciones'
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+            example: 'Descripción motivo Prueba'
+      responses:
+        '200':
+          description: Detalles de la operación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseBajaEmbargo'
+        '400':
+          $ref: '#/components/schemas/BadRequest'
+        '401':
+          $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          $ref: '#/components/schemas/NotFound'
+        '409':
+          $ref: '#/components/schemas/Conflict'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    UnauthorizedError:
+      description: Información de autenticación no existe o es inválida
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: No se tiene acceso al recurso
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Petición mal formada
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: No encontrado
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Conflicto
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+    TipoDocumentoEnum:
+      type: string
+      minLength: 1
+      maxLength: 1
+      enum: [ C,D,N,S ]
+      example: 'D'
+    RequestAltaCuentaExpediente:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        cod_expediente:
+          type: string
+          description: 'Código del expediente creado'
+          minLength: 16
+          maxLength: 16
+          example: '1234567890123456'
+      required: 
+        - tip_documento
+        - cod_documento
+        - cod_expediente
+    ResponseAltaCuentaExpediente:
+      type: object
+      properties:
+        cod_expediente:
+          type: string
+          description: 'Código del expediente creado'
+          minLength: 16
+          maxLength: 16
+          example: '1234567890123456'
+        cod_situ_exp:
+          type: string
+          description: 'Estado del expediente'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No es posible crear una CE, partiendo de los datos de entrada aportados'
+            - 'Usuario no autorizado a crear Cuentas Expediente'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    ResponseConsultaCuentaExpediente:
+      type: object
+      properties:
+        resultados:
+          type: array
+          items:
+            type: object
+            properties:
+              fecha_ingreso:
+                type: string
+                description: 'Lista con las fechas de firma o alta de los movimientos'
+                format: date-time
+                example: '2022-07-20T23:30:08Z'
+              fecha_firmeza:
+                type: string
+                description: 'Lista con las fechas de firmeza o confirmación o caducidad'
+                format: date-time
+                example: '2022-07-20T23:30:08Z'
+              tipo_movimiento:
+                type: string
+                description: 'Lista con tipo de operación'
+                minLength: 2
+                maxLength: 2
+                example: '01'
+              abono:
+                type: number
+                description: 'Lista con importe de operación de abono'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              importe_pendiente:
+                type: number
+                description: 'Lista con importe de operación pendiente'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              cargo:
+                type: number
+                description: 'Lista con importe de operación de adeudo'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              importe_caducado:
+                type: number
+                description: 'Lista con importe de operación caducada'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              moneda:
+                type: string
+                description: 'Lista con monedas de la operación'
+                minLength: 3
+                maxLength: 3
+                example: 'EUR'
+              serie_mandamiento:
+                type: string
+                description: 'Lista con la serie del mandamiento de la operación'
+                minLength: 2
+                maxLength: 2
+                example: '01'
+              numero_mandamiento:
+                type: string
+                description: 'Lista con número del mandamiento de la operación'
+                minLength: 7
+                maxLength: 7
+                example: '1234567'
+              numero_operacion:
+                type: string
+                description: 'Lista con número de las operaciones'
+                minLength: 11
+                maxLength: 11
+                example: '12345678901'
+            required:
+              - fecha_ingreso
+              - tipo_movimiento
+              - serie_mandamiento
+              - numero_mandamiento
+              - numero_operacion
+        totales:
+          type: array
+          items:
+            type: object
+            properties:
+              total_moneda:
+                type: string
+                description: 'Lista con monedas para el total del expediente'
+                minLength: 3
+                maxLength: 3
+                example: 'EUR'
+              total_abono:
+                type: number
+                description: 'Importe total de operaciones de abono por moneda'
+                example: 123.12
+              total_pendiente:
+                type: number
+                description: 'Importe total de operaciones pendientes por moneda'
+                example: 123.12
+              total_cargo:
+                type: number
+                description: 'Importe total de operaciones de adeudo por moneda'
+                example: 123.12
+            required:
+              - total_moneda
+        num_pagina:
+          type: integer
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          minLength: 1
+          maxLength: 2
+          example: 1
+        tam_pagina:
+          type: integer
+          description: 'Número de resultados que devolverá en una página determinada'
+          minLength: 1
+          maxLength: 3
+          example: 20  
+        mas_paginas:
+          type: boolean
+          description: 'Indica si hay más páginas de resultados o no'
+          example: true
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No hay datos para la selección informada'
+            - 'El tamaño de página excede el máximo permitido o no es correcto'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestAltaPagoFormulario:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        nombre:
+          type: string
+          description: 'Nombre o razón social de quien hace ingreso'
+          minLength: 1
+          maxLength: 85
+          example: 'NombrePrueba'
+        tip_documento_ingreso:
+          description: 'Tipo documento de quien hace ingreso'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento_ingreso:
+          type: string
+          description: 'Código documento de quien hace ingreso'
+          maxLength: 10
+          example: '123456789N'
+        cod_tipovia:
+          type: string
+          description: 'Código de tipo de vía de quien hace ingreso'
+          minLength: 2
+          maxLength: 2
+          example: '11'
+        nom_via:
+          type: string
+          description: 'Nombre de la vía de la dirección'
+          minLength: 1
+          maxLength: 55
+          example: 'Nombre via Prueba'
+        num_via:
+          type: string
+          description: 'Número de la vía de la dirección'
+          minLength: 1
+          maxLength: 5
+          example: '12345'
+        cod_postal:
+          type: string
+          description: 'Código postal (España)'
+          minLength: 1
+          maxLength: 5
+          example: '12345'
+        cod_pais:
+          type: string
+          description: 'Código de País'
+          minLength: 3
+          maxLength: 3
+          example: '034'
+        cod_provincia:
+          type: string
+          description: 'Código de Provincia (España)'
+          minLength: 2
+          maxLength: 2
+          example: '47'
+        cod_plaza:
+          type: string
+          description: 'Código de Plaza (España)'
+          minLength: 6
+          maxLength: 6
+          example: '123456'
+        num_telefono:
+          type: string
+          description: 'Número de teléfono'
+          minLength: 10
+          maxLength: 10
+          example: '1234567890'
+        cod_concepto:
+          type: string
+          description: 'Código de concepto de Pago'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        tipo_recurso:
+          type: string
+          description: 'Tipo de recurso para ingreso de recurso'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        des_concepto:
+          type: string
+          description: 'Descripción del concepto Otros'
+          minLength: 1
+          maxLength: 50
+          example: 'Descripción Prueba'
+        importe:
+          type: number
+          description: 'Importe del ingreso'
+          minimum: 0
+          maximum: 123456789012345.12
+          example: 100.05 
+        cod_moneda:
+          type: string
+          description: 'Moneda del ingreso'
+          minLength: 3
+          maxLength: 3
+          example: 'EUR'
+        des_observ:
+          type: string
+          description: 'Observaciones'
+          minLength: 1
+          maxLength: 600
+          example: 'Observaciones Prueba'
+        des_cuerpopolic:
+          type: string
+          description: 'Cuerpo policial actuante'
+          minLength: 1
+          maxLength: 60
+          example: 'Descripción Cuerpo Policía'
+        nom_policia:
+          type: string
+          description: 'Nombre del policía actuante'
+          minLength: 1
+          maxLength: 60
+          example: 'Descripción Policía Actuante'
+        num_regpolic:
+          type: string
+          description: 'Número de registro policial'
+          minLength: 1
+          maxLength: 15
+          example: '123456789012345'
+        cod_policia:
+          type: string
+          description: 'Código de policía'
+          minLength: 1
+          maxLength: 10
+          example: '1234567890'
+        nom_representado:
+          type: string
+          description: 'Nombre de por cuenta de quien se hace el ingreso'
+          minLength: 1
+          maxLength: 85
+          example: 'Nombre para el ejemplo Prueba'
+        doc_representado:
+          type: string
+          description: 'Documento del representado'
+          minLength: 10
+          maxLength: 10
+          example: '123456789N'
+        dir_representado:
+          type: string
+          description: 'Dirección del representado'
+          minLength: 1
+          maxLength: 150
+          example: 'Dirección del representado Prueba'
+        nom_orden_penal:
+          type: string
+          description: 'Nombre de orden penal'
+          minLength: 1
+          maxLength: 85
+          example: 'Nombre orden penal Prueba'
+        doc_orden_penal:
+          type: string
+          description: 'Documento orden penal'
+          minLength: 10
+          maxLength: 10
+          example: '123456789N'
+        dir_orden_penal:
+          type: string
+          description: 'Dirección orden penal'
+          minLength: 1
+          maxLength: 150
+          example: 'Dirección orden penal Prueba'
+      required: 
+        - tip_documento
+        - cod_documento
+        - nombre
+        - tip_documento_ingreso
+        - cod_documento_ingreso
+        - cod_tipovia
+        - nom_via
+        - cod_pais
+        - cod_concepto
+        - importe
+        - cod_moneda
+    ResponseAltaPagoFormulario:
+      type: object
+      properties:
+        num_operacion:
+          type: number
+          description: 'Número de operación'
+          maxLength: 11
+          example: '12345678901'
+        cod_seralfab:
+          type: string
+          description: 'Serie del mandamiento'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        num_sr:
+          type: string
+          description: 'Número del mandamiento'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        fecha:
+          type: string
+          description: 'Fecha de la operación'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestAltaPagoMandamiento:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        nombre:
+          type: string
+          description: 'Nombre o razón social del beneficiario'
+          minLength: 1
+          maxLength: 85
+          example: 'NombrePrueba'
+        tip_documento_mp:
+          description: 'Tipo documento del titular del MP'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento_mp:
+          type: string
+          description: 'Código documento del titular del MP'
+          maxLength: 10
+          example: '123456789N'
+        exp_no_dispone:
+          type: string
+          description: 'Explicación de Tipo Documento No se Dispone'
+          minLength: 1
+          maxLength: 600
+          example: 'Descripción Prueba'
+        cod_concepto:
+          type: string
+          description: 'Código de concepto de Pago'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        des_concepto:
+          type: string
+          description: 'Descripción del concepto Otros'
+          minLength: 1
+          maxLength: 50
+          example: 'Descripción Prueba'
+        importe:
+          type: number
+          description: 'Importe del MP'
+          minimum: 0
+          maximum: 123456789012345.12
+          example: 100.05 
+        cod_moneda:
+          type: string
+          description: 'Moneda del MP'
+          minLength: 3
+          maxLength: 3
+          example: 'EUR'
+        localizacion:
+          type: string
+          description: 'Localización de la cuenta del pago: E -> España, X -> Extranjero'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'E'
+            - 'X'
+          example: 'E'
+        tipo_pago:
+          type: string
+          description: 'Tipo de la cuenta del pago: A -> Abono en cuenta, I -> IBAN, N -> No bancarizado'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'A'
+            - 'I'
+            - 'N'
+          example: 'A'
+        cod_entidad:
+          type: string
+          description: 'Entidad de la cuenta'
+          minLength: 4
+          maxLength: 4
+          example: '1234'     
+        cod_oficina:
+          type: string
+          description: 'Ofician de la cuenta'
+          minLength: 4
+          maxLength: 4
+          example: '1234'  
+        cod_ccc:
+          type: string
+          description: 'Cuenta'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'  
+        cod_ctaiban:
+          type: string
+          description: 'IBAN'
+          minLength: 34
+          maxLength: 34
+          example: '1234567890123456789012345678901234'  
+        cta_benef:
+          type: string
+          description: 'Cuenta extranjera'
+          minLength: 34
+          maxLength: 34
+          example: '1234567890123456789012345678901234'  
+        cod_swift:
+          type: string
+          description: 'Código SWIFT'
+          minLength: 11
+          maxLength: 11
+          example: '12345678901' 
+        motivo_no_bancarizado:
+          type: string
+          description: 'Motivo no bancarizado'
+          minLength: 1
+          maxLength: 600
+          example: 'Descripción no bancarizado Prueba' 
+        ind_resid:
+          type: boolean
+          example: true
+        des_observ:
+          type: string
+          description: 'Observaciones'
+          minLength: 1
+          maxLength: 600
+          example: 'Descripción observaciones Prueba'
+        cod_tipovia:
+          type: string
+          description: 'Código de tipo de vía de la dirección del beneficiario'
+          minLength: 2
+          maxLength: 2
+          example: '11'
+        nom_via:
+          type: string
+          description: 'Nombre de la vía de la dirección'
+          minLength: 1
+          maxLength: 55
+          example: 'Nombre via Prueba'
+        num_via:
+          type: string
+          description: 'Número de la vía de la dirección'
+          minLength: 1
+          maxLength: 5
+          example: '12345'
+        cod_postal:
+          type: string
+          description: 'Código postal (España)'
+          minLength: 1
+          maxLength: 5
+          example: '12345'
+        cod_pais:
+          type: string
+          description: 'Código de País'
+          minLength: 3
+          maxLength: 3
+          example: '034'
+        cod_provincia:
+          type: string
+          description: 'Código de Provincia (España)'
+          minLength: 2
+          maxLength: 2
+          example: '47'
+        cod_plaza:
+          type: string
+          description: 'Código de Plaza (España)'
+          minLength: 6
+          maxLength: 6
+          example: '123456'
+        num_telefono:
+          type: string
+          description: 'Número de teléfono'
+          minLength: 10
+          maxLength: 10
+          example: '1234567890'
+        tipo_notificacion:
+          type: string
+          description: 'Tipo de la notificación (SMS, Email o Ambos)'
+          minLength: 10
+          maxLength: 10
+          example: '1234567890'
+        num_sms_notificacion:
+          type: string
+          description: 'Número del teléfono para la notificación'
+          minLength: 10
+          maxLength: 10
+          example: '1234567890'
+        email_notificacion:
+          type: string
+          description: 'Email para la notificación'
+          minLength: 8
+          maxLength: 100
+          example: 'correo@prueba.com'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, P -> Pendiente de Cobro'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'P'
+          example: 'F'
+      required: 
+        - tip_documento
+        - cod_documento
+        - nombre
+        - tip_documento_mp
+        - cod_documento_mp
+        - cod_concepto
+        - importe
+        - cod_moneda
+        - estado
+    ResponseAltaPagoMandamiento:
+      type: object
+      properties:
+        num_operacion:
+          type: number
+          description: 'Número de operación'
+          maxLength: 11
+          example: '12345678901'
+        cod_seralfab:
+          type: string
+          description: 'Serie del mandamiento'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        num_sr:
+          type: string
+          description: 'Número del mandamiento'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        fecha:
+          type: string
+          description: 'Fecha de la operación'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        fec_caduca:
+          type: string
+          description: 'Fecha de caducidad de la operación'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, P -> Pendiente de Cobro'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'P'
+          example: 'F'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '004'
+            - '005'
+            - '006'
+            - '007'
+            - '008'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'La CE relacionada con el Número de Procedimiento no tiene saldo disponible para realizar la operación'
+            - 'El formato del teléfono no es correcto'
+            - 'El formato del correo electrónico no es correcto'
+            - 'El formato del código Iban informado no es correcto'
+            - 'El formato del código BIC/Swift informado no es correcto'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestTransferenciaCuentaExpediente:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        cod_expediente_destino:
+          type: string
+          description: 'Código de la cuenta expediente'
+          minLength: 16
+          maxLength: 16
+          example: '1234567890123456'
+        importe:
+          type: number
+          description: 'Importe de la transferencia'
+          minimum: 0
+          maximum: 123456789012345.12
+          example: 100.05 
+        cod_moneda:
+          type: string
+          description: 'Moneda del ingreso'
+          minLength: 3
+          maxLength: 3
+          example: 'EUR'
+        cod_concepto:
+          type: string
+          description: 'Código del concepto'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        des_concepto:
+          type: string
+          description: 'Descripción del concepto Otros'
+          minLength: 1
+          maxLength: 50
+          example: 'Descripción Prueba'
+        des_observ:
+          type: string
+          description: 'Observaciones'
+          minLength: 1
+          maxLength: 600
+          example: 'Observaciones Prueba'
+        nombre:
+          type: string
+          description: 'Nombre del beneficiario del fondo abandonado'
+          minLength: 1
+          maxLength: 85
+          example: 'NombrePrueba'
+        fec_disposicion:
+          type: string
+          description: 'Fecha de puesta a disposición del beneficiario de la cantidad'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, A -> Ejecutada'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'A'
+          example: 'F'
+      required: 
+        - tip_documento
+        - cod_documento
+        - cod_expediente_destino
+        - importe
+        - cod_moneda
+        - cod_concepto
+        - estado
+    ResponseTransferenciaCuentaExpediente:
+      type: object
+      properties:
+        num_operacion:
+          type: number
+          description: 'Número de operación en el juzgado origen'
+          maxLength: 11
+          example: '12345678901'
+        num_operacion_destino:
+          type: number
+          description: 'Número de operación en el juzgado destino'
+          maxLength: 11
+          example: '12345678901'
+        cod_seralfab:
+          type: string
+          description: 'Serie del mandamiento'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        num_sr:
+          type: string
+          description: 'Número del mandamiento'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        fecha:
+          type: string
+          description: 'Fecha de la operación'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, A -> Ejecutada'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'A'
+          example: 'F'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '004'
+            - '005'
+            - '006'
+            - '007'
+            - '008'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'La C.E. origen no tiene saldo disponible para realizar la operación'
+            - 'La situación de la C.E. origen no es la correcta para realizar una orden de transferencia'
+            - 'La situación de la C.E. destino no es la correcta para realizar una orden de transferencia'
+            - 'La situación de la C.E. destino está bloqueada'
+            - 'La C.E. destino tiene operaciones de transferencia pendientes de firma'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestTraspasoCuentaExpediente:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        cod_expediente_destino:
+          type: string
+          description: 'Código de la cuenta expediente'
+          minLength: 16
+          maxLength: 16
+          example: '1234567890123456'
+        cod_concepto:
+          type: string
+          description: 'Código del concepto'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        des_concepto:
+          type: string
+          description: 'Descripción del concepto Otros'
+          minLength: 1
+          maxLength: 50
+          example: 'Descripción Prueba'
+        des_observ:
+          type: string
+          description: 'Observaciones'
+          minLength: 1
+          maxLength: 600
+          example: 'Observaciones Prueba'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, A -> Ejecutada'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'A'
+          example: 'F'
+      required: 
+        - tip_documento
+        - cod_documento
+        - cod_expediente_destino
+        - cod_concepto
+        - estado
+    ResponseTraspasoCuentaExpediente:
+      type: object
+      properties:
+        num_operacion:
+          type: number
+          description: 'Número de operación en el juzgado origen'
+          maxLength: 11
+          example: '12345678901'
+        num_operacion_destino:
+          type: number
+          description: 'Número de operación en el juzgado destino'
+          maxLength: 11
+          example: '12345678901'
+        cod_seralfab:
+          type: string
+          description: 'Serie del mandamiento'
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        num_sr:
+          type: string
+          description: 'Número del mandamiento'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        fecha:
+          type: string
+          description: 'Fecha de la operación'
+          format: date-time
+          example: '2019-07-20T23:30:08Z'
+        importes:
+          type: array
+          items:
+            type: object
+            properties:
+              importe:
+                type: number
+                description: 'Importe del ingreso por cada moneda del expediente'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 100.05
+        monedas:
+          type: array
+          items:
+            type: object
+            properties:
+              cod_moneda:
+                type: string
+                description: 'Código de la Moneda por cada moneda del expediente'
+                minLength: 3
+                maxLength: 3
+                example: 'EUR'
+        estado:
+          type: string
+          description: 'Estado de la operación: F -> Pendiente de Firma, A -> Ejecutada'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'F'
+            - 'A'
+          example: 'F'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '004'
+            - '005'
+            - '006'
+            - '007'
+            - '008'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'La situación de la C.E. origen está bloqueada'
+            - 'La situación de la C.E. destino está bloqueada'
+            - 'La C.E. origen tiene operaciones de transferencia pendientes de firma'
+            - 'La C.E. destino tiene operaciones de transferencia pendientes de firma'
+            - 'No se pueden realizar traspasos que tengan como destino las cuentas especiales 5555, 7777 o 9999'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta  
+    RequestAltaEmbargo:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        cod_expediente:
+          type: string
+          description: 'Código de la Cuenta Expediente'
+          minLength: 16
+          maxLength: 16
+          example: '1234567890123456'
+        modalidad:
+          type: string
+          description: 'Modalidad Embargo: S -> Simple, I -> Múltiple Individual, M -> Múltiple múltiple'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'S'
+            - 'I'
+            - 'M'
+          example: 'S'
+        tip_documentos_emb:
+          type: array
+          items:
+            type: object
+            properties:
+              tip_documento_emb:
+                description: 'Tipo documento de la persona embargada'
+                allOf:
+                - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documentos_emb:
+          type: array
+          items:
+            type: object
+            properties:
+              cod_documento_emb:
+                type: string
+                description: 'Código documento de la persona embargada'
+                maxLength: 10
+                example: '123456789N'
+        nombres:
+          type: array
+          items:
+            type: object
+            properties:
+              nombre:
+                type: string
+                description: 'Nombre de la persona embargada'
+                minLength: 1
+                maxLength: 80
+                example: 'NombrePrueba'
+        apellidos_uno:
+          type: array
+          items:
+            type: object
+            properties:
+              apellido_uno:
+                type: string
+                description: 'Primer apellido de la persona embargada'
+                minLength: 1
+                maxLength: 55
+                example: 'Apellido1Prueba'
+        apellidos_dos:
+          type: array
+          items:
+            type: object
+            properties:
+              apellido_dos:
+                type: string
+                description: 'Segundo apellido de la persona embargada'
+                minLength: 1
+                maxLength: 55
+                example: 'Apellido2Prueba'
+        importe:
+          type: number
+          description: 'Importe del embargo'
+          minimum: 0
+          maximum: 123456789012345.12
+          example: 100.05 
+        cod_moneda:
+          type: string
+          description: 'Código de la Moneda'
+          minLength: 3
+          maxLength: 3
+          example: 'EUR'
+        cod_tipoemb:
+          type: string
+          description: 'Tipo Embargo'
+          minLength: 4
+          maxLength: 4
+          enum:
+            - 'AEAT'
+            - 'ECCV'
+            - 'AMBO'
+          example: 'AEAT'
+        des_motivo:
+          type: string
+          description: 'Observaciones'
+          minLength: 1
+          maxLength: 200
+          example: 'Observaciones Prueba'
+        cod_expediente_origen:
+          type: string
+          description: 'Expediente origen para embargos con CE con procedimientos: 05 Ejecución, 64 Ejecución de sentencias laborales, 78 Ejecutorias penales, 95 Ejecuciones contenciosas'
+          minLength: 2
+          maxLength: 2
+          example: '05'
+      required: 
+        - tip_documento
+        - cod_documento
+        - cod_expediente
+        - modalidad
+        - tip_documentos_emb
+        - cod_documentos_emb
+        - nombres
+        - importe
+        - cod_moneda
+        - cod_tipoemb
+    ResponseAltaEmbargo:
+      type: object
+      properties:
+        num_embargo:
+          type: string
+          description: 'Número de embargo de cada embargo dado de alta'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        cod_estado:
+          type: string
+          description: 'Estado del Embargo de cada embargo dado de alta: PE -> Pendiente, EN -> Enviado, ER -> En error'
+          minLength: 2
+          maxLength: 2
+          enum:
+            - 'PE'
+            - 'EN'
+            - 'ER'
+          example: 'F'
+        cod_clave_embargo:
+          type: string
+          description: 'Concepto del Embargo de cada embargo dado de alta'
+          minLength: 35
+          maxLength: 35
+          example: '6002000049582915#E#0000005001'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '005'
+            - '006'
+            - '007'
+            - '008'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'El tipo/código de documento, no corresponde con el nombre y primer apellido de la persona a embargar'
+            - 'Tiene que existir más de una persona al elegir la Modalidad de embargo múltiple'
+            - 'La C.E. donde se va a realizar el alta del embargo está en estado bloqueada'
+            - 'La C.E. donde se va a realizar el alta del embargo está pendiente de una orden de traspaso'
+            - 'El importe del embargo ha de ser mayor que 0 euros y menor que 1000 millones de euros'
+            - 'Existen embargos previos para el mismo expediente/deudor en estado enviado'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    ResponseTrazabilidadIngresosErroneos:
+      type: object
+      properties:
+        resultados:
+          type: array
+          items:
+            type: object
+            properties:
+              expediente:
+                type: string
+                description: 'Lista con expedientes del ingreso erróneo'
+                minLength: 16
+                maxLength: 16
+                example: '1234567890123456'
+              tip_documento:
+                description: 'Lista de tipo documento'
+                allOf:
+                - $ref: '#/components/schemas/TipoDocumentoEnum'
+              cod_documento:
+                type: string
+                description: 'Lista de Código documento'
+                maxLength: 10
+                example: '123456789N'
+              titular:
+                type: string
+                description: 'Lista de titulares'
+                minLength: 85
+                maxLength: 85
+                example: 'Titular Prueba'
+              serie_mandamiento:
+                type: string
+                description: 'Lista con la serie del mandamiento de la operación origen'
+                minLength: 2
+                maxLength: 2
+                example: '01'
+              numero_mandamiento:
+                type: string
+                description: 'Lista con número del mandamiento de la operación origen'
+                minLength: 7
+                maxLength: 7
+                example: '1234567'
+              fecha_ingreso:
+                type: string
+                description: 'Lista con la fecha del ingreso erróneo'
+                format: date-time
+                example: '2022-07-20T23:30:08Z'
+              importe:
+                type: number
+                description: 'Lista con importe del ingreso erróneo'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              moneda:
+                type: string
+                description: 'Lista con moneda del ingreso erróneo'
+                minLength: 3
+                maxLength: 3
+                example: 'EUR'
+              estado_movimiento:
+                type: string
+                description: 'Lista con el estado del ingreso erróneo: PE -> No Recuperado, RC -> Reclamado, RE -> Recuperado'
+                minLength: 2
+                maxLength: 2
+                enum:
+                  - 'PE'
+                  - 'RC'
+                  - 'RE'
+                example: 'PE'
+              numero_operacion:
+                type: string
+                description: 'Lista con número de las operaciones origen'
+                minLength: 11
+                maxLength: 11
+                example: '12345678901'
+            required:
+              - expediente
+              - tip_documento
+              - cod_documento
+              - titular
+              - serie_mandamiento
+              - numero_mandamiento
+              - fecha_ingreso
+              - importe
+              - moneda
+              - estado_movimiento
+              - numero_operacion
+        num_pagina:
+          type: integer
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          minLength: 1
+          maxLength: 2
+          example: 1
+        tam_pagina:
+          type: integer
+          description: 'Número de resultados que devolverá en una página determinada'
+          minLength: 1
+          maxLength: 3
+          example: 20
+        mas_paginas:
+          type: boolean
+          description: 'Indica si hay más páginas de resultados o no'
+          example: true
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No hay datos para la selección informada'
+            - 'El tamaño de página excede el máximo permitido o no es correcto'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestAccesoCuentaExpediente:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+        tip_documento_profesional:
+          description: 'Tipo documento del profesional'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento_profesional:
+          type: string
+          description: 'Código documento del profesional'
+          maxLength: 10
+          example: '123456789N'
+        nombre:
+          type: string
+          description: 'Nombre del profesional'
+          minLength: 1
+          maxLength: 50
+          example: 'NombrePrueba'
+        apellidos:
+          type: string
+          description: 'Apellidos del profesional'
+          minLength: 1
+          maxLength: 50
+          example: 'Apellidos Prueba'
+        colectivo:
+          type: string
+          description: 'Colectivo del profesional: AB -> Abogado, PR -> Procurador, GS -> Graduado Social'
+          minLength: 2
+          maxLength: 2
+          enum:
+            - 'AB'
+            - 'PR'
+            - 'GS'
+          example: 'AB'
+        accion:
+          type: string
+          description: 'A -> Alta, B -> Baja'
+          minLength: 1
+          maxLength: 1
+          enum:
+            - 'A'
+            - 'B'
+          example: 'A'
+        cod_motivosol:
+          type: string
+          description: 'Motivo de la solicitud: 01 -> Nueva Representación, 03 -> Baja de la Representación'
+          minLength: 2
+          maxLength: 2
+          enum:
+            - '01'
+            - '03'
+          example: '01'
+        des_comentario:
+          type: string
+          description: 'Comentarios'
+          minLength: 1
+          maxLength: 255
+          example: 'Comentarios Prueba'
+      required: 
+        - tip_documento
+        - cod_documento
+        - tip_documento_profesional
+        - cod_documento_profesional
+        - nombre
+        - apellidos
+        - colectivo
+        - accion
+        - cod_motivosol
+    ResponseAccesoCuentaExpediente:
+      type: object
+      properties:
+        cod_estado:
+          type: string
+          description: 'Estado de la solicitud: AL -> Aceptada, BA -> Baja, DE -> Denegada'
+          minLength: 2
+          maxLength: 2
+          enum:
+            - 'AL'
+            - 'BA'
+            - 'DE'
+          example: 'AL'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'El profesional informado, ya está en el estado solicitado, por lo que no se ha realizado ninguna acción'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    ResponseListadoOpPendientes:
+      type: object
+      properties:
+        resultados:
+          type: array
+          items:
+            type: object
+            properties:
+              expediente:
+                type: string
+                description: 'Lista con el expediente de la operación'
+                minLength: 16
+                maxLength: 16
+                example: '1234567890123456'
+              titular:
+                type: string
+                description: 'Lista de titulares'
+                minLength: 85
+                maxLength: 85
+                example: 'Titular Prueba'
+              tipo_operacion:
+                type: string
+                description: 'Lista con los tipos de operación '
+                minLength: 2
+                maxLength: 2
+                example: '01'
+              serie_mandamiento:
+                type: string
+                description: 'Lista con la serie del mandamiento de la operación'
+                minLength: 2
+                maxLength: 2
+                example: '01'
+              numero_mandamiento:
+                type: string
+                description: 'Lista con número del mandamiento de la operación'
+                minLength: 7
+                maxLength: 7
+                example: '1234567'
+              fecha:
+                type: string
+                description: 'Lista con la fecha de la operación'
+                format: date-time
+                example: '2022-07-20T23:30:08Z'
+              importe:
+                type: number
+                description: 'Lista con importe de la operación'
+                minimum: 0
+                maximum: 123456789012345.12
+                example: 500.00
+              moneda:
+                type: string
+                description: 'Lista con moneda de la operación'
+                minLength: 3
+                maxLength: 3
+                example: 'EUR'
+              fecha_caducidad:
+                type: string
+                description: 'Lista con la fecha de caducidad de la operación'
+                format: date-time
+                example: '2022-07-20T23:30:08Z'
+              numero_operacion:
+                type: string
+                description: 'Lista con número de la operación origen'
+                minLength: 11
+                maxLength: 11
+                example: '12345678901'
+            required:
+              - expediente
+              - tipo_operacion
+              - cod_documento
+              - titular
+              - serie_mandamiento
+              - numero_mandamiento
+              - fecha
+              - importe
+              - moneda
+              - numero_operacion
+        num_pagina:
+          type: integer
+          description: 'Valor para la paginación indicando la página que quiere visualizar'
+          minLength: 1
+          maxLength: 2
+          example: 1
+        tam_pagina:
+          type: integer
+          description: 'Número de resultados que devolverá en una página determinada'
+          minLength: 1
+          maxLength: 3
+          example: 20
+        mas_paginas:
+          type: boolean
+          description: 'Indica si hay más páginas de resultados o no'
+          example: true
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No hay datos para la selección informada'
+            - 'El tamaño de página excede el máximo permitido o no es correcto'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    RequestConfirmacionOpPendientes:
+      type: object
+      properties:
+        tip_documento:
+          description: 'Tipo documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          allOf:
+          - $ref: '#/components/schemas/TipoDocumentoEnum'
+        cod_documento:
+          type: string
+          description: 'Código documento del usuario que hace la operación para validar si tiene permisos para realizarla'
+          maxLength: 10
+          example: '123456789N'
+      required: 
+        - tip_documento
+        - cod_documento
+    ResponseConfirmacionOpPendientes:
+      type: object
+      properties:
+        estado_operacion:
+          type: string
+          description: 'Estado de la operación '
+          minLength: 1
+          maxLength: 1
+          example: '1'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '005'
+            - '006'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No existe la operación'
+            - 'No se pueden localizar las C.E. de la operación'
+            - 'La operación ha sido aprobada previamente'
+            - 'La C.E. o el órgano están bloqueados'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
+    ResponseBajaEmbargo:
+      type: object
+      properties:
+        num_embargo:
+          type: string
+          description: 'Número de embargo de cada embargo dado de alta'
+          minLength: 7
+          maxLength: 7
+          example: '1234567'
+        cod_estado:
+          type: string
+          description: 'Estado del Embargo de cada embargo dado de alta: BA -> Baja'
+          minLength: 2
+          maxLength: 2
+          enum:
+            - 'BA'
+          example: 'BA'
+        cod_respuesta:
+          type: string
+          enum:
+            - '000'
+            - '001'
+            - '002'
+            - '003'
+            - '004'
+            - '999'
+          example: '000'
+        des_respuesta:
+          type: string
+          enum:
+            - 'Operación correcta'
+            - 'Faltan campos obligatorios (Nombre de los campos)'
+            - 'El usuario no tiene permisos para realizar la operación'
+            - 'No hay ningún embargo para dar de baja con los datos aportados'
+            - 'El estado del embargo no permite darlo de baja'
+            - 'Error técnico'
+          example: 'Operación correcta'
+      required: 
+        - cod_respuesta
